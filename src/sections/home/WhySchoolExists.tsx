@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -43,11 +42,11 @@ export function WhySchoolExists() {
       })
 
       gsap.from('[data-why-card]', {
-        opacity: 0,
         y: 34,
         scale: 0.97,
         duration: 0.8,
         ease: 'power4.out',
+        clearProps: 'transform',
         stagger: 0.09,
         scrollTrigger: {
           trigger: '[data-why-card-grid]',
@@ -166,33 +165,33 @@ export function WhySchoolExists() {
                 purpose is to help them discover who they can become.
               </p>
 
+              <div
+                data-why-card-grid
+                className="mt-7 grid max-w-2xl gap-3 md:grid-cols-2"
+              >
+                {pillars.map((pillar) => (
+                  <article
+                    key={pillar.title}
+                    data-why-card
+                    className="group rounded-[1.4rem] border border-[#d8e6d2] bg-white/86 p-4.5 shadow-[0_18px_48px_rgba(22,51,37,0.08)] backdrop-blur-xl transition duration-500 will-change-transform hover:-translate-y-1 hover:shadow-[0_24px_64px_rgba(22,51,37,0.12)]"
+                  >
+                    <div className="mb-3.5 flex items-center justify-between">
+                      <div className="grid h-9 w-9 place-items-center rounded-full border border-[#8ebf80]/18 bg-[#f3f9f0] text-[#6ea565] shadow-[0_10px_24px_rgba(22,51,37,0.06)]">
+                        <PillarIcon name={pillar.icon} />
+                      </div>
+                      <div className="h-1.5 w-12 rounded-full bg-gradient-to-r from-[#8ebf80] to-[#cfe4c9]" />
+                    </div>
+                    <h3 className="text-base font-semibold leading-tight text-[#173628]">
+                      {pillar.title}
+                    </h3>
+                    <p className="mt-2.5 text-sm leading-6 text-[#5c7267]">{pillar.copy}</p>
+                  </article>
+                ))}
+              </div>
+
               <div className="mt-7 inline-flex rounded-full border border-[#8ebf80]/24 bg-white/72 px-4.5 py-2 text-[0.64rem] font-black uppercase tracking-[0.18em] text-[#5e8f56] shadow-[0_14px_36px_rgba(22,51,37,0.06)] backdrop-blur">
                 Discover Our Approach
               </div>
-            </div>
-
-            <div
-              data-why-card-grid
-              className="mt-8 grid gap-3 md:grid-cols-2"
-            >
-              {pillars.map((pillar) => (
-                <article
-                  key={pillar.title}
-                  data-why-card
-                  className="group rounded-[1.4rem] border border-[#d8e6d2] bg-white/84 p-4.5 shadow-[0_18px_48px_rgba(22,51,37,0.08)] backdrop-blur-xl transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_64px_rgba(22,51,37,0.12)]"
-                >
-                  <div className="mb-3.5 flex items-center justify-between">
-                    <div className="grid h-9 w-9 place-items-center rounded-full border border-[#8ebf80]/18 bg-[#f3f9f0] text-[#6ea565] shadow-[0_10px_24px_rgba(22,51,37,0.06)]">
-                      <PillarIcon name={pillar.icon} />
-                    </div>
-                    <div className="h-1.5 w-12 rounded-full bg-gradient-to-r from-[#8ebf80] to-[#cfe4c9]" />
-                  </div>
-                  <h3 className="text-base font-semibold leading-tight text-[#173628]">
-                    {pillar.title}
-                  </h3>
-                  <p className="mt-2.5 text-sm leading-6 text-[#5c7267]">{pillar.copy}</p>
-                </article>
-              ))}
             </div>
           </div>
         </div>
