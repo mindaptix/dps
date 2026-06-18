@@ -117,7 +117,7 @@ export function FutureReadyEducation() {
     <section
       ref={sectionRef}
       id="future-ready"
-      className="section-depth relative overflow-hidden bg-[#f8fcf6] px-5 py-10 text-[#173628] sm:px-6 lg:px-10 lg:py-12"
+      className="section-depth relative overflow-hidden bg-[#f8fcf6] px-5 py-8 text-[#173628] sm:px-6 lg:px-10 lg:py-10"
     >
       <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f7fcf4_48%,#ffffff_100%)]" />
       <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(100,145,89,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(100,145,89,0.08)_1px,transparent_1px)] [background-size:88px_88px]" />
@@ -130,9 +130,9 @@ export function FutureReadyEducation() {
           </p>
         </div>
 
-        <div className="mt-5 grid gap-4 lg:grid-cols-[0.34fr_0.66fr]">
-          <div className="relative z-10 grid self-start gap-3">
-            <div data-future-grid className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-1">
+        <div className="mt-4 grid gap-3 lg:grid-cols-[0.34fr_0.66fr]">
+          <div className="relative z-10 grid self-start gap-2">
+            <div data-future-grid className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
               {skills.map((skill, index) => {
                 const selected = index === active
                 return (
@@ -144,13 +144,13 @@ export function FutureReadyEducation() {
                     onMouseEnter={() => setActive(index)}
                     whileHover={{ x: 8 }}
                     transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-                    className={`group relative min-h-[6.2rem] overflow-hidden rounded-lg border p-4 text-left transition duration-500 md:min-h-[7rem] ${
+                    className={`group relative min-h-[5.35rem] overflow-hidden rounded-lg border p-3 text-left transition duration-500 md:min-h-[5.9rem] ${
                       selected
                         ? 'border-[#8cc27a] bg-white text-[#173628] shadow-[0_22px_70px_rgba(22,51,37,0.14)]'
                         : 'border-[#dbeed3] bg-white/72 text-[#173628] shadow-[0_16px_50px_rgba(22,51,37,0.05)] hover:border-[#8cc27a]/70'
                     }`}
                   >
-                    <div className="absolute bottom-0 right-0 top-0 w-32 overflow-hidden opacity-92 transition duration-500 group-hover:scale-105">
+                    <div className="absolute bottom-0 right-0 top-0 w-28 overflow-hidden opacity-92 transition duration-500 group-hover:scale-105">
                       <Image
                         src={skill.image}
                         alt=""
@@ -160,9 +160,9 @@ export function FutureReadyEducation() {
                       />
                       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.96),rgba(255,255,255,0.42))]" />
                     </div>
-                    <div className="relative z-10 flex items-center gap-3.5 pr-20">
+                    <div className="relative z-10 flex items-center gap-3 pr-16">
                       <span
-                        className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-xs font-black ${
+                        className={`grid h-10 w-10 shrink-0 place-items-center rounded-full text-xs font-black ${
                           selected
                           ? 'bg-[#8cc27a] text-white shadow-[0_10px_26px_rgba(140,194,122,0.28)]'
                             : 'bg-[#eef8ea] text-[#73a764]'
@@ -174,8 +174,12 @@ export function FutureReadyEducation() {
                         <p className="text-[0.58rem] font-black uppercase tracking-[0.16em] text-[#73a764]">
                           {skill.tag}
                         </p>
-                        <h4 className="mt-1 text-lg font-semibold leading-tight">{skill.title}</h4>
-                        <p className="mt-1 text-sm leading-5 text-[#5f7468]">{skill.line}</p>
+                        <h4 className="mt-1 text-base font-semibold leading-tight md:text-[1.05rem]">
+                          {skill.title}
+                        </h4>
+                        <p className="mt-0.5 text-xs leading-5 text-[#5f7468] md:text-sm">
+                          {skill.line}
+                        </p>
                       </div>
                     </div>
                   </motion.button>
