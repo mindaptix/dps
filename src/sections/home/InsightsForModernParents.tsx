@@ -37,7 +37,7 @@ export function InsightsForModernParents() {
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: index * 0.06 }}
+              transition={{ duration: 0.48, delay: index * 0.05 }}
               whileHover={{ y: -12, scale: 1.015 }}
               className={[
                 'surface-lift edge-highlight group relative min-h-72 overflow-hidden rounded-[1.45rem] border border-[#d8c495]/55 p-6 transition duration-500 hover:bg-[#073c2c] hover:text-white',

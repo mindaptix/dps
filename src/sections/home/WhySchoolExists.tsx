@@ -1,192 +1,252 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import Image from 'next/image'
 
-const promises = [
+const pillars = [
   {
-    title: 'Safety first',
-    desc: 'Children settle faster when school feels calm, known and predictable.',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    ),
+    title: 'Safe & Caring Environment',
+    copy: 'A place where children feel protected, heard, and emotionally supported.',
+    icon: 'shield',
   },
   {
-    title: 'Visible growth',
-    desc: 'Parents see confidence, communication and curiosity building over time.',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-      </svg>
-    ),
-  },
-  {
-    title: 'Future clarity',
-    desc: 'Academic strength is paired with judgment, values and real-world readiness.',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-      </svg>
-    ),
+    title: 'Future Ready Growth',
+    copy: 'From early learning to higher goals, children are prepared for real life.',
+    icon: 'spark',
   },
 ]
 
 export function WhySchoolExists() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const imageRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
+  const sectionRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
-    const ctx = gsap.context(() => {
-      // Advanced Masked Text Reveal
-      const titles = gsap.utils.toArray('[data-animate-text]')
-      titles.forEach((title: any) => {
-        gsap.from(title, {
-          y: 100,
-          opacity: 0,
-          rotate: 2,
-          duration: 1.2,
-          ease: 'power4.out',
-          scrollTrigger: {
-            trigger: title,
-            start: 'top 90%',
-          }
-        })
-      })
+    if (!sectionRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return
+    }
 
-      // Subtext fade in
-      gsap.from('[data-vision-description]', {
+    const context = gsap.context(() => {
+      gsap.from('[data-why-heading], [data-why-copy]', {
         opacity: 0,
-        y: 20,
-        duration: 1,
+        y: 28,
+        duration: 0.85,
+        ease: 'power4.out',
+        stagger: 0.08,
         scrollTrigger: {
-          trigger: '[data-vision-description]',
-          start: 'top 85%',
-        }
+          trigger: sectionRef.current,
+          start: 'top 82%',
+          once: true,
+        },
       })
 
-      // Image Parallax
-      gsap.fromTo(imageRef.current, 
-        { scale: 1.2, y: 50 },
-        { 
-          scale: 1, 
-          y: -50,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true
-          }
-        }
-      )
-
-      // Cards stagger
-      gsap.from('[data-vision-card]', {
-        x: -50,
+      gsap.from('[data-why-card]', {
         opacity: 0,
-        stagger: 0.15,
+        y: 34,
+        scale: 0.97,
         duration: 0.8,
-        ease: 'power3.out',
+        ease: 'power4.out',
+        stagger: 0.09,
         scrollTrigger: {
-          trigger: contentRef.current,
-          start: 'top 70%',
-        }
+          trigger: '[data-why-card-grid]',
+          start: 'top 84%',
+          once: true,
+        },
       })
-    }, containerRef)
 
-    return () => ctx.revert()
+      gsap.to('[data-why-parallax]', {
+        yPercent: -8,
+        scale: 1.06,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+
+      gsap.to('[data-why-orb]', {
+        y: (index) => [18, -12, 10][index] ?? 0,
+        x: (index) => [-8, 12, -10][index] ?? 0,
+        duration: 8,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut',
+        stagger: 0.35,
+      })
+    }, sectionRef)
+
+    return () => context.revert()
   }, [])
 
   return (
     <section
-      id="vision"
-      ref={containerRef}
-      className="relative overflow-hidden bg-[#061813] py-24 lg:py-32"
+      ref={sectionRef}
+      id="why-school-exists"
+      className="relative overflow-hidden bg-[#f6f2ea] px-5 py-16 text-[#173628] sm:px-6 lg:px-10 lg:py-24"
     >
-      {/* Cinematic Background Elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-[#d9bd80]/10 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[#0b513c]/15 rounded-full blur-[120px]" />
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-[0.03] mix-blend-overlay" />
-      </div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_18%,rgba(134,185,125,0.14),transparent_28%),radial-gradient(circle_at_84%_72%,rgba(110,165,101,0.09),transparent_30%),linear-gradient(180deg,#f7f3ec_0%,#f2ede3_55%,#f7f3ec_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(110,165,101,0.06)_1px,transparent_1px),linear-gradient(180deg,rgba(110,165,101,0.05)_1px,transparent_1px)] bg-[size:88px_88px] opacity-30" />
+      <div className="floating-grain pointer-events-none absolute inset-0 opacity-08" />
 
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
-          {/* Content Column */}
-          <div ref={contentRef} className="relative z-10">
-            <div className="overflow-hidden">
-              <p data-animate-text className="text-xs font-black uppercase tracking-[0.4em] text-[#d9bd80] mb-6 text-center lg:text-left">
-                Why this school exists
-              </p>
-            </div>
-            <div className="overflow-hidden mb-4">
-              <h2 data-animate-text className="text-4xl font-serif font-medium leading-tight text-white md:text-6xl lg:leading-[1.1] text-center lg:text-left">
-                Because a child needs <span className="text-[#d9bd80] italic">more</span> than a campus.
-              </h2>
-            </div>
-            <div data-vision-description>
-              <p className="mt-8 text-xl leading-relaxed text-white/70 max-w-xl text-center lg:text-left mx-auto lg:mx-0">
-                They need a <span className="text-[#d9bd80] font-semibold border-b border-[#d9bd80]/30">planned environment</span>. We turn care, learning, and character into one 
-                continuous journey parents can trust.
-              </p>
-            </div>
+      <div
+        data-why-orb
+        className="pointer-events-none absolute left-10 top-16 h-28 w-28 rounded-full bg-[#8ebf80]/12 blur-3xl"
+      />
+      <div
+        data-why-orb
+        className="pointer-events-none absolute right-12 top-28 h-36 w-36 rounded-full bg-[#6ea565]/10 blur-3xl"
+      />
+      <div
+        data-why-orb
+        className="pointer-events-none absolute bottom-10 left-1/4 h-24 w-24 rounded-full bg-[#b9d7b2]/14 blur-3xl"
+      />
 
-            <div className="mt-12 space-y-6">
-              {promises.map((item) => (
-                <div
-                  key={item.title}
-                  data-vision-card
-                  className="group relative p-6 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm transition-all hover:bg-white/[0.07] hover:border-[#d9bd80]/40"
-                >
-                  <div className="flex items-start gap-5">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-[#d9bd80]/20 to-transparent flex items-center justify-center text-[#d9bd80] group-hover:rotate-[360deg] transition-transform duration-700 border border-[#d9bd80]/20">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-white mb-2">{item.title}</h3>
-                      <p className="text-sm text-white/50 leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </div>
+      <div className="relative mx-auto max-w-[96rem]">
+        <div className="grid gap-8 xl:grid-cols-[0.42fr_0.58fr] xl:items-center">
+          <div className="relative overflow-hidden rounded-[2.2rem] border border-[#d8e6d2] bg-white/86 shadow-[0_28px_90px_rgba(22,51,37,0.08)] backdrop-blur-xl">
+            <div className="relative min-h-[34rem] sm:min-h-[40rem]">
+              <div
+                data-why-parallax
+                className="absolute inset-0 bg-[url('/images/dps-hero-students.png')] bg-cover bg-[center_18%]"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02)_0%,rgba(7,26,19,0.06)_55%,rgba(7,26,19,0.34)_100%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_16%,rgba(255,255,255,0.16),transparent_26%)]" />
+
+              <div className="absolute left-6 top-6 rounded-full border border-white/45 bg-white/82 px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#6ea565] backdrop-blur">
+                Child-first school
+              </div>
+
+              <div className="absolute right-6 top-6 max-w-[10rem] rounded-[1rem] border border-white/35 bg-white/78 p-3 text-[#173628] shadow-[0_18px_44px_rgba(22,51,37,0.12)] backdrop-blur-xl">
+                <p className="text-[0.58rem] font-black uppercase tracking-[0.18em] text-[#6ea565]">
+                  Warm welcome
+                </p>
+                <p className="mt-2 text-xs leading-5 text-[#5c7267]">
+                  A child arriving with smiles, safety, and belonging.
+                </p>
+              </div>
+
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-7">
+                <div className="rounded-[1.5rem] border border-white/35 bg-white/82 p-5 shadow-[0_18px_50px_rgba(22,51,37,0.12)] backdrop-blur-xl">
+                  <p className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-[#6ea565]">
+                    Emotional start
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold leading-tight text-[#173628]">
+                    Children feel welcomed the moment they arrive.
+                  </p>
                 </div>
-              ))}
+              </div>
             </div>
           </div>
 
-          {/* Visual Column */}
           <div className="relative">
-            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden shadow-2xl border border-white/10">
-              <div ref={imageRef} className="absolute inset-0">
-                <Image
-                  src="/images/dps-campus-life.png"
-                  alt="DPS Campus Life"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#061813] via-transparent to-transparent opacity-60" />
-              
-              {/* Floating Decorative Card */}
-              <div className="absolute bottom-8 left-8 right-8 p-6 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10">
-                <p className="text-xs font-bold text-[#d9bd80] uppercase tracking-widest mb-2">First Feeling</p>
-                <p className="text-2xl font-serif italic text-white">"A sense of belonging, from day one."</p>
+            <div className="max-w-3xl">
+              <p
+                data-why-heading
+                className="text-[0.72rem] font-black uppercase tracking-[0.42em] text-[#6ea565]"
+              >
+                Why This School Exists
+              </p>
+              <h2
+                data-why-heading
+                className="mt-5 text-[clamp(2.4rem,4vw,4.8rem)] font-semibold leading-[0.95] tracking-[-0.05em] text-[#173628]"
+              >
+                Because every child deserves more than just education.
+              </h2>
+              <p data-why-copy className="mt-6 max-w-xl text-base leading-7 text-[#5c7267] md:text-[1.05rem]">
+                We exist to create a place where children feel safe, confident, curious, and ready
+                for the future - not only with good marks, but with good values, life skills, and
+                self-belief.
+              </p>
+              <p data-why-copy className="mt-4 max-w-xl text-base leading-7 text-[#5c7267] md:text-[1.05rem]">
+                Every child enters school with dreams, questions, fears, and hidden potential. Our
+                purpose is to help them discover who they can become.
+              </p>
+
+              <div className="mt-7 inline-flex rounded-full border border-[#8ebf80]/24 bg-white/72 px-4.5 py-2 text-[0.64rem] font-black uppercase tracking-[0.18em] text-[#5e8f56] shadow-[0_14px_36px_rgba(22,51,37,0.06)] backdrop-blur">
+                Discover Our Approach
               </div>
             </div>
 
-            {/* Accent Elements */}
-            <div className="absolute -top-6 -right-6 w-32 h-32 border-t-2 border-r-2 border-[#d9bd80]/30 rounded-tr-3xl pointer-events-none" />
-            <div className="absolute -bottom-6 -left-6 w-32 h-32 border-b-2 border-l-2 border-[#d9bd80]/30 rounded-bl-3xl pointer-events-none" />
+            <div
+              data-why-card-grid
+              className="mt-8 grid gap-3 md:grid-cols-2"
+            >
+              {pillars.map((pillar) => (
+                <article
+                  key={pillar.title}
+                  data-why-card
+                  className="group rounded-[1.4rem] border border-[#d8e6d2] bg-white/84 p-4.5 shadow-[0_18px_48px_rgba(22,51,37,0.08)] backdrop-blur-xl transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_64px_rgba(22,51,37,0.12)]"
+                >
+                  <div className="mb-3.5 flex items-center justify-between">
+                    <div className="grid h-9 w-9 place-items-center rounded-full border border-[#8ebf80]/18 bg-[#f3f9f0] text-[#6ea565] shadow-[0_10px_24px_rgba(22,51,37,0.06)]">
+                      <PillarIcon name={pillar.icon} />
+                    </div>
+                    <div className="h-1.5 w-12 rounded-full bg-gradient-to-r from-[#8ebf80] to-[#cfe4c9]" />
+                  </div>
+                  <h3 className="text-base font-semibold leading-tight text-[#173628]">
+                    {pillar.title}
+                  </h3>
+                  <p className="mt-2.5 text-sm leading-6 text-[#5c7267]">{pillar.copy}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+function PillarIcon({ name }: { name: string }) {
+  const common = {
+    className: 'h-5 w-5',
+    fill: 'none',
+    stroke: 'currentColor',
+    strokeLinecap: 'round' as const,
+    strokeLinejoin: 'round' as const,
+    strokeWidth: 1.9,
+    viewBox: '0 0 24 24',
+  }
+
+  if (name === 'shield') {
+    return (
+      <svg {...common}>
+        <path d="M12 3 19 6v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3Z" />
+        <path d="m9.5 12 1.7 1.7 3.5-4" />
+      </svg>
+    )
+  }
+
+  if (name === 'book') {
+    return (
+      <svg {...common}>
+        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5Z" />
+        <path d="M7 7h9" />
+        <path d="M7 10h9" />
+      </svg>
+    )
+  }
+
+  if (name === 'heart') {
+    return (
+      <svg {...common}>
+        <path d="M20.5 8.5c0 5-8.5 10-8.5 10s-8.5-5-8.5-10a4.5 4.5 0 0 1 8.5-2 4.5 4.5 0 0 1 8.5 2Z" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg {...common}>
+      <path d="M12 3v5" />
+      <path d="M12 16v5" />
+      <path d="M3 12h5" />
+      <path d="M16 12h5" />
+      <path d="m6.5 6.5 3 3" />
+      <path d="m17.5 6.5-3 3" />
+    </svg>
   )
 }

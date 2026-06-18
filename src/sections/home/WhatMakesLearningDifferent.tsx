@@ -1,110 +1,216 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import Image from 'next/image'
+import { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const pillars = [
-  ['Know', 'Strong academic foundations with depth, discipline and visible mastery.', 'Concept clarity'],
-  ['Think', 'Critical thinking through inquiry, debate and guided reflection.', 'Reasoning'],
-  ['Create', 'Projects, design thinking, arts and innovation that make learning tangible.', 'Original work'],
-  ['Connect', 'Relationships, communication and collaboration across real classroom moments.', 'Expression'],
-  ['Contribute', 'Service, citizenship and responsibility that build a grounded worldview.', 'Purpose'],
+const systems = [
+  {
+    id: '01',
+    title: 'Science',
+    line: 'Curiosity becomes method. Questions become discoveries.',
+    image: '/images/dps-learning-different.png',
+  },
+  {
+    id: '02',
+    title: 'Arts',
+    line: 'Feeling becomes form. Imagination learns to speak.',
+    image: '/images/early-years.png',
+  },
+  {
+    id: '03',
+    title: 'Sports',
+    line: 'Energy becomes discipline. Teams teach resilience.',
+    image: '/images/dps-campus-life.png',
+  },
+  {
+    id: '04',
+    title: 'Coding',
+    line: 'Logic becomes language. Children learn to build with technology.',
+    image: '/images/primary-school.png',
+  },
+  {
+    id: '05',
+    title: 'Leadership',
+    line: 'Responsibility becomes action. Confidence becomes service.',
+    image: '/images/leadership.png',
+  },
+  {
+    id: '06',
+    title: 'Voice',
+    line: 'Thought becomes expression. Ideas learn to reach people.',
+    image: '/images/middle-school.png',
+  },
 ]
 
 export function WhatMakesLearningDifferent() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+
+    if (!sectionRef.current || !trackRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return
+    }
+
+    const context = gsap.context(() => {
+      gsap.from('[data-machine-label], [data-machine-copy]', {
+        opacity: 0,
+        y: 18,
+        duration: 0.72,
+        ease: 'power3.out',
+        stagger: 0.08,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 84%',
+          once: true,
+        },
+      })
+
+      gsap.from('[data-machine-card]', {
+        opacity: 0,
+        x: 90,
+        scale: 0.96,
+        duration: 0.9,
+        ease: 'power4.out',
+        stagger: 0.08,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 78%',
+          once: true,
+        },
+      })
+
+      gsap.to('[data-machine-gear]', {
+        rotate: 360,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+
+      const tween = gsap.to(trackRef.current, {
+        x: () => {
+          const track = trackRef.current
+          if (!track) return 0
+
+          const overflow = track.scrollWidth - window.innerWidth
+          return overflow > 0 ? -overflow : 0
+        },
+        ease: 'none',
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: () => {
+            const track = trackRef.current
+            const overflow = track ? track.scrollWidth - window.innerWidth : 0
+            return `+=${Math.max(overflow + window.innerHeight * 0.35, window.innerHeight * 2.2)}`
+          },
+          pin: true,
+          scrub: 0.85,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const next = Math.min(systems.length - 1, Math.floor(self.progress * systems.length))
+            setActive(next)
+          },
+        },
+      })
+
+      return () => tween.kill()
+    }, sectionRef)
+
+    return () => context.revert()
+  }, [])
+
   return (
-    <section className="section-depth relative overflow-hidden bg-[#f7f2e9] px-6 py-20 lg:py-28">
-      <div className="absolute inset-0 depth-mesh opacity-80" />
-      <div className="absolute -left-28 top-20 h-80 w-80 rounded-full bg-[#caa66a]/18 blur-3xl" />
-      <div className="absolute -right-28 bottom-24 h-96 w-96 rounded-full bg-[#0b513c]/12 blur-3xl" />
-      <div className="section-divider-glow absolute inset-x-10 top-0" />
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen overflow-hidden bg-[#f4f8f3] text-[#173628]"
+      id="learning-machine"
+    >
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(110,165,101,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(110,165,101,0.06)_1px,transparent_1px)] bg-[size:78px_78px]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_64%_10%,rgba(134,185,125,0.18),transparent_24%),linear-gradient(180deg,#f4f8f3_0%,#e9f3e6_100%)]" />
 
-      <div className="relative mx-auto grid max-w-[96rem] gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="surface-lift edge-highlight relative min-h-[38rem] overflow-hidden rounded-[1.75rem] border border-[#e5d3aa] bg-[url('/images/dps-learning-different.png')] bg-cover bg-center"
-        >
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,24,19,0.06),rgba(6,24,19,0.82)),radial-gradient(circle_at_72%_22%,rgba(217,189,128,0.22),transparent_30%)]" />
-          <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-white/20 to-transparent" />
-          <div className="absolute right-6 top-6 hidden rounded-[1.2rem] border border-white/14 bg-[#061813]/54 p-4 text-white shadow-[0_20px_58px_rgba(0,0,0,0.32)] backdrop-blur-xl sm:block">
-            <p className="text-[0.6rem] font-black uppercase tracking-[0.16em] text-[#d9bd80]">
-              Evidence loop
-            </p>
-            <p className="mt-2 text-2xl font-semibold leading-none">4-step rhythm</p>
-          </div>
-          <div className="absolute left-6 top-6 rounded-full border border-[#d9bd80]/45 bg-[#061813]/40 px-4 py-2 text-[0.65rem] font-black uppercase tracking-[0.16em] text-[#f1d891] backdrop-blur">
-            Learning model
-          </div>
-          <div className="absolute bottom-7 left-7 right-7 overflow-hidden rounded-[1.4rem] border border-white/14 bg-[#061813]/76 p-6 text-white shadow-[0_22px_70px_rgba(0,0,0,0.32)] backdrop-blur-xl">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d9bd80] to-transparent" />
-            <p className="text-3xl font-semibold leading-tight">Learn. Apply. Reflect. Present.</p>
-            <p className="mt-4 text-sm leading-7 text-white/68">
-              Children do not just consume lessons. They build evidence of understanding that
-              parents can see and teachers can mentor.
-            </p>
-            <div className="mt-6 grid grid-cols-4 gap-2">
-              {['Learn', 'Apply', 'Reflect', 'Present'].map((step) => (
-                <span
-                  key={step}
-                  className="rounded-xl border border-white/10 bg-white/[0.06] px-3 py-3 text-center text-[0.58rem] font-black uppercase tracking-[0.1em] text-[#d9bd80]"
+      <div
+        data-machine-gear
+        className="pointer-events-none absolute left-[58%] top-20 hidden h-56 w-56 -translate-x-1/2 rounded-full border-[1.35rem] border-[#8ebf80]/35 lg:block"
+      >
+        {Array.from({ length: 12 }).map((_, index) => (
+          <span
+            key={index}
+            className="absolute left-1/2 top-1/2 h-8 w-4 origin-[50%_7rem] rounded-sm bg-[#8ebf80]/55"
+            style={{ transform: `translate(-50%, -50%) rotate(${index * 30}deg)` }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-[96rem] flex-col justify-center px-5 py-14 sm:px-6 lg:px-10">
+        <div className="flex items-start justify-between gap-8">
+          <p data-machine-label className="text-xs font-black uppercase text-[#6ea565]">
+            The learning machine
+          </p>
+          <p data-machine-copy className="hidden text-xs font-black uppercase text-[#6a8577] md:block">
+            Six systems. One running engine.
+          </p>
+        </div>
+
+        <div className="mt-14 flex items-center justify-between">
+          <p className="text-sm font-black text-[#6ea565]">
+            {systems[active].id} / {String(systems.length).padStart(2, '0')}
+          </p>
+          <p className="text-sm font-black text-[#6ea565]">
+            {systems[Math.min(active + 1, systems.length - 1)].id}
+          </p>
+        </div>
+
+        <div className="relative mt-8 overflow-visible">
+          <div
+            ref={trackRef}
+            className="flex w-max gap-8 pr-[24vw] will-change-transform"
+            style={{ paddingLeft: '6vw' }}
+          >
+            {systems.map((system, index) => {
+              const isActive = index === active
+              return (
+                <article
+                  key={system.title}
+                  data-machine-card
+                  className={`relative h-[34rem] shrink-0 overflow-hidden rounded-[1.35rem] border border-[#d7e5d2] bg-white transition duration-500 ${
+                    isActive
+                      ? 'w-[72vw] min-w-[48rem] max-w-[60rem] opacity-100'
+                      : 'w-[28vw] min-w-[18rem] max-w-[30rem] opacity-70'
+                  }`}
                 >
-                  {step}
-                </span>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        <div className="surface-lift edge-highlight relative overflow-hidden rounded-[1.75rem] border border-[#e5d3aa] bg-white/70 p-6 backdrop-blur sm:p-8 lg:p-10">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#073c2c] via-[#caa66a] to-[#073c2c]" />
-          <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-[#caa66a]/16 blur-2xl" />
-          <p className="text-xs font-black uppercase tracking-[0.25em] text-[#a77e3e]">
-            What makes learning different
-          </p>
-          <h2 className="mt-5 text-[clamp(2.35rem,4vw,4.7rem)] font-semibold leading-[1.02] text-[#0b2a20]">
-            Learning parents can understand, and children can feel.
-          </h2>
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-[#52665e]">
-            The classroom rhythm is designed around proof of growth: what the child knows, how the
-            child thinks, what the child creates and how the child contributes.
-          </p>
-
-          <div className="mt-9 grid gap-3">
-            {pillars.map(([title, text, cue], index) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: index * 0.06 }}
-                whileHover={{ x: 12, scale: 1.015 }}
-                className="group grid grid-cols-[4.5rem_1fr] items-center gap-5 rounded-[1.2rem] border border-[#d8c495]/60 bg-[#fbf8f1] p-4 shadow-[0_18px_54px_rgba(48,34,12,0.05)] transition hover:border-[#0b513c]/25 hover:bg-white hover:shadow-[0_24px_70px_rgba(48,34,12,0.12)] xl:grid-cols-[4.5rem_1fr_auto]"
-              >
-                <div className="grid h-16 w-16 place-items-center rounded-2xl bg-[#073c2c] text-sm font-black text-[#d9bd80] shadow-[0_14px_30px_rgba(7,60,44,0.18)]">
-                  0{index + 1}
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-[#0b2a20]">{title}</h3>
-                  <p className="mt-1 text-sm leading-6 text-[#52665e]">{text}</p>
-                </div>
-                <p className="hidden rounded-full border border-[#d8c495]/70 px-3 py-2 text-[0.62rem] font-black uppercase tracking-[0.12em] text-[#a77e3e] xl:block">
-                  {cue}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-          <div className="mt-5 rounded-[1.2rem] border border-[#0b513c]/12 bg-[#073c2c] p-5 text-white shadow-[0_18px_54px_rgba(7,60,44,0.18)]">
-            <p className="text-[0.64rem] font-black uppercase tracking-[0.16em] text-[#d9bd80]">
-              Parent clarity
-            </p>
-            <p className="mt-3 text-sm leading-7 text-white/70">
-              Every project, reflection and presentation becomes visible proof, so learning feels
-              real instead of decorative.
-            </p>
+                  <Image
+                    src={system.image}
+                    alt={system.title}
+                    fill
+                    sizes="(min-width: 1024px) 62vw, 92vw"
+                    className={`object-cover transition duration-700 ${isActive ? 'scale-100' : 'scale-105'}`}
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(246,250,245,0.02),rgba(25,48,36,0.08)_46%,rgba(25,48,36,0.45)_100%)]" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(110,165,101,0.14),transparent_34%)]" />
+                  <div className="absolute bottom-8 left-8 right-8">
+                    <h3 className="font-serif text-6xl leading-none text-white md:text-7xl">
+                      {system.title}
+                    </h3>
+                  </div>
+                </article>
+              )
+            })}
           </div>
         </div>
+
+        <p className="mt-8 max-w-3xl text-lg leading-8 text-[#567063]">
+          {systems[active].line}
+        </p>
       </div>
     </section>
   )

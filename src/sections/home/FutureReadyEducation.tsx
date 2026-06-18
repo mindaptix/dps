@@ -1,139 +1,99 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
+import Image from 'next/image'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useEffect, useRef } from 'react'
-import * as THREE from 'three'
 
-const cards = [
-  ['AI & Digital Fluency', 'Tools, judgment and responsible use.'],
-  ['Entrepreneurship', 'Problem framing and initiative.'],
-  ['Sustainability', 'Systems thinking with local action.'],
-  ['Design Thinking', 'Prototype, test, improve.'],
-  ['Financial Literacy', 'Everyday money confidence.'],
-  ['Global Competencies', 'Culture, communication and perspective.'],
-]
-const futureStats = [
-  ['Future skills', 'Built into projects'],
-  ['Digital fluency', 'Guided, not gimmicky'],
-  ['Career clarity', 'Developed over time'],
+const skills = [
+  {
+    title: 'AI & Digital Fluency',
+    tag: 'Build',
+    line: 'Tools with judgment.',
+    image: '/images/leadership.png',
+    focus: 'object-[50%_42%]',
+  },
+  {
+    title: 'Entrepreneurship',
+    tag: 'Launch',
+    line: 'Ideas into action.',
+    image: '/images/dps-learning-different.png',
+    focus: 'object-[50%_44%]',
+  },
+  {
+    title: 'Sustainability',
+    tag: 'Care',
+    line: 'Local action, global sense.',
+    image: '/images/dps-campus-life.png',
+    focus: 'object-[50%_48%]',
+  },
+  {
+    title: 'Design Thinking',
+    tag: 'Create',
+    line: 'Prototype, test, improve.',
+    image: '/images/primary-school.png',
+    focus: 'object-[50%_40%]',
+  },
+  {
+    title: 'Financial Literacy',
+    tag: 'Decide',
+    line: 'Everyday money confidence.',
+    image: '/images/middle-school.png',
+    focus: 'object-[50%_42%]',
+  },
+  {
+    title: 'Global Competencies',
+    tag: 'Connect',
+    line: 'Culture and communication.',
+    image: '/images/early-years.png',
+    focus: 'object-[50%_36%]',
+  },
 ]
 
 export function FutureReadyEducation() {
   const sectionRef = useRef<HTMLElement>(null)
-  const mountRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+  const activeSkill = skills[active]
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
-    const mount = mountRef.current
-
-    if (!mount || !sectionRef.current) {
+    if (!sectionRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return
     }
 
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(45, mount.clientWidth / mount.clientHeight, 0.1, 100)
-    camera.position.z = 5
-
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-    renderer.setSize(mount.clientWidth, mount.clientHeight)
-    mount.appendChild(renderer.domElement)
-
-    const geometry = new THREE.IcosahedronGeometry(1.55, 2)
-    const material = new THREE.MeshStandardMaterial({
-      color: '#caa66a',
-      metalness: 0.5,
-      roughness: 0.28,
-      wireframe: true,
-    })
-    const orb = new THREE.Mesh(geometry, material)
-    scene.add(orb)
-
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(2.05, 0.01, 16, 120),
-      new THREE.MeshBasicMaterial({ color: '#d9bd80' }),
-    )
-    ring.rotation.x = Math.PI / 2.8
-    scene.add(ring)
-
-    const particles = new THREE.Group()
-    const particleGeometry = new THREE.SphereGeometry(0.018, 8, 8)
-    const particleMaterial = new THREE.MeshBasicMaterial({ color: '#f4d9a1' })
-
-    for (let index = 0; index < 90; index += 1) {
-      const particle = new THREE.Mesh(particleGeometry, particleMaterial)
-      const radius = 1.9 + Math.random() * 1.25
-      const theta = Math.random() * Math.PI * 2
-      const phi = Math.acos(2 * Math.random() - 1)
-      particle.position.set(
-        radius * Math.sin(phi) * Math.cos(theta),
-        radius * Math.sin(phi) * Math.sin(theta),
-        radius * Math.cos(phi),
-      )
-      particles.add(particle)
-    }
-
-    scene.add(particles)
-    scene.add(new THREE.AmbientLight('#ffffff', 1.2))
-    const light = new THREE.PointLight('#f4d9a1', 2.5)
-    light.position.set(4, 3, 4)
-    scene.add(light)
-
-    let pointerX = 0
-    let pointerY = 0
-    let frame = 0
-
-    const animate = () => {
-      orb.rotation.x += 0.004 + pointerY * 0.002
-      orb.rotation.y += 0.006 + pointerX * 0.002
-      ring.rotation.z += 0.003
-      particles.rotation.y -= 0.0015
-      particles.rotation.x += 0.0008
-      renderer.render(scene, camera)
-      frame = requestAnimationFrame(animate)
-    }
-    animate()
-
-    const resize = () => {
-      camera.aspect = mount.clientWidth / mount.clientHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(mount.clientWidth, mount.clientHeight)
-    }
-
-    const pointerMove = (event: PointerEvent) => {
-      const rect = mount.getBoundingClientRect()
-      pointerX = (event.clientX - rect.left) / rect.width - 0.5
-      pointerY = (event.clientY - rect.top) / rect.height - 0.5
-
-      gsap.to(camera.position, {
-        x: pointerX * 0.35,
-        y: pointerY * -0.28,
-        duration: 0.7,
-        ease: 'power3.out',
-      })
-    }
-
-    window.addEventListener('resize', resize)
-    mount.addEventListener('pointermove', pointerMove)
-
     const context = gsap.context(() => {
-      gsap.from(mount, {
+      gsap.from('[data-future-reveal]', {
         opacity: 0,
-        scale: 0.82,
-        rotate: 4,
-        duration: 1,
+        y: 34,
+        filter: 'blur(12px)',
+        duration: 0.85,
         ease: 'power4.out',
+        stagger: 0.08,
         scrollTrigger: {
-          trigger: mount,
-          start: 'top 76%',
+          trigger: sectionRef.current,
+          start: 'top 78%',
+          once: true,
         },
       })
 
-      gsap.to(mount, {
-        yPercent: -8,
+      gsap.from('[data-future-card]', {
+        opacity: 0,
+        y: 36,
+        rotateX: -8,
+        duration: 0.78,
+        ease: 'power4.out',
+        stagger: 0.06,
+        scrollTrigger: {
+          trigger: '[data-future-grid]',
+          start: 'top 82%',
+          once: true,
+        },
+      })
+
+      gsap.to('[data-future-track]', {
+        xPercent: -8,
         ease: 'none',
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -144,84 +104,203 @@ export function FutureReadyEducation() {
       })
     }, sectionRef)
 
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % skills.length)
+    }, 1500)
+
     return () => {
       context.revert()
-      window.removeEventListener('resize', resize)
-      mount.removeEventListener('pointermove', pointerMove)
-      cancelAnimationFrame(frame)
-      renderer.dispose()
-      geometry.dispose()
-      material.dispose()
-      particleGeometry.dispose()
-      particleMaterial.dispose()
-      mount.removeChild(renderer.domElement)
+      window.clearInterval(timer)
     }
   }, [])
 
   return (
-    <section ref={sectionRef} className="section-depth relative overflow-hidden bg-[#061813] px-6 py-20 text-white lg:py-28">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_24%,rgba(202,166,106,0.18),transparent_28%),radial-gradient(circle_at_84%_58%,rgba(83,139,110,0.14),transparent_32%)]" />
-      <div className="absolute inset-0 depth-mesh-dark opacity-55" />
-      <div className="section-divider-glow absolute inset-x-10 top-0" />
-      <div className="relative mx-auto grid max-w-[96rem] items-center gap-10 lg:grid-cols-[1fr_0.85fr]">
-        <div className="surface-lift-dark edge-highlight relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.045] p-6 backdrop-blur sm:p-8 lg:p-10">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[#d9bd80] to-transparent" />
-          <div className="absolute -right-16 top-10 h-56 w-56 rounded-full bg-[#d9bd80]/10 blur-3xl" />
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#d9bd80]">
-            Future-ready education
-          </p>
-          <h2 className="mt-5 text-[clamp(2.35rem,4.2vw,5rem)] font-semibold leading-[1.02]">
-            Future skills, taught with human judgment.
-          </h2>
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-white/68">
-            Children need more than buzzwords. They need guided exposure to technology, enterprise,
-            sustainability and global thinking inside meaningful school work.
-          </p>
+    <section
+      ref={sectionRef}
+      id="future-ready"
+      className="section-depth relative overflow-hidden bg-[#f8fcf6] px-5 py-14 text-[#173628] sm:px-6 lg:px-10 lg:py-20"
+    >
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f4fbef_48%,#ffffff_100%)]" />
+      <div className="absolute inset-0 opacity-[0.10] [background-image:linear-gradient(rgba(100,145,89,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(100,145,89,0.08)_1px,transparent_1px)] [background-size:88px_88px]" />
+      <div className="section-divider-glow absolute inset-x-10 top-0 opacity-35" />
 
-          <div className="relative mt-8 grid gap-3 sm:grid-cols-3">
-            {futureStats.map(([label, text]) => (
-              <div key={label} className="rounded-[1.1rem] border border-[#d9bd80]/18 bg-[#d9bd80]/8 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
-                <p className="text-[0.62rem] font-black uppercase tracking-[0.14em] text-[#d9bd80]">{label}</p>
-                <p className="mt-2 text-sm font-semibold leading-5 text-white">{text}</p>
+      <div className="relative mx-auto max-w-[96rem]">
+        <div className="grid gap-8 lg:grid-cols-[0.42fr_0.58fr] lg:items-end">
+          <div data-future-reveal>
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#73a764]">
+              Section 5 - Future Ready Education
+            </p>
+            <h2 className="mt-4 max-w-3xl text-5xl font-semibold leading-none text-[#173628] md:text-7xl">
+              Skills that feel visible, practical and alive.
+            </h2>
+          </div>
+
+          <div data-future-reveal className="grid gap-3 sm:grid-cols-3">
+            {[
+              ['6', 'living skills'],
+              ['1.5s', 'auto journey'],
+              ['100%', 'project linked'],
+            ].map(([value, label]) => (
+              <div
+                key={label}
+                className="border border-[#dbeed3] bg-white/82 px-5 py-4 shadow-[0_18px_50px_rgba(22,51,37,0.06)] backdrop-blur"
+              >
+                <p className="text-3xl font-semibold leading-none text-[#173628]">{value}</p>
+                <p className="mt-2 text-[0.64rem] font-black uppercase tracking-[0.18em] text-[#73a764]">
+                  {label}
+                </p>
               </div>
             ))}
           </div>
+        </div>
 
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            {cards.map(([card, detail], index) => (
+        <div className="mt-9 grid gap-5 lg:grid-cols-[0.58fr_0.42fr]">
+          <motion.div
+            data-future-reveal
+            className="relative min-h-[36rem] overflow-hidden border border-[#dbeed3] bg-[#06130f] shadow-[0_26px_90px_rgba(22,51,37,0.16)]"
+            whileHover={{ y: -4 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 24 }}
+          >
+            <AnimatePresence mode="wait">
               <motion.div
-                key={card}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                whileHover={{ x: 10, scale: 1.03 }}
-                transition={{ type: 'spring', stiffness: 250, damping: 18, delay: index * 0.03 }}
-                className="motion-card group relative overflow-hidden rounded-[1.15rem] border border-white/10 bg-white/[0.06] p-5 shadow-[0_16px_44px_rgba(0,0,0,0.16)] transition hover:border-[#d9bd80]/28 hover:bg-white/[0.085]"
+                key={activeSkill.image}
+                initial={{ opacity: 0, scale: 1.06, x: 42 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 1.03, x: -42 }}
+                transition={{ duration: 0.72, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0"
               >
-                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#d9bd80]/70 to-transparent opacity-0 transition group-hover:opacity-100" />
-                <p className="text-sm font-semibold text-white">{card}</p>
-                <p className="mt-2 text-xs leading-5 text-white/58">{detail}</p>
+                <Image
+                  src={activeSkill.image}
+                  alt={activeSkill.title}
+                  fill
+                  sizes="(min-width: 1024px) 56vw, 100vw"
+                  className={`object-cover ${activeSkill.focus}`}
+                />
               </motion.div>
-            ))}
+            </AnimatePresence>
+
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,19,15,0.82),rgba(6,19,15,0.16)_54%,rgba(6,19,15,0.22)),linear-gradient(180deg,rgba(6,19,15,0.04),rgba(6,19,15,0.78))]" />
+            <div className="video-sheen pointer-events-none absolute inset-0 opacity-06" />
+
+            <div className="absolute left-5 top-5 rounded-full border border-white/18 bg-white/88 px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#73a764] backdrop-blur">
+              Living curriculum
+            </div>
+
+            <div className="absolute bottom-6 left-6 right-6">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeSkill.title}
+                  initial={{ opacity: 0, y: 18, filter: 'blur(10px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -18, filter: 'blur(10px)' }}
+                  transition={{ duration: 0.48 }}
+                  className="max-w-xl"
+                >
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-[#d9b96f]">
+                    {activeSkill.tag}
+                  </p>
+                  <h3 className="mt-3 text-5xl font-semibold leading-none text-white md:text-6xl">
+                    {activeSkill.title}
+                  </h3>
+                  <p className="mt-4 text-xl font-medium leading-8 text-white/82">
+                    {activeSkill.line}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="mt-6 h-1 overflow-hidden bg-white/18">
+                <motion.div
+                  key={active}
+                  initial={{ width: '0%' }}
+                  animate={{ width: '100%' }}
+                  transition={{ duration: 1.5, ease: 'linear' }}
+                  className="h-full bg-[#d9b96f]"
+                />
+              </div>
+            </div>
+          </motion.div>
+
+          <div data-future-grid className="grid gap-3 sm:grid-cols-2">
+            {skills.map((skill, index) => {
+              const selected = index === active
+              return (
+                <motion.button
+                  key={skill.title}
+                  data-future-card
+                  type="button"
+                  onClick={() => setActive(index)}
+                  onMouseEnter={() => setActive(index)}
+                  whileHover={{ y: -8, rotate: index % 2 === 0 ? 1.2 : -1.2 }}
+                  transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                  className={`group relative min-h-44 overflow-hidden border p-4 text-left transition duration-500 ${
+                    selected
+                      ? 'border-[#8cc27a] bg-[#173628] text-white shadow-[0_22px_70px_rgba(22,51,37,0.18)]'
+                      : 'border-[#dbeed3] bg-white/88 text-[#173628] shadow-[0_16px_50px_rgba(22,51,37,0.06)] hover:border-[#8cc27a]/70'
+                  }`}
+                >
+                  <div className="absolute right-0 top-0 h-full w-24 overflow-hidden opacity-18 transition duration-500 group-hover:opacity-28">
+                    <Image
+                      src={skill.image}
+                      alt=""
+                      fill
+                      sizes="8rem"
+                      className={`object-cover ${skill.focus}`}
+                    />
+                  </div>
+                  <div className="relative z-10 flex h-full flex-col justify-between">
+                    <div className="flex items-center justify-between gap-4">
+                      <span
+                        className={`grid h-9 w-9 place-items-center rounded-full text-xs font-black ${
+                          selected ? 'bg-[#8cc27a] text-white' : 'bg-[#eef8ea] text-[#73a764]'
+                        }`}
+                      >
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span
+                        className={`text-[0.62rem] font-black uppercase tracking-[0.16em] ${
+                          selected ? 'text-[#d9b96f]' : 'text-[#73a764]'
+                        }`}
+                      >
+                        {skill.tag}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className="text-2xl font-semibold leading-tight">{skill.title}</h4>
+                      <p className={`mt-3 text-sm leading-6 ${selected ? 'text-white/74' : 'text-[#5f7468]'}`}>
+                        {skill.line}
+                      </p>
+                    </div>
+                  </div>
+                </motion.button>
+              )
+            })}
           </div>
         </div>
-        <div className="surface-lift-dark edge-highlight relative min-h-[34rem] overflow-hidden rounded-[1.75rem] border border-[#caa66a]/22 bg-[#04130f]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,rgba(202,166,106,0.24),transparent_56%)]" />
-          <div className="absolute inset-8 rounded-full border border-[#d9bd80]/10" />
-          <div className="absolute inset-16 rounded-full border border-[#d9bd80]/6" />
-          <div
-            ref={mountRef}
-            className="premium-glow absolute inset-0"
-            aria-label="Animated future-ready education orb"
-          />
-          <div className="absolute left-6 top-6 rounded-full border border-[#d9bd80]/30 bg-black/20 px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.14em] text-[#d9bd80] backdrop-blur">
-            Living curriculum
-          </div>
-          <div className="absolute bottom-6 left-6 right-6 rounded-[1.2rem] border border-white/10 bg-[#061813]/72 p-5 backdrop-blur-xl">
-            <p className="text-2xl font-semibold leading-none">Skills move with the world.</p>
-            <p className="mt-3 text-sm leading-6 text-white/62">
-              The programme keeps children adaptable without losing values, focus or confidence.
-            </p>
+
+        <div data-future-reveal className="mt-5 overflow-hidden">
+          <div data-future-track className="flex w-max gap-3 will-change-transform">
+            {[...skills, ...skills].map((skill, index) => (
+              <button
+                key={`${skill.title}-${index}`}
+                type="button"
+                onClick={() => setActive(index % skills.length)}
+                className="relative h-24 w-52 overflow-hidden border border-[#dbeed3] bg-white text-left shadow-[0_14px_38px_rgba(22,51,37,0.06)]"
+              >
+                <Image
+                  src={skill.image}
+                  alt={skill.title}
+                  fill
+                  sizes="13rem"
+                  className={`object-cover ${skill.focus}`}
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,19,15,0.78),rgba(6,19,15,0.14))]" />
+                <span className="absolute bottom-3 left-3 right-3 text-xs font-black uppercase tracking-[0.08em] text-white">
+                  {skill.title}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
       </div>

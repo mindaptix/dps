@@ -1,185 +1,99 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useEffect, useRef } from 'react'
 
-const values = [
-  { label: 'Leadership', icon: 'people', x: '52%', y: '6%' },
-  { label: 'Innovation', icon: 'bulb', x: '88%', y: '26%' },
-  { label: 'Character', icon: 'shield', x: '89%', y: '55%' },
-  { label: 'Compassion', icon: 'heart', x: '83%', y: '78%' },
-  { label: 'Excellence', icon: 'star', x: '18%', y: '64%' },
-  { label: 'Global Citizenship', icon: 'globe', x: '20%', y: '39%' },
+const orbitLabels = [
+  { label: 'Leadership', icon: 'users', left: '50%', top: '10%' },
+  { label: 'Innovation', icon: 'bulb', left: '86%', top: '32%' },
+  { label: 'Character', icon: 'shield', left: '90%', top: '58%' },
+  { label: 'Compassion', icon: 'heart', left: '82%', top: '82%' },
+  { label: 'Excellence', icon: 'star', left: '18%', top: '66%' },
+  { label: 'Global Citizenship', icon: 'globe', left: '22%', top: '39%' },
 ]
 
 export function HomeHero() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const imageRef = useRef<HTMLDivElement>(null)
-  const orbitRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
-    if (!sectionRef.current || !imageRef.current || !orbitRef.current) {
-      return
-    }
-
-    const section = sectionRef.current
-
-    const context = gsap.context(() => {
-      const timeline = gsap.timeline({ defaults: { ease: 'power4.out' } })
-
-      timeline
-        .from('[data-hero-eyebrow]', { opacity: 0, y: 18, duration: 0.55 })
-        .from('[data-hero-title] > span', { opacity: 0, yPercent: 105, stagger: 0.08, duration: 0.9 }, '-=0.2')
-        .from('[data-hero-copy]', { opacity: 0, y: 22, duration: 0.65 }, '-=0.42')
-        .from(imageRef.current, { opacity: 0, scale: 1.08, x: 40, duration: 1.1 }, '-=0.9')
-        .from('[data-value-chip]', { opacity: 0, scale: 0.55, stagger: 0.06, duration: 0.48 }, '-=0.55')
-        .from('[data-scroll-cue]', { opacity: 0, y: 16, duration: 0.45 }, '-=0.2')
-
-      gsap.to(orbitRef.current, {
-        rotate: 360,
-        duration: 58,
-        ease: 'none',
-        repeat: -1,
-      })
-
-      gsap.to('[data-hero-spark]', {
-        y: 'random(-28, 28)',
-        x: 'random(-18, 18)',
-        opacity: 'random(0.25, 0.9)',
-        duration: 'random(2.2, 4.6)',
-        ease: 'sine.inOut',
-        repeat: -1,
-        yoyo: true,
-        stagger: 0.08,
-      })
-
-      gsap.to(imageRef.current, {
-        scale: 1.07,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 1,
-        },
-      })
-    }, section)
-
-    const handleMove = (event: MouseEvent) => {
-      const bounds = section.getBoundingClientRect()
-      const x = (event.clientX - bounds.left) / bounds.width - 0.5
-      const y = (event.clientY - bounds.top) / bounds.height - 0.5
-
-      gsap.to(imageRef.current, {
-        x: x * 20,
-        y: y * 12,
-        duration: 0.8,
-        ease: 'power3.out',
-      })
-    }
-
-    section.addEventListener('mousemove', handleMove)
-
-    return () => {
-      section.removeEventListener('mousemove', handleMove)
-      context.revert()
-    }
-  }, [])
-
   return (
-    <section ref={sectionRef} className="relative min-h-screen overflow-hidden bg-[#06130f] text-white">
-      <div
-        ref={imageRef}
-        className="absolute inset-0 bg-[url('/images/dps-hero-students.png')] bg-cover bg-[center_top]"
-      />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,12,9,0.54)_0%,rgba(3,18,13,0.36)_34%,rgba(4,20,15,0.14)_62%,rgba(2,10,8,0.22)_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_36%,rgba(231,197,119,0.18),transparent_31%),linear-gradient(180deg,rgba(0,0,0,0.16),transparent_48%,rgba(0,0,0,0.2))]" />
-      <div className="video-sheen pointer-events-none absolute inset-0 opacity-18" />
-      <div className="floating-grain pointer-events-none absolute inset-0 opacity-22" />
+    <section id="vision" className="relative min-h-screen overflow-hidden bg-[#06130f] text-white">
+      <div className="absolute inset-0 bg-[url('/images/dps-hero-students.png')] bg-cover bg-[64%_center]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,13,10,0.92)_0%,rgba(4,18,13,0.78)_34%,rgba(4,18,13,0.30)_58%,rgba(4,18,13,0.08)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.20)_0%,rgba(0,0,0,0.02)_42%,rgba(0,0,0,0.38)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_43%,rgba(210,177,102,0.18),transparent_28%),radial-gradient(circle_at_28%_50%,rgba(138,188,123,0.14),transparent_32%)]" />
+      <div className="floating-grain pointer-events-none absolute inset-0 opacity-20" />
 
-      {[...Array(22)].map((_, index) => (
-        <span
-          key={index}
-          data-hero-spark
-          className="absolute z-10 h-1 w-1 rounded-full bg-[#e9ca80]/75"
-          style={{
-            left: `${7 + ((index * 19) % 86)}%`,
-            top: `${17 + ((index * 13) % 70)}%`,
-          }}
-        />
-      ))}
-
-      <div className="relative z-20 mx-auto flex min-h-screen max-w-[96rem] items-center px-6 pb-20 pt-32 lg:px-16">
-        <div className="max-w-[43rem] translate-y-2 drop-shadow-[0_3px_18px_rgba(0,0,0,0.65)] lg:ml-0">
-          <p data-hero-eyebrow className="text-sm font-bold uppercase tracking-[0.34em] text-[#d9bd80]">
+      <div className="relative z-10 mx-auto grid min-h-screen max-w-[112rem] items-center px-6 pb-16 pt-32 md:px-10 lg:grid-cols-[0.52fr_0.48fr] lg:px-20 lg:pt-28">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          className="max-w-[56rem]"
+        >
+          <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#d9b96f]">
             Welcome to DPS Gurugram
           </p>
-          <h1 data-hero-title className="hero-title mt-5 overflow-hidden font-semibold">
-            <span className="block text-white">Not Just a School.</span>
-            <span className="mt-3 block text-[#dfc47c]">A Place Where Children</span>
-            <span className="block text-[#dfc47c]">Discover Who They Can Become.</span>
+
+          <h1 className="mt-6 max-w-[16ch] font-serif text-5xl font-medium leading-[1.03] text-[#d9b96f] md:text-6xl lg:text-7xl">
+            <span className="mt-3 block">A Place Where Children Discover Who They Can Become.</span>
           </h1>
-          <p data-hero-copy className="mt-6 max-w-[37rem] text-sm leading-7 text-white/80 md:text-base md:leading-8">
+
+          <p className="mt-8 max-w-3xl text-base font-medium leading-8 text-white/86 md:text-lg">
             A nurturing ecosystem that inspires curiosity, builds character and prepares children
             for a future without limits.
           </p>
-          <div data-hero-actions className="relative z-40 mt-8 flex flex-wrap items-center gap-5">
+
+          <div className="mt-10 flex flex-wrap items-center gap-7">
             <a
               href="#admissions"
-              className="group inline-flex min-w-64 items-center justify-center gap-5 rounded-md border border-[#edcd88]/60 bg-[#d4ad68] px-7 py-4 text-xs font-black uppercase tracking-[0.08em] text-[#06130f] opacity-100 shadow-[0_18px_55px_rgba(212,173,104,0.55)] transition hover:bg-[#e2c17f]"
+              className="group inline-flex min-w-64 items-center justify-center gap-8 rounded-md bg-[#d2b166] px-7 py-4 text-xs font-black uppercase tracking-[0.08em] text-[#06130f] shadow-[0_18px_46px_rgba(210,177,102,0.25)] transition hover:bg-[#e0c57b]"
             >
               Schedule a Campus Visit
-              <span className="transition group-hover:translate-x-1">-&gt;</span>
+              <span className="text-lg leading-none transition group-hover:translate-x-1">-&gt;</span>
             </a>
-            <a
-              href="#vision"
-              className="grid h-14 w-14 place-items-center rounded-full border border-[#d9bd80]/85 bg-black/20 text-[#d9bd80] backdrop-blur transition hover:bg-[#d9bd80] hover:text-[#06130f]"
-              aria-label="Watch campus story"
-            >
-              <span className="ml-0.5 text-[0.7rem] font-black uppercase tracking-[0.08em]">Play</span>
+
+            <a href="#vision" className="inline-flex items-center gap-4" aria-label="Watch our story">
+              <span className="grid h-14 w-14 place-items-center rounded-full border border-[#d2b166] bg-[#06130f]/34 text-[#d2b166] backdrop-blur">
+                <span className="ml-1 h-0 w-0 border-y-[6px] border-l-[9px] border-y-transparent border-l-current" />
+              </span>
+              <span className="text-xs font-black uppercase tracking-[0.14em] text-white">
+                Watch Our Story
+              </span>
             </a>
-            <span className="text-xs font-black uppercase tracking-[0.16em] text-white/82">
-              Watch Our Story
-            </span>
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      <div className="pointer-events-none absolute right-[3vw] top-[12vh] z-20 hidden aspect-square w-[min(41vw,42rem)] xl:block">
-        <div
-          ref={orbitRef}
-          className="absolute inset-[5%] rounded-full border border-[#f6dc96]/75 shadow-[0_0_18px_rgba(246,220,150,0.6),0_0_54px_rgba(246,220,150,0.26)]"
-        />
-        <div className="absolute inset-[5%] rounded-full bg-[conic-gradient(from_205deg,transparent_0deg,rgba(246,220,150,0.22)_32deg,transparent_72deg,transparent_360deg)] opacity-80" />
-        {values.map((value) => (
+        <div className="relative hidden min-h-[42rem] lg:block">
           <motion.div
-            key={value.label}
-            data-value-chip
-            whileHover={{ scale: 1.08, y: -5 }}
-            className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2 text-center"
-            style={{ left: value.x, top: value.y }}
-          >
-            <div className="mx-auto grid h-13 w-13 place-items-center rounded-full border border-[#f6dc96]/80 bg-[#07140f]/62 text-[#f6dc96] shadow-[0_0_18px_rgba(246,220,150,0.52)] backdrop-blur">
-              <OrbitIcon name={value.icon} />
-            </div>
-            <p className="mt-2 max-w-32 text-[0.68rem] font-black uppercase leading-4 tracking-[0.045em] text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.82)]">
-              {value.label}
-            </p>
-          </motion.div>
-        ))}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute left-1/2 top-1/2 h-[34rem] w-[34rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d2b166]/55 shadow-[0_0_34px_rgba(210,177,102,0.22),inset_0_0_34px_rgba(210,177,102,0.08)]"
+          />
+          <div className="absolute left-1/2 top-1/2 h-[25rem] w-[25rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d2b166]/18" />
+
+          {orbitLabels.map((item, index) => (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, y: 14, scale: 0.92 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 0.7, delay: 0.18 + index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute -translate-x-1/2 -translate-y-1/2 text-center"
+              style={{ left: item.left, top: item.top }}
+            >
+              <div className="mx-auto grid h-12 w-12 place-items-center rounded-full border border-[#d2b166]/60 bg-[#06130f]/58 text-[#f2d889] shadow-[0_0_26px_rgba(210,177,102,0.22)] backdrop-blur">
+                <OrbitIcon name={item.icon} />
+              </div>
+              <p className="mt-2 max-w-[8rem] text-[0.72rem] font-black uppercase leading-tight tracking-[0.04em] text-white">
+                {item.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
-      <div data-scroll-cue className="absolute bottom-10 left-1/2 z-20 hidden -translate-x-1/2 text-center text-white lg:block">
-        <div className="mx-auto grid h-10 w-6 place-items-center rounded-full border border-white/70">
-          <span className="h-2 w-1 rounded-full bg-white" />
+      <div className="absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 text-center text-white/72 md:block">
+        <div className="mx-auto mb-2 grid h-10 w-7 place-items-center rounded-full border border-white/45">
+          <span className="h-3 w-px rounded-full bg-white/70" />
         </div>
-        <p className="mt-3 text-[0.66rem] font-bold uppercase tracking-[0.16em] text-white/85">
-          Scroll to explore
-        </p>
+        <p className="text-[0.62rem] font-black uppercase tracking-[0.16em]">Scroll to explore</p>
       </div>
     </section>
   )
@@ -187,7 +101,7 @@ export function HomeHero() {
 
 function OrbitIcon({ name }: { name: string }) {
   const common = {
-    className: 'h-7 w-7',
+    className: 'h-5 w-5',
     fill: 'none',
     stroke: 'currentColor',
     strokeLinecap: 'round' as const,
@@ -196,13 +110,13 @@ function OrbitIcon({ name }: { name: string }) {
     viewBox: '0 0 24 24',
   }
 
-  if (name === 'people') {
+  if (name === 'users') {
     return (
       <svg {...common}>
-        <path d="M16 11a4 4 0 1 0-8 0" />
-        <path d="M5 20a7 7 0 0 1 14 0" />
-        <path d="M18 9a3 3 0 0 1 3 3" />
-        <path d="M3 12a3 3 0 0 1 3-3" />
+        <path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
+        <circle cx="9.5" cy="7" r="4" />
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
     )
   }
@@ -212,7 +126,7 @@ function OrbitIcon({ name }: { name: string }) {
       <svg {...common}>
         <path d="M9 18h6" />
         <path d="M10 22h4" />
-        <path d="M8 14a6 6 0 1 1 8 0c-1 1-1 2-1 4H9c0-2 0-3-1-4Z" />
+        <path d="M12 2a7 7 0 0 0-4 12.7c.7.5 1 1.2 1 2.1V18h6v-1.2c0-.9.4-1.6 1.1-2.1A7 7 0 0 0 12 2Z" />
       </svg>
     )
   }
@@ -237,7 +151,7 @@ function OrbitIcon({ name }: { name: string }) {
   if (name === 'star') {
     return (
       <svg {...common}>
-        <path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z" />
+        <path d="m12 3 2.5 5.2 5.7.8-4.1 4 1 5.7-5.1-2.7-5.1 2.7 1-5.7-4.1-4 5.7-.8L12 3Z" />
       </svg>
     )
   }
@@ -246,8 +160,7 @@ function OrbitIcon({ name }: { name: string }) {
     <svg {...common}>
       <circle cx="12" cy="12" r="9" />
       <path d="M3 12h18" />
-      <path d="M12 3c3 3 3 15 0 18" />
-      <path d="M12 3c-3 3-3 15 0 18" />
+      <path d="M12 3c2.4 2.5 3.5 5.5 3.5 9S14.4 18.5 12 21c-2.4-2.5-3.5-5.5-3.5-9S9.6 5.5 12 3Z" />
     </svg>
   )
 }

@@ -33,15 +33,15 @@ export function InterfaceDock() {
     <>
       <div className="fixed left-0 right-0 top-0 z-[70] h-1 bg-[#061813]/20">
         <div
-          className="h-full bg-gradient-to-r from-[#d9bd80] via-[#f2dea7] to-[#0b513c] shadow-[0_0_24px_rgba(217,189,128,0.55)]"
+          className="h-full bg-gradient-to-r from-[#8ebf80] via-[#cfe6c7] to-[#6ea565] shadow-[0_0_24px_rgba(110,165,101,0.35)]"
           style={{ width: `${progress * 100}%` }}
         />
       </div>
 
       <aside className="fixed right-5 top-1/2 z-50 hidden -translate-y-1/2 xl:block">
-        <div className="surface-lift-dark edge-highlight overflow-hidden rounded-[1.25rem] border border-white/12 bg-[#061813]/72 p-2 text-white shadow-[0_24px_80px_rgba(0,0,0,0.34)] backdrop-blur-xl">
+        <div className="surface-lift-dark edge-highlight overflow-hidden rounded-[1.25rem] border border-[#d4e2d0] bg-white/85 p-2 text-[#173628] shadow-[0_24px_80px_rgba(22,51,37,0.12)] backdrop-blur-xl">
           <div className="px-3 pb-3 pt-2">
-            <p className="text-[0.55rem] font-black uppercase tracking-[0.16em] text-[#d9bd80]">
+              <p className="text-[0.55rem] font-black uppercase tracking-[0.16em] text-[#6ea565]">
               Explore
             </p>
           </div>
@@ -50,7 +50,7 @@ export function InterfaceDock() {
               <a
                 key={item.href}
                 href={item.href}
-                className="group grid h-12 w-24 place-items-center rounded-[0.9rem] border border-white/0 text-[0.64rem] font-black uppercase tracking-[0.12em] text-white/68 transition hover:border-[#d9bd80]/30 hover:bg-[#d9bd80]/12 hover:text-[#f2dea7]"
+                className="group grid h-12 w-24 place-items-center rounded-[0.9rem] border border-transparent text-[0.64rem] font-black uppercase tracking-[0.12em] text-[#567063] transition hover:border-[#cfe2cb] hover:bg-[#e7f1e5] hover:text-[#6ea565]"
               >
                 {item.label}
               </a>
@@ -58,19 +58,19 @@ export function InterfaceDock() {
           </nav>
           <a
             href="mailto:admissions@dpsgurugram.edu"
-            className="mt-2 grid h-12 place-items-center rounded-[0.9rem] bg-[#d9bd80] px-4 text-[0.62rem] font-black uppercase tracking-[0.12em] text-[#061813] transition hover:bg-[#f2dea7]"
+            className="mt-2 grid h-12 place-items-center rounded-[0.9rem] bg-[#6ea565] px-4 text-[0.62rem] font-black uppercase tracking-[0.12em] text-white transition hover:bg-[#82b874]"
           >
             Talk
           </a>
         </div>
       </aside>
 
-      <nav className="fixed bottom-4 left-4 right-4 z-50 grid grid-cols-4 gap-2 rounded-[1.2rem] border border-white/12 bg-[#061813]/82 p-2 text-white shadow-[0_24px_80px_rgba(0,0,0,0.34)] backdrop-blur-xl xl:hidden">
+      <nav className="fixed bottom-4 left-4 right-4 z-50 grid grid-cols-4 gap-2 rounded-[1.2rem] border border-[#d4e2d0] bg-white/88 p-2 text-[#173628] shadow-[0_24px_80px_rgba(22,51,37,0.12)] backdrop-blur-xl xl:hidden">
         {quickLinks.map((item) => (
           <a
             key={item.href}
             href={item.href}
-            className="grid min-h-11 place-items-center rounded-[0.85rem] text-[0.62rem] font-black uppercase tracking-[0.1em] text-white/72 transition hover:bg-[#d9bd80]/14 hover:text-[#f2dea7]"
+            className="grid min-h-11 place-items-center rounded-[0.85rem] text-[0.62rem] font-black uppercase tracking-[0.1em] text-[#567063] transition hover:bg-[#e7f1e5] hover:text-[#6ea565]"
           >
             {item.label}
           </a>

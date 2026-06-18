@@ -35,10 +35,10 @@ export function FoundingFamilies() {
             {familyNotes.map((note, index) => (
               <motion.div
                 key={note}
-                initial={{ opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.42, delay: index * 0.06 }}
                 className="grid grid-cols-[3.25rem_1fr] items-start gap-4 rounded-[1.2rem] border border-[#d8c495]/55 bg-[#fbf8f1] p-5 text-sm leading-7 text-[#52665e] shadow-[0_18px_54px_rgba(48,34,12,0.05)] transition hover:-translate-y-1 hover:border-[#0b513c]/22 hover:bg-white hover:shadow-[0_24px_70px_rgba(48,34,12,0.12)]"
               >
                 <span className="grid h-10 w-10 place-items-center rounded-full bg-[#073c2c] text-xs font-black text-[#d9bd80]">
@@ -57,10 +57,10 @@ export function FoundingFamilies() {
           </div>
         </div>
         <motion.div
-          initial={{ opacity: 0, scale: 0.94, rotate: 2 }}
+          initial={{ opacity: 0, scale: 0.96, rotate: 1 }}
           whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.68 }}
           className="surface-lift edge-highlight relative min-h-[42rem] overflow-hidden rounded-[1.75rem] border border-[#d8c495]/70 bg-[#061813]"
         >
           <div className="absolute inset-0 bg-[url('/images/dps-founding-families.png')] bg-cover bg-center opacity-82" />

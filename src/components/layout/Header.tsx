@@ -1,5 +1,8 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
 
 const navItems = [
   ['Our Vision', '#vision'],
@@ -12,62 +15,71 @@ const navItems = [
 ]
 
 export function Header() {
+  const [hidden, setHidden] = useState(false)
+  const lastScrollY = useRef(0)
+
+  useEffect(() => {
+    const updateVisibility = () => {
+      const currentY = window.scrollY
+      const scrollingDown = currentY > lastScrollY.current
+      const scrolledPastThreshold = currentY > 80
+
+      if (scrolledPastThreshold && scrollingDown) {
+        setHidden(true)
+      } else {
+        setHidden(false)
+      }
+
+      lastScrollY.current = currentY
+    }
+
+    lastScrollY.current = window.scrollY
+    window.addEventListener('scroll', updateVisibility, { passive: true })
+
+    return () => window.removeEventListener('scroll', updateVisibility)
+  }, [])
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 text-white">
-      <div className="relative flex h-16 w-full items-center gap-8 bg-black/68 px-8 shadow-[0_16px_50px_rgba(0,0,0,0.34)] backdrop-blur-md">
-        <Link href="/" className="flex shrink-0 items-center gap-3">
-          <span className="relative block h-11 w-9 shrink-0">
-            <Image
-              src="/images/school-crest.png"
-              alt="Delhi Public School SPR Gurugram"
-              fill
-              priority
-              sizes="2.25rem"
-              className="object-contain"
-            />
-          </span>
-          <span className="leading-none">
-            <span className="block font-serif text-[1.7rem] font-semibold uppercase tracking-[0.08em]">
-              DPS
+    <header
+      className={`fixed inset-x-0 top-2 z-50 text-[#173628] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none md:top-3 ${
+        hidden ? '-translate-y-[120%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'
+      }`}
+    >
+      <div className="px-3 pt-0">
+        <div className="mx-auto flex max-w-[112rem] items-center gap-2 rounded-[1.2rem] border border-[#d5e3cf] bg-white/90 px-2 py-0 shadow-[0_18px_60px_rgba(22,51,37,0.12)] backdrop-blur-xl md:px-3 lg:px-4">
+          <Link href="/" className="flex shrink-0 items-center">
+            <span className="relative ml-3 block h-[4.5rem] w-40 shrink-0 md:ml-4 md:h-[5rem] md:w-48 lg:ml-5 lg:h-[5.5rem] lg:w-[13.5rem]">
+              <Image
+                src="/images/schoollogo.png"
+                alt="Delhi Public School SPR Gurugram"
+                fill
+                priority
+                sizes="(max-width: 768px) 12rem, (max-width: 1024px) 14rem, 16rem"
+                className="object-contain"
+              />
             </span>
-            <span className="mt-1 block text-[0.6rem] font-bold uppercase tracking-[0.28em]">
-              Gurugram
-            </span>
-          </span>
-        </Link>
-        <div className="hidden h-8 w-px shrink-0 bg-white/28 md:block" />
-        <p className="hidden w-32 shrink-0 text-[0.56rem] font-bold uppercase leading-4 tracking-[0.08em] text-white/78 md:block">
-          Nurturing minds. Building futures.
-        </p>
-        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-8 text-[0.57rem] font-bold uppercase tracking-[0.03em] text-white/86 lg:flex">
-          {navItems.map(([item, href]) => (
+          </Link>
+
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-4 text-[0.74rem] font-bold uppercase tracking-[0.12em] text-[#1f1f1f] xl:flex">
+            {navItems.map(([item, href]) => (
+              <a
+                key={item}
+                href={href}
+                className="relative whitespace-nowrap transition duration-300 hover:text-[#000000] after:absolute after:-bottom-2 after:left-0 after:h-px after:w-0 after:bg-[#000000] after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
+
+          <div className="ml-auto mr-2 flex shrink-0 items-center gap-2">
             <a
-              key={item}
-              href={href}
-              className="whitespace-nowrap transition hover:text-[#d5b36c]"
+              href="#admissions"
+              className="hidden rounded-full border border-[#6ea565]/20 bg-gradient-to-r from-[#75ad68] to-[#639958] px-4 py-1.5 text-[0.64rem] font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(99,153,88,0.28)] transition duration-300 hover:-translate-y-0.5 hover:from-[#86be79] hover:to-[#6ea565] hover:shadow-[0_16px_36px_rgba(99,153,88,0.34)] md:inline-flex"
             >
-              {item}
+              Schedule A Visit
             </a>
-          ))}
-        </nav>
-        <div className="ml-auto flex shrink-0 items-center gap-4">
-          <a
-            href="#admissions"
-            className="hidden rounded-[0.18rem] bg-[#b89555] px-7 py-3.5 text-[0.6rem] font-bold uppercase tracking-[0.04em] text-white shadow-[0_10px_32px_rgba(184,149,85,0.28)] transition hover:bg-[#caa66a] md:inline-flex"
-          >
-            Schedule A Visit
-          </a>
-          <button
-            type="button"
-            aria-label="Open menu"
-            className="grid h-8 w-8 place-items-center rounded-full border border-white/25 text-white/82 transition hover:border-[#d5b36c] hover:text-[#d5b36c]"
-          >
-            <span className="grid gap-1">
-              <span className="block h-px w-3.5 bg-current" />
-              <span className="block h-px w-3.5 bg-current" />
-              <span className="block h-px w-3.5 bg-current" />
-            </span>
-          </button>
+          </div>
         </div>
       </div>
     </header>
