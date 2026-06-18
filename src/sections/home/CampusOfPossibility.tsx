@@ -1,311 +1,298 @@
 'use client'
 
 import Image from 'next/image'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const spaces = [
-  ['Library', 'Quiet focus and guided discovery', '18%', '34%'],
-  ['Robotics Lab', 'Hands-on building and experimentation', '46%', '28%'],
-  ['Sports Ground', 'Strength, teamwork and resilience', '76%', '46%'],
-  ['Arts Studios', 'Expression, performance and confidence', '32%', '67%'],
-  ['Wellness Zone', 'Everyday safety with responsive support', '61%', '70%'],
-  ['Smart Classrooms', 'Planned learning with parent reassurance', '84%', '24%'],
-]
-
-const campusStats = [
-  ['6', 'Distinct learning zones'],
-  ['100%', 'Safety-first planning'],
-  ['All day', 'Movement + discovery'],
-]
-
-const spotlightCards = [
+const campusSpaces = [
+  {
+    title: 'Classrooms',
+    label: 'Learn',
+    text: 'Focused rooms for clear teaching, discussion and daily confidence.',
+    image: '/images/primary-school.png',
+    focus: 'object-[50%_42%]',
+    pos: ['22%', '36%'],
+  },
+  {
+    title: 'Innovation Labs',
+    label: 'Build',
+    text: 'STEM, robotics and experiments turn questions into working ideas.',
+    image: '/images/dps-learning-different.png',
+    focus: 'object-[50%_44%]',
+    pos: ['48%', '28%'],
+  },
   {
     title: 'Library',
-    detail: 'Quiet focus',
+    label: 'Discover',
+    text: 'Quiet reading, research and guided discovery for independent minds.',
     image: '/images/dps-campus-life.png',
+    focus: 'object-[42%_50%]',
+    pos: ['68%', '38%'],
   },
   {
-    title: 'Robotics',
-    detail: 'Hands-on making',
-    image: '/images/dps-learning-different.png',
-  },
-  {
-    title: 'Sports',
-    detail: 'Energy and teamwork',
+    title: 'Sports Infrastructure',
+    label: 'Play',
+    text: 'Movement, teamwork and resilience through structured physical growth.',
     image: '/images/leadership.png',
+    focus: 'object-[50%_40%]',
+    pos: ['78%', '66%'],
+  },
+  {
+    title: 'Arts Facilities',
+    label: 'Perform',
+    text: 'Music, visual arts and performance spaces for expression and poise.',
+    image: '/images/early-years.png',
+    focus: 'object-[50%_36%]',
+    pos: ['36%', '70%'],
+  },
+  {
+    title: 'Outdoor Learning Spaces',
+    label: 'Grow',
+    text: 'Open spaces where observation, care and curiosity feel natural.',
+    image: '/images/dps-campus-life.png',
+    focus: 'object-[50%_50%]',
+    pos: ['58%', '58%'],
   },
 ]
 
 export function CampusOfPossibility() {
+  const sectionRef = useRef<HTMLElement>(null)
+  const [active, setActive] = useState(0)
+  const activeSpace = campusSpaces[active]
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger)
+
+    if (!sectionRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return
+    }
+
+    const context = gsap.context(() => {
+      gsap.from('[data-campus-reveal]', {
+        opacity: 0,
+        y: 34,
+        filter: 'blur(12px)',
+        duration: 0.85,
+        ease: 'power4.out',
+        stagger: 0.07,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 78%',
+          once: true,
+        },
+      })
+
+      gsap.from('[data-campus-card]', {
+        opacity: 0,
+        y: 28,
+        scale: 0.96,
+        duration: 0.75,
+        ease: 'power4.out',
+        stagger: 0.05,
+        scrollTrigger: {
+          trigger: '[data-campus-grid]',
+          start: 'top 82%',
+          once: true,
+        },
+      })
+    }, sectionRef)
+
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % campusSpaces.length)
+    }, 2200)
+
+    return () => {
+      context.revert()
+      window.clearInterval(timer)
+    }
+  }, [])
+
   return (
-    <section id="campus" className="section-depth relative overflow-hidden bg-[#fbfdf9] px-6 py-18 text-[#173628] lg:py-24">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(163,206,141,0.18),transparent_30%),radial-gradient(circle_at_18%_70%,rgba(202,166,106,0.08),transparent_26%),linear-gradient(180deg,#ffffff_0%,#f7fcf2_58%,#ffffff_100%)]" />
-      <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(100,145,89,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(100,145,89,0.055)_1px,transparent_1px)] [background-size:96px_96px]" />
+    <section
+      ref={sectionRef}
+      id="campus"
+      className="section-depth relative overflow-hidden bg-[#fbfdf9] px-5 py-12 text-[#173628] sm:px-6 lg:px-10 lg:py-16"
+    >
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,#ffffff_0%,#f5fbf1_55%,#ffffff_100%)]" />
+      <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(100,145,89,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(100,145,89,0.08)_1px,transparent_1px)] [background-size:92px_92px]" />
       <div className="section-divider-glow absolute inset-x-10 top-0 opacity-35" />
 
       <div className="relative mx-auto max-w-[96rem]">
-        <div className="grid gap-8 lg:grid-cols-[0.44fr_0.56fr] lg:items-end">
+        <div data-campus-reveal className="grid gap-5 lg:grid-cols-[0.48fr_0.52fr] lg:items-end">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#7fb069]">Campus of possibility</p>
-            <h2 className="mt-4 max-w-xl text-[clamp(2.6rem,4.6vw,5.4rem)] font-semibold leading-[0.96] tracking-[-0.06em] text-[#173628]">
-              A campus that feels alive, open and intentional.
+            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#73a764]">
+              Section 6 - Campus of Possibility
+            </p>
+            <h2 className="mt-4 max-w-3xl text-4xl font-semibold leading-none text-[#173628] md:text-6xl">
+              Spaces that open a new possibility every day.
             </h2>
           </div>
           <p className="max-w-2xl text-base leading-8 text-[#577065]">
-            Spaces are planned for movement, discovery, quiet focus and care, so each area feels distinct and useful.
+            The campus is planned as a living learning map: focused rooms, labs, books, sports,
+            arts and outdoor discovery working together.
           </p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="surface-lift edge-highlight relative mt-10 min-h-[44rem] overflow-hidden rounded-[1.9rem] border border-[#dbeed3] bg-white/88 shadow-[0_24px_80px_rgba(116,154,100,0.08)]"
-        >
-          <div className="absolute inset-0 bg-[url('/images/dps-campus-life.png')] bg-cover bg-center opacity-[0.22] blur-[1px]" />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.94),rgba(247,252,242,0.74)_38%,rgba(255,255,255,0.18)),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.56))]" />
-
-          <div className="relative grid min-h-[44rem] gap-6 p-5 sm:p-7 lg:grid-cols-[0.44fr_0.56fr] lg:p-8">
-            <div className="relative overflow-hidden rounded-[1.5rem] border border-[#dbeed3] bg-white/88 p-5 shadow-[0_18px_40px_rgba(116,154,100,0.08)] backdrop-blur-xl lg:p-6">
-              <div className="flex items-center justify-between gap-4">
-                <div className="rounded-full border border-[#8cc27a]/28 bg-white px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#6ea565]">
-                  Parent reassurance
-                </div>
-                <div className="hidden rounded-full border border-[#dbeed3] bg-[#f6fbf4] px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#7fb069] sm:block">
-                  Campus zones
-                </div>
-              </div>
-
-              <p className="mt-5 max-w-md text-[clamp(2rem,3vw,3rem)] font-semibold leading-[0.96] tracking-[-0.05em] text-[#173628]">
-                Every space has a purpose.
-              </p>
-              <p className="mt-4 max-w-md text-sm leading-7 text-[#577065]">
-                Safety, independence and creativity are designed into the day.
-              </p>
-
-              <div className="mt-6 grid gap-3">
-                {campusStats.map(([value, label], index) => (
-                  <motion.div
-                    key={label}
-                    initial={{ opacity: 0, x: -14 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.35, delay: index * 0.06 }}
-                    className="grid grid-cols-[4rem_1fr] items-center gap-4 rounded-[1.2rem] border border-[#dbeed3] bg-[#f6fbf4] px-4 py-3"
-                  >
-                    <div className="grid h-12 w-12 place-items-center rounded-full bg-[#8cc27a] text-lg font-black text-white">
-                      {value}
-                    </div>
-                    <div>
-                      <p className="text-[0.64rem] font-black uppercase tracking-[0.18em] text-[#7fb069]">
-                        {label}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {spotlightCards.map((item, index) => (
-                  <motion.div
-                    key={item.title}
-                    initial={{ opacity: 0, y: 14 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.06 }}
-                    className="group overflow-hidden rounded-[1.2rem] border border-[#dbeed3] bg-white shadow-[0_16px_40px_rgba(116,154,100,0.08)]"
-                  >
-                    <div className="relative h-28">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        sizes="(min-width: 1024px) 12vw, 33vw"
-                        className="object-cover transition duration-500 group-hover:scale-[1.04]"
-                      />
-                      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.0),rgba(255,255,255,0.55))]" />
-                    </div>
-                    <div className="p-3">
-                      <p className="text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#7fb069]">
-                        {item.title}
-                      </p>
-                      <p className="mt-1 text-xs leading-5 text-[#577065]">{item.detail}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-[1.5rem] border border-[#dbeed3] bg-white/80 shadow-[0_18px_40px_rgba(116,154,100,0.08)] backdrop-blur-xl">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.18),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.10),rgba(255,255,255,0.82))]" />
-
-              <div className="relative h-full min-h-[34rem] p-5 sm:p-7">
-                <motion.div
-                  initial={{ opacity: 0, scale: 1.04 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                  className="absolute inset-0"
+        <div className="mt-8 grid gap-5 lg:grid-cols-[0.38fr_0.62fr]">
+          <div data-campus-grid className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+            {campusSpaces.map((space, index) => {
+              const selected = index === active
+              return (
+                <motion.button
+                  key={space.title}
+                  data-campus-card
+                  type="button"
+                  onClick={() => setActive(index)}
+                  onMouseEnter={() => setActive(index)}
+                  whileHover={{ x: 8 }}
+                  transition={{ type: 'spring', stiffness: 220, damping: 22 }}
+                  className={`group relative min-h-24 overflow-hidden rounded-lg border p-4 text-left transition duration-500 ${
+                    selected
+                      ? 'border-[#8cc27a] bg-white shadow-[0_22px_70px_rgba(22,51,37,0.12)]'
+                      : 'border-[#dbeed3] bg-white/74 shadow-[0_16px_48px_rgba(22,51,37,0.05)] hover:border-[#8cc27a]/65'
+                  }`}
                 >
-                  <Image
-                    src="/images/dps-campus-life.png"
-                    alt="Campus life"
-                    fill
-                    sizes="(min-width: 1024px) 54vw, 100vw"
-                    className="object-cover"
-                  />
-                </motion.div>
-
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.88)_0%,rgba(255,255,255,0.16)_45%,rgba(255,255,255,0.84)_100%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.70))]" />
-
-                <motion.div
-                  initial={{ opacity: 0, y: 18, x: -10 }}
-                  whileInView={{ opacity: 1, y: 0, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  className="absolute left-5 top-20 hidden w-44 overflow-hidden rounded-[1.35rem] border border-white/70 bg-white/82 shadow-[0_18px_40px_rgba(116,154,100,0.12)] backdrop-blur-xl lg:block"
-                >
-                  <div className="relative h-32">
+                  <div className="absolute bottom-0 right-0 top-0 w-32 overflow-hidden opacity-90 transition duration-500 group-hover:scale-105">
                     <Image
-                      src="/images/primary-school.png"
-                      alt="Smart classrooms"
+                      src={space.image}
+                      alt=""
                       fill
-                      sizes="18vw"
-                      className="object-cover"
+                      sizes="9rem"
+                      className={`object-cover ${space.focus}`}
                     />
+                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.96),rgba(255,255,255,0.30))]" />
                   </div>
-                  <div className="p-3">
-                    <p className="text-[0.6rem] font-black uppercase tracking-[0.16em] text-[#7fb069]">
-                      Smart classrooms
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 18, x: 10 }}
-                  whileInView={{ opacity: 1, y: 0, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.16 }}
-                  className="absolute right-5 top-32 hidden w-40 overflow-hidden rounded-[1.35rem] border border-white/70 bg-white/82 shadow-[0_18px_40px_rgba(116,154,100,0.12)] backdrop-blur-xl lg:block"
-                >
-                  <div className="relative h-28">
-                    <Image
-                      src="/images/leadership.png"
-                      alt="Performance area"
-                      fill
-                      sizes="16vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-3">
-                    <p className="text-[0.6rem] font-black uppercase tracking-[0.16em] text-[#7fb069]">
-                      Perform
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 18, x: -8 }}
-                  whileInView={{ opacity: 1, y: 0, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.22 }}
-                  className="absolute left-1/2 bottom-28 hidden w-52 -translate-x-1/2 overflow-hidden rounded-[1.45rem] border border-white/70 bg-white/86 shadow-[0_18px_40px_rgba(116,154,100,0.12)] backdrop-blur-xl lg:block"
-                >
-                  <div className="relative h-28">
-                    <Image
-                      src="/images/dps-learning-different.png"
-                      alt="Science and tech"
-                      fill
-                      sizes="20vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-3">
-                    <p className="text-[0.6rem] font-black uppercase tracking-[0.16em] text-[#7fb069]">
-                      Discover
-                    </p>
-                  </div>
-                </motion.div>
-
-                <div className="absolute left-6 top-6 rounded-full border border-[#8cc27a]/30 bg-white/92 px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#6ea565] backdrop-blur-sm">
-                  Safety + discovery
-                </div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45 }}
-                  className="absolute right-6 top-6 rounded-[1.15rem] border border-[#dbeed3] bg-white/92 px-4 py-3 shadow-[0_18px_40px_rgba(116,154,100,0.08)] backdrop-blur-md"
-                >
-                  <p className="text-[0.58rem] font-black uppercase tracking-[0.16em] text-[#7fb069]">
-                    6 zones
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-[#173628]">Designed to work together</p>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: 0.08 }}
-                  className="absolute left-5 bottom-5 right-5 rounded-[1.5rem] border border-[#dbeed3] bg-white/92 p-4 shadow-[0_18px_40px_rgba(116,154,100,0.08)] backdrop-blur-xl"
-                >
-                  <p className="text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#7fb069]">
-                    Campus rhythm
-                  </p>
-                  <p className="mt-2 text-2xl font-semibold leading-tight text-[#173628]">
-                    Movement, focus and play in one flow.
-                  </p>
-                </motion.div>
-
-                <div className="pointer-events-none absolute inset-0">
-                  {spaces.map(([space, detail, x, y], index) => (
-                    <motion.div
-                      key={space}
-                      initial={{ opacity: 0, scale: 0.82 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.35, delay: 0.08 + index * 0.04 }}
-                      className="group/hotspot pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2"
-                      style={{ left: x, top: y }}
+                  <div className="relative z-10 flex items-center gap-4 pr-20">
+                    <span
+                      className={`grid h-11 w-11 shrink-0 place-items-center rounded-full text-xs font-black ${
+                        selected
+                          ? 'bg-[#8cc27a] text-white shadow-[0_12px_28px_rgba(140,194,122,0.28)]'
+                          : 'bg-[#eef8ea] text-[#73a764]'
+                      }`}
                     >
-                      <div className="relative">
-                        <span className="absolute inset-0 rounded-full bg-[#8cc27a]/22 blur-md" />
-                        <span className="relative block h-4 w-4 rounded-full border border-[#dff0d8] bg-[#8cc27a] shadow-[0_0_28px_rgba(140,194,122,0.55)]" />
-                        <div className="absolute left-1/2 top-7 w-56 -translate-x-1/2 rounded-[1rem] border border-[#dbeed3] bg-white/92 p-4 opacity-0 shadow-[0_18px_54px_rgba(116,154,100,0.12)] backdrop-blur-xl transition group-hover/hotspot:opacity-100">
-                          <p className="text-[0.62rem] font-black uppercase tracking-[0.14em] text-[#7fb069]">
-                            {space}
-                          </p>
-                          <p className="mt-2 text-xs leading-5 text-[#577065]">{detail}</p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div>
+                      <p className="text-[0.6rem] font-black uppercase tracking-[0.18em] text-[#73a764]">
+                        {space.label}
+                      </p>
+                      <h3 className="mt-1 text-lg font-semibold leading-tight text-[#173628]">
+                        {space.title}
+                      </h3>
+                      <p className="mt-1 text-xs leading-5 text-[#577065]">{space.text}</p>
+                    </div>
+                  </div>
+                </motion.button>
+              )
+            })}
           </div>
 
-          <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-[#8cc27a] to-transparent" />
-        </motion.div>
+          <motion.div
+            data-campus-reveal
+            className="relative min-h-[34rem] overflow-hidden rounded-[1.65rem] border border-[#dbeed3] bg-[#06130f] shadow-[0_28px_90px_rgba(22,51,37,0.16)] lg:min-h-[42rem]"
+            whileHover={{ y: -4 }}
+            transition={{ type: 'spring', stiffness: 180, damping: 24 }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeSpace.image}
+                initial={{ opacity: 0, scale: 1.06, x: 44 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 1.03, x: -44 }}
+                transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={activeSpace.image}
+                  alt={activeSpace.title}
+                  fill
+                  sizes="(min-width: 1024px) 58vw, 100vw"
+                  className={`object-cover ${activeSpace.focus}`}
+                />
+              </motion.div>
+            </AnimatePresence>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-3">
-          {spaces.map(([space, detail], index) => (
-            <motion.div
-              key={space}
-              initial={{ opacity: 0, y: 14 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.38, delay: index * 0.04 }}
-              whileHover={{ y: -4, scale: 1.01 }}
-              className="rounded-[1.15rem] border border-[#dbeed3] bg-white/86 p-4 shadow-[0_18px_52px_rgba(116,154,100,0.08)] backdrop-blur-xl transition hover:border-[#8cc27a]/38 hover:bg-white"
-            >
-              <p className="text-sm font-black uppercase tracking-[0.1em] text-[#7fb069]">{space}</p>
-              <p className="mt-2 text-xs leading-5 text-[#577065]">{detail}</p>
-            </motion.div>
-          ))}
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,19,15,0.25),rgba(6,19,15,0.04)_56%,rgba(6,19,15,0.18)),linear-gradient(180deg,rgba(6,19,15,0.02),rgba(6,19,15,0.58))]" />
+            <div className="video-sheen pointer-events-none absolute inset-0 opacity-04" />
+
+            <div className="absolute left-5 top-5 rounded-full border border-white/45 bg-white/90 px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#73a764] shadow-[0_14px_36px_rgba(22,51,37,0.08)] backdrop-blur">
+              Campus map
+            </div>
+            <div className="absolute right-5 top-5 rounded-full border border-white/45 bg-white/90 px-4 py-2 text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#173628] shadow-[0_14px_36px_rgba(22,51,37,0.08)] backdrop-blur">
+              Explore spaces
+            </div>
+
+            <div className="pointer-events-none absolute inset-0">
+              {campusSpaces.map((space, index) => {
+                const selected = index === active
+                const [left, top] = space.pos
+                return (
+                  <button
+                    key={space.title}
+                    type="button"
+                    onClick={() => setActive(index)}
+                    className="pointer-events-auto absolute -translate-x-1/2 -translate-y-1/2"
+                    style={{ left, top }}
+                    aria-label={`Show ${space.title}`}
+                  >
+                    <span
+                      className={`relative block rounded-full transition ${
+                        selected ? 'h-8 w-8' : 'h-5 w-5 hover:h-7 hover:w-7'
+                      }`}
+                    >
+                      <span className="absolute inset-0 rounded-full bg-[#8cc27a]/30 blur-md" />
+                      <span
+                        className={`relative grid h-full w-full place-items-center rounded-full border border-white/70 text-[0.55rem] font-black ${
+                          selected ? 'bg-[#8cc27a] text-white' : 'bg-white/90 text-[#73a764]'
+                        }`}
+                      >
+                        {index + 1}
+                      </span>
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+
+            <div className="absolute bottom-5 left-5 right-5">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeSpace.title}
+                  initial={{ opacity: 0, y: 18, filter: 'blur(10px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -18, filter: 'blur(10px)' }}
+                  transition={{ duration: 0.5 }}
+                  className="max-w-2xl rounded-[1.2rem] border border-white/46 bg-white/92 p-5 text-[#173628] shadow-[0_18px_50px_rgba(22,51,37,0.14)] backdrop-blur-xl"
+                >
+                  <p className="text-xs font-black uppercase tracking-[0.22em] text-[#73a764]">
+                    {activeSpace.label}
+                  </p>
+                  <h3 className="mt-2 text-3xl font-semibold leading-none text-[#173628] md:text-4xl">
+                    {activeSpace.title}
+                  </h3>
+                  <p className="mt-3 text-base font-medium leading-7 text-[#577065]">
+                    {activeSpace.text}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="mt-4 grid grid-cols-6 gap-2">
+                {campusSpaces.map((space, index) => (
+                  <button
+                    key={space.title}
+                    type="button"
+                    onClick={() => setActive(index)}
+                    className={`h-1.5 rounded-full transition ${
+                      index === active ? 'bg-[#8cc27a]' : 'bg-white/48 hover:bg-white/78'
+                    }`}
+                    aria-label={`Select ${space.title}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
