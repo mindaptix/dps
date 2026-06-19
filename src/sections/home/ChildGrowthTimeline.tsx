@@ -122,7 +122,7 @@ export function ChildGrowthTimeline() {
     <section
       ref={sectionRef}
       id="journey"
-      className="relative isolate h-screen overflow-hidden bg-[#090806] text-white"
+      className="relative isolate h-screen overflow-hidden bg-[#eef7eb] text-[#173628]"
     >
       <AnimatePresence mode="wait">
         <motion.div
@@ -143,13 +143,13 @@ export function ChildGrowthTimeline() {
         </motion.div>
       </AnimatePresence>
 
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,5,3,0.82),rgba(6,5,3,0.54)_42%,rgba(6,5,3,0.72)),linear-gradient(180deg,rgba(0,0,0,0.56),rgba(0,0,0,0.22)_42%,rgba(0,0,0,0.78))]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(221,171,65,0.16),transparent_28%)]" />
-      <div className="floating-grain pointer-events-none absolute inset-0 opacity-18" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(238,247,235,0.38),rgba(238,247,235,0.12)_46%,rgba(238,247,235,0.32)),linear-gradient(180deg,rgba(255,255,255,0.30),rgba(255,255,255,0.08)_44%,rgba(238,247,235,0.42))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(140,194,122,0.10),transparent_30%)]" />
+      <div className="floating-grain pointer-events-none absolute inset-0 opacity-05" />
 
       <div className="relative z-10 flex h-full flex-col justify-between px-5 py-7 md:px-10 lg:px-14">
         <div data-journey-head className="text-center">
-          <p className="text-[0.72rem] font-black uppercase tracking-[0.55em] text-[#e3b545]">
+          <p className="text-[0.72rem] font-black uppercase tracking-[0.55em] text-[#6ea565]">
             Nursery to Grade 12 Child Journey
           </p>
         </div>
@@ -165,22 +165,22 @@ export function ChildGrowthTimeline() {
               transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
               className="relative"
             >
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#e3b545]/16 md:h-[36rem] md:w-[36rem]" />
-              <p className="text-xs font-black uppercase tracking-[0.36em] text-white/82">
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#8cc27a]/26 md:h-[36rem] md:w-[36rem]" />
+              <p className="text-xs font-black uppercase tracking-[0.36em] text-[#173628]/78">
                 {activeStage.label}
               </p>
               <div className="mt-6 flex items-center justify-center gap-5">
-                <span className="text-xs font-black uppercase tracking-[0.34em] text-white/72">
+                <span className="text-xs font-black uppercase tracking-[0.34em] text-[#52705f]">
                   Age
                 </span>
-                <h2 className="text-[clamp(5.5rem,12vw,10rem)] font-light leading-none tracking-normal text-white">
+                <h2 className="text-[clamp(5.5rem,12vw,10rem)] font-light leading-none tracking-normal text-[#173628]">
                   {activeStage.age}
                 </h2>
               </div>
-              <h3 className="font-serif text-[clamp(3.2rem,7vw,6.5rem)] font-medium italic leading-none tracking-normal text-[#e3b545]">
+              <h3 className="font-serif text-[clamp(3.2rem,7vw,6.5rem)] font-medium italic leading-none tracking-normal text-[#6ea565]">
                 {activeStage.title}
               </h3>
-              <p className="mx-auto mt-8 max-w-4xl text-xl font-semibold leading-9 text-white/84 md:text-2xl">
+              <p className="mx-auto mt-8 max-w-4xl text-xl font-semibold leading-9 text-[#385747] md:text-2xl">
                 {activeStage.line}
               </p>
             </motion.div>
@@ -189,9 +189,9 @@ export function ChildGrowthTimeline() {
 
         <div className="mx-auto w-full max-w-[92rem]">
           <div className="relative mx-auto mb-7 hidden max-w-[84rem] px-2 md:block">
-            <div className="absolute left-6 right-6 top-4 h-px bg-white/18" />
+            <div className="absolute left-6 right-6 top-4 h-px bg-[#173628]/16" />
             <div
-              className="absolute left-6 top-4 h-px bg-[#e3b545] transition-all duration-500"
+              className="absolute left-6 top-4 h-px bg-[#8cc27a] transition-all duration-500"
               style={{ width: `calc((100% - 3rem) * ${progress})` }}
             />
             <div className="grid grid-cols-5">
@@ -211,13 +211,13 @@ export function ChildGrowthTimeline() {
                     <span
                       className={`grid h-8 w-8 place-items-center rounded-full border transition ${
                         active
-                          ? 'border-[#e3b545] bg-[#e3b545] shadow-[0_0_28px_rgba(227,181,69,0.45)]'
-                          : 'border-white/26 bg-white/20'
+                          ? 'border-[#8cc27a] bg-[#8cc27a] shadow-[0_0_28px_rgba(140,194,122,0.42)]'
+                          : 'border-[#173628]/18 bg-white/68'
                       }`}
                     >
-                      <span className={active ? 'h-3 w-3 rounded-full bg-[#120d06]' : 'h-2 w-2 rounded-full bg-white/48'} />
+                      <span className={active ? 'h-3 w-3 rounded-full bg-white' : 'h-2 w-2 rounded-full bg-[#173628]/32'} />
                     </span>
-                    <span className="text-[0.7rem] font-black uppercase tracking-[0.08em] text-white/70">
+                    <span className="text-[0.7rem] font-black uppercase tracking-[0.08em] text-[#385747]">
                       {stage.range}
                     </span>
                   </button>
@@ -241,8 +241,8 @@ export function ChildGrowthTimeline() {
                     }}
                     className={`group relative h-28 w-[14rem] overflow-hidden rounded-lg border transition duration-500 md:h-36 md:w-[18rem] ${
                       active
-                        ? 'border-[#e3b545] shadow-[0_18px_60px_rgba(227,181,69,0.2)]'
-                        : 'border-white/14 opacity-72 hover:opacity-100'
+                        ? 'border-[#8cc27a] shadow-[0_18px_60px_rgba(140,194,122,0.22)]'
+                        : 'border-white/70 opacity-86 hover:opacity-100'
                     }`}
                   >
                     <Image
@@ -252,8 +252,8 @@ export function ChildGrowthTimeline() {
                       sizes="18rem"
                       className={`object-cover transition duration-700 group-hover:scale-105 ${stage.focus}`}
                     />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.02),rgba(0,0,0,0.72))]" />
-                    <span className="absolute left-4 top-3 rounded-full bg-[#e3b545] px-3 py-1 text-xs font-black text-[#120d06]">
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(23,54,40,0.48))]" />
+                    <span className="absolute left-4 top-3 rounded-full bg-[#8cc27a] px-3 py-1 text-xs font-black text-white">
                       {stage.age}
                     </span>
                     <span className="absolute bottom-3 left-4 right-4 text-left text-xs font-black uppercase tracking-[0.1em] text-white">

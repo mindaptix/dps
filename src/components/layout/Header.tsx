@@ -46,9 +46,9 @@ export function Header() {
       }`}
     >
       <div className="px-3 pt-0">
-        <div className="mx-auto flex max-w-[112rem] items-center gap-2 rounded-[1.2rem] border border-[#d5e3cf] bg-white/90 px-2 py-0 shadow-[0_18px_60px_rgba(22,51,37,0.12)] backdrop-blur-xl md:px-3 lg:px-4">
+        <div className="mx-auto flex max-w-[112rem] items-center gap-2 rounded-[1.2rem] border border-[#d5e3cf] bg-white px-2 py-0 shadow-[0_18px_60px_rgba(22,51,37,0.12)] md:px-3 lg:px-4">
           <Link href="/" className="flex shrink-0 items-center">
-            <span className="relative ml-3 block h-[5.2rem] w-48 shrink-0 md:ml-4 md:h-[5.8rem] md:w-60 lg:ml-5 lg:h-[6.4rem] lg:w-[17rem]">
+            <span className="relative ml-3 block h-[5.2rem] w-48 shrink-0 overflow-hidden md:ml-4 md:h-[5.8rem] md:w-60 lg:ml-5 lg:h-[6.4rem] lg:w-[17rem]">
               <Image
                 src="/images/schoollogo.png.png"
                 alt="Delhi Public School SPR Gurugram"
