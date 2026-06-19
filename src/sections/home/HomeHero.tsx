@@ -13,48 +13,59 @@ const orbitLabels = [
 
 export function HomeHero() {
   return (
-    <section id="vision" className="relative min-h-screen overflow-hidden bg-[#06130f] text-white">
+    <section id="vision" className="relative min-h-screen overflow-hidden bg-[#edf2e6] text-[#183f2d]">
       <div className="absolute inset-0 bg-[url('/images/dps-hero-students.png')] bg-cover bg-[64%_center]" />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(2,13,10,0.92)_0%,rgba(4,18,13,0.78)_34%,rgba(4,18,13,0.30)_58%,rgba(4,18,13,0.08)_100%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.20)_0%,rgba(0,0,0,0.02)_42%,rgba(0,0,0,0.38)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,253,246,0.97)_0%,rgba(250,247,231,0.92)_35%,rgba(244,247,227,0.44)_62%,rgba(255,255,255,0.08)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.10)_0%,transparent_55%,rgba(238,232,205,0.22)_100%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_68%_43%,rgba(210,177,102,0.18),transparent_28%),radial-gradient(circle_at_28%_50%,rgba(138,188,123,0.14),transparent_32%)]" />
       <div className="floating-grain pointer-events-none absolute inset-0 opacity-20" />
 
-      <div className="relative z-10 mx-auto grid min-h-screen max-w-[112rem] items-center px-6 pb-16 pt-32 md:px-10 lg:grid-cols-[0.52fr_0.48fr] lg:px-20 lg:pt-28">
+      <div className="relative z-10 mx-auto grid min-h-screen max-w-[112rem] items-center px-6 pb-20 pt-36 md:px-10 lg:grid-cols-[0.6fr_0.4fr] lg:px-20 lg:pb-16 lg:pt-32">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="max-w-[56rem]"
+          className="max-w-[62rem]"
         >
-          <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#d9b96f]">
+          <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#8a6f32]">
             Welcome to DPS Gurugram
           </p>
 
-          <h1 className="mt-6 max-w-[16ch] font-serif text-5xl font-medium leading-[1.03] text-[#d9b96f] md:text-6xl lg:text-7xl">
-            <span className="mt-3 block">A Place Where Children Discover Who They Can Become.</span>
+          <h1 className="mt-5 max-w-[22ch] font-serif text-[2.4rem] font-medium leading-[1.02] text-[#244f39] sm:text-5xl md:text-[3.4rem] xl:text-[3.8rem]">
+            <span className="block">The Future Will Belong to Children Who Can Think, Care, and Create.</span>
           </h1>
 
-          <p className="mt-8 max-w-3xl text-base font-medium leading-8 text-white/86 md:text-lg">
-            A nurturing ecosystem that inspires curiosity, builds character and prepares children
-            for a future without limits.
-          </p>
+          <div className="mt-7 max-w-[49rem] space-y-3 text-sm font-medium leading-6 text-[#344f42] sm:text-base sm:leading-7">
+            <p>
+              The world our children will inherit is changing rapidly. Knowledge alone is no longer
+              enough.
+            </p>
+            <p>
+              Children need curiosity to explore, wisdom to make good decisions, confidence to lead,
+              and compassion to make a difference.
+            </p>
+            <p>
+              At DPS, we are building a learning community where academic excellence, character,
+              wellbeing, and future readiness come together to help every child thrive.
+            </p>
+          </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-7">
+          <div className="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href="#admissions"
-              className="group inline-flex min-w-64 items-center justify-center gap-8 rounded-md bg-[#d2b166] px-7 py-4 text-xs font-black uppercase tracking-[0.08em] text-[#06130f] shadow-[0_18px_46px_rgba(210,177,102,0.25)] transition hover:bg-[#e0c57b]"
+              className="group inline-flex min-h-13 items-center justify-center gap-5 rounded-md bg-[#24543b] px-6 py-3.5 text-xs font-black uppercase tracking-[0.08em] text-[#f4efe1] shadow-[0_18px_46px_rgba(24,63,45,0.24)] transition hover:-translate-y-0.5 hover:bg-[#183f2d]"
             >
-              Schedule a Campus Visit
+              Book a Discovery Visit
               <span className="text-lg leading-none transition group-hover:translate-x-1">-&gt;</span>
             </a>
 
-            <a href="#vision" className="inline-flex items-center gap-4" aria-label="Watch our story">
-              <span className="grid h-14 w-14 place-items-center rounded-full border border-[#d2b166] bg-[#06130f]/34 text-[#d2b166] backdrop-blur">
-                <span className="ml-1 h-0 w-0 border-y-[6px] border-l-[9px] border-y-transparent border-l-current" />
-              </span>
-              <span className="text-xs font-black uppercase tracking-[0.14em] text-white">
-                Watch Our Story
+            <a
+              href="#admissions"
+              className="group inline-flex min-h-13 items-center justify-center gap-5 rounded-md border border-[#8fa685]/55 bg-[#eef3e8]/78 px-6 py-3.5 text-xs font-black uppercase tracking-[0.08em] text-[#244f39] backdrop-blur transition hover:-translate-y-0.5 hover:border-[#557c50] hover:bg-[#e4eddd]"
+            >
+              Download Prospectus
+              <span aria-hidden="true" className="text-lg leading-none text-[#8a6f32] transition group-hover:translate-y-0.5">
+                &darr;
               </span>
             </a>
           </div>
@@ -78,10 +89,10 @@ export function HomeHero() {
               className="absolute -translate-x-1/2 -translate-y-1/2 text-center"
               style={{ left: item.left, top: item.top }}
             >
-              <div className="mx-auto grid h-12 w-12 place-items-center rounded-full border border-[#d2b166]/60 bg-[#06130f]/58 text-[#f2d889] shadow-[0_0_26px_rgba(210,177,102,0.22)] backdrop-blur">
+              <div className="mx-auto grid h-12 w-12 place-items-center rounded-full border border-[#d2b166]/70 bg-white/76 text-[#567a4d] shadow-[0_10px_28px_rgba(87,111,65,0.14)] backdrop-blur">
                 <OrbitIcon name={item.icon} />
               </div>
-              <p className="mt-2 max-w-[8rem] text-[0.72rem] font-black uppercase leading-tight tracking-[0.04em] text-white">
+              <p className="mt-2 max-w-[8rem] text-[0.72rem] font-black uppercase leading-tight tracking-[0.04em] text-[#315844]">
                 {item.label}
               </p>
             </motion.div>
@@ -89,9 +100,9 @@ export function HomeHero() {
         </div>
       </div>
 
-      <div className="absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 text-center text-white/72 md:block">
-        <div className="mx-auto mb-2 grid h-10 w-7 place-items-center rounded-full border border-white/45">
-          <span className="h-3 w-px rounded-full bg-white/70" />
+      <div className="absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 text-center text-[#315844]/70 md:block">
+        <div className="mx-auto mb-2 grid h-10 w-7 place-items-center rounded-full border border-[#315844]/35">
+          <span className="h-3 w-px rounded-full bg-[#315844]/60" />
         </div>
         <p className="text-[0.62rem] font-black uppercase tracking-[0.16em]">Scroll to explore</p>
       </div>

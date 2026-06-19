@@ -53,7 +53,7 @@ export function Header() {
                 src="/images/schoollogo.png.png"
                 alt="Delhi Public School SPR Gurugram"
                 fill
-                priority
+                loading="eager"
                 sizes="(max-width: 768px) 14rem, (max-width: 1024px) 16rem, 18rem"
                 className="object-contain"
               />

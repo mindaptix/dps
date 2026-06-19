@@ -1,271 +1,178 @@
 'use client'
 
 import Image from 'next/image'
-import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion } from 'framer-motion'
 
-const journeyStages = [
-  {
-    range: 'Nursery',
-    label: 'Nursery / Nursery',
-    age: '3+',
-    title: 'Wonder begins',
-    line: 'A gentle start where the child feels safe, seen and excited to come to school.',
-    image: '/images/early-years.png',
-    focus: 'object-[50%_35%]',
-  },
-  {
-    range: 'Grades 1-5',
-    label: 'Primary / Grades 1-5',
-    age: '6+',
-    title: 'Learning feels safe',
-    line: 'Reading, counting, habits and friendships grow in a calm guided environment.',
-    image: '/images/primary-school.png',
-    focus: 'object-[50%_42%]',
-  },
-  {
-    range: 'Grades 6-8',
-    label: 'Middle School / Grades 6-8',
-    age: '11+',
-    title: 'Discovery opens',
-    line: 'Projects, clubs, science exploration and real questions shape emerging strengths.',
-    image: '/images/dps-learning-different.png',
-    focus: 'object-[50%_44%]',
-  },
-  {
-    range: 'Grades 9-10',
-    label: 'Senior Prep / Grades 9-10',
-    age: '15+',
-    title: 'Direction sharpens',
-    line: 'Mentoring, practice and discipline build confidence for serious academic goals.',
-    image: '/images/leadership.png',
-    focus: 'object-[50%_40%]',
-  },
-  {
-    range: 'Grades 11-12',
-    label: 'Future Ready / Grades 11-12',
-    age: '17+',
-    title: 'Ready for what is next',
-    line: 'Portfolio building, entrance preparation and guidance open clear future pathways.',
-    image: '/images/university.png',
-    focus: 'object-[50%_44%]',
-  },
-]
+const ease = [0.22, 1, 0.36, 1] as const
 
-export function ChildGrowthTimeline() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
-  const activeIndexRef = useRef(0)
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [direction, setDirection] = useState(1)
-  const activeStage = journeyStages[activeIndex]
-  const progress = activeIndex / (journeyStages.length - 1)
-
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger)
-
-    if (!sectionRef.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return
-    }
-
-    const context = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: `+=${window.innerHeight * (journeyStages.length - 1.15)}`,
-        pin: true,
-        scrub: 0.65,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          const next = Math.min(
-            journeyStages.length - 1,
-            Math.floor(self.progress * journeyStages.length),
-          )
-
-          if (next !== activeIndexRef.current) {
-            setDirection(next > activeIndexRef.current ? 1 : -1)
-            activeIndexRef.current = next
-            setActiveIndex(next)
-          }
-
-          if (trackRef.current) {
-            gsap.to(trackRef.current, {
-              xPercent: -self.progress * 34,
-              duration: 0.24,
-              ease: 'power2.out',
-              overwrite: true,
-            })
-          }
-        },
-      })
-
-      gsap.from('[data-journey-head]', {
-        opacity: 0,
-        y: 24,
-        filter: 'blur(10px)',
-        duration: 0.8,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 72%',
-          once: true,
-        },
-      })
-    }, sectionRef)
-
-    return () => context.revert()
-  }, [])
-
+export function LearningThatMatters() {
   return (
     <section
-      ref={sectionRef}
       id="journey"
-      className="relative isolate h-screen overflow-hidden bg-[#eef7eb] text-[#173628]"
+      className="relative isolate overflow-hidden bg-[#e8efe1] px-5 py-12 text-[#102f22] sm:px-6 lg:px-10 lg:py-16"
     >
-      <AnimatePresence mode="wait">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_8%_20%,rgba(150,124,65,0.08),transparent_25%),radial-gradient(circle_at_88%_76%,rgba(98,145,88,0.16),transparent_28%),linear-gradient(180deg,#edf3e8_0%,#dde8d8_56%,#e8efe1_100%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.1] [background-image:linear-gradient(rgba(62,105,76,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(62,105,76,0.12)_1px,transparent_1px)] [background-size:92px_92px] [mask-image:linear-gradient(to_bottom,black,transparent_76%)]" />
+
+      <motion.div
+        aria-hidden="true"
+        animate={{ x: [0, 50, 0], y: [0, -28, 0], rotate: [0, 8, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        className="pointer-events-none absolute -left-24 top-1/3 h-72 w-72 rounded-[4rem] border-[3.5rem] border-[#8cc27a]/10"
+      />
+
+      <div className="relative mx-auto max-w-[98rem]">
         <motion.div
-          key={activeStage.image}
-          initial={{ opacity: 0, x: direction > 0 ? 90 : -90, scale: 1.08 }}
-          animate={{ opacity: 1, x: 0, scale: 1 }}
-          exit={{ opacity: 0, x: direction > 0 ? -90 : 90, scale: 1.04 }}
-          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.42 }}
+          transition={{ duration: 0.9, ease }}
+          className="grid gap-7 lg:grid-cols-[0.52fr_0.48fr] lg:items-center"
         >
-          <Image
-            src={activeStage.image}
-            alt={activeStage.title}
-            fill
-            sizes="100vw"
-            className={`object-cover ${activeStage.focus}`}
-          />
+          <h2 className="text-[clamp(2.5rem,4vw,4.5rem)] font-semibold leading-[0.92] tracking-[-0.055em] lg:whitespace-nowrap">
+            Learning That Matters
+          </h2>
+          <div className="max-w-[38rem] border-l-2 border-[#d2ad5c] pl-6 lg:justify-self-end">
+            <p className="font-serif text-[clamp(1.65rem,2.7vw,3rem)] font-medium leading-[1.03] text-[#405f4e]">
+              Learning is not preparation for life.
+            </p>
+            <p className="mt-3 font-serif text-[clamp(2rem,3.4vw,3.9rem)] font-medium leading-[0.95] text-[#6ea565]">
+              Learning is life.
+            </p>
+          </div>
         </motion.div>
-      </AnimatePresence>
 
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(238,247,235,0.38),rgba(238,247,235,0.12)_46%,rgba(238,247,235,0.32)),linear-gradient(180deg,rgba(255,255,255,0.30),rgba(255,255,255,0.08)_44%,rgba(238,247,235,0.42))]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(140,194,122,0.10),transparent_30%)]" />
-      <div className="floating-grain pointer-events-none absolute inset-0 opacity-05" />
-
-      <div className="relative z-10 flex h-full flex-col justify-between px-5 py-7 md:px-10 lg:px-14">
-        <div data-journey-head className="text-center">
-          <p className="text-[0.72rem] font-black uppercase tracking-[0.55em] text-[#6ea565]">
-            Nursery to Grade 12 Child Journey
-          </p>
-        </div>
-
-        <div className="mx-auto grid w-full max-w-[84rem] flex-1 place-items-center pt-8 text-center">
-          <AnimatePresence mode="wait" custom={direction}>
+        <div className="mt-12 grid gap-6 lg:grid-cols-[0.58fr_0.42fr] lg:items-stretch">
+          <div className="relative min-h-[32rem] sm:min-h-[36rem]">
             <motion.div
-              key={activeStage.title}
-              custom={direction}
-              initial={{ opacity: 0, x: direction > 0 ? 90 : -90, filter: 'blur(14px)' }}
-              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, x: direction > 0 ? -90 : 90, filter: 'blur(14px)' }}
-              transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
-              className="relative"
+              initial={{ opacity: 0, y: 150, scale: 0.82, rotate: -7, filter: 'blur(14px)' }}
+              whileInView={{ opacity: 1, y: 0, scale: 1, rotate: -2, filter: 'blur(0px)' }}
+              viewport={{ once: true, amount: 0.22 }}
+              transition={{ duration: 1.05, ease }}
+              whileHover={{ rotate: 0, scale: 1.012 }}
+              className="absolute inset-x-4 bottom-8 top-6 overflow-hidden rounded-[2rem] border-[7px] border-white bg-[#173628] shadow-[0_42px_130px_rgba(22,51,37,0.23)] sm:inset-x-12"
             >
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#8cc27a]/26 md:h-[36rem] md:w-[36rem]" />
-              <p className="text-xs font-black uppercase tracking-[0.36em] text-[#173628]/78">
-                {activeStage.label}
-              </p>
-              <div className="mt-6 flex items-center justify-center gap-5">
-                <span className="text-xs font-black uppercase tracking-[0.34em] text-[#52705f]">
-                  Age
-                </span>
-                <h2 className="text-[clamp(5.5rem,12vw,10rem)] font-light leading-none tracking-normal text-[#173628]">
-                  {activeStage.age}
-                </h2>
-              </div>
-              <h3 className="font-serif text-[clamp(3.2rem,7vw,6.5rem)] font-medium italic leading-none tracking-normal text-[#6ea565]">
-                {activeStage.title}
-              </h3>
-              <p className="mx-auto mt-8 max-w-4xl text-xl font-semibold leading-9 text-[#385747] md:text-2xl">
-                {activeStage.line}
-              </p>
+              <Image
+                src="/images/learning-that-matters.png"
+                alt="Students exploring, investigating and creating solutions through meaningful learning"
+                fill
+                sizes="(min-width: 1024px) 56vw, 100vw"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#071a13]/38 via-transparent to-white/5" />
             </motion.div>
-          </AnimatePresence>
-        </div>
 
-        <div className="mx-auto w-full max-w-[92rem]">
-          <div className="relative mx-auto mb-7 hidden max-w-[84rem] px-2 md:block">
-            <div className="absolute left-6 right-6 top-4 h-px bg-[#173628]/16" />
-            <div
-              className="absolute left-6 top-4 h-px bg-[#8cc27a] transition-all duration-500"
-              style={{ width: `calc((100% - 3rem) * ${progress})` }}
+            <FlyingPhoto
+              image="/images/dps-learning-different.png"
+              className="left-0 top-0 h-36 w-48 sm:h-44 sm:w-60"
+              initial={{ x: -220, y: -80, rotate: -20 }}
+              finalRotate={-5}
+              delay={0.22}
+              float={-8}
             />
-            <div className="grid grid-cols-5">
-              {journeyStages.map((stage, index) => {
-                const active = index === activeIndex
-                return (
-                  <button
-                    key={stage.range}
-                    type="button"
-                    onClick={() => {
-                      setDirection(index >= activeIndex ? 1 : -1)
-                      activeIndexRef.current = index
-                      setActiveIndex(index)
-                    }}
-                    className="relative z-10 flex flex-col items-center gap-3 text-center"
-                  >
-                    <span
-                      className={`grid h-8 w-8 place-items-center rounded-full border transition ${
-                        active
-                          ? 'border-[#8cc27a] bg-[#8cc27a] shadow-[0_0_28px_rgba(140,194,122,0.42)]'
-                          : 'border-[#173628]/18 bg-white/68'
-                      }`}
-                    >
-                      <span className={active ? 'h-3 w-3 rounded-full bg-white' : 'h-2 w-2 rounded-full bg-[#173628]/32'} />
-                    </span>
-                    <span className="text-[0.7rem] font-black uppercase tracking-[0.08em] text-[#385747]">
-                      {stage.range}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
+            <FlyingPhoto
+              image="/images/primary-school.png"
+              className="right-0 top-14 h-32 w-40 sm:h-40 sm:w-52"
+              initial={{ x: 220, y: -60, rotate: 18 }}
+              finalRotate={5}
+              delay={0.36}
+              float={9}
+            />
+            <FlyingPhoto
+              image="/images/dps-campus-life.png"
+              className="bottom-0 right-[8%] h-32 w-44 sm:h-40 sm:w-56"
+              initial={{ x: 160, y: 190, rotate: 17 }}
+              finalRotate={3}
+              delay={0.5}
+              float={-7}
+            />
           </div>
 
-          <div className="overflow-hidden">
-            <div ref={trackRef} className="flex w-max gap-4 will-change-transform">
-              {journeyStages.map((stage, index) => {
-                const active = index === activeIndex
-                return (
-                  <button
-                    key={stage.title}
-                    type="button"
-                    onClick={() => {
-                      setDirection(index >= activeIndex ? 1 : -1)
-                      activeIndexRef.current = index
-                      setActiveIndex(index)
-                    }}
-                    className={`group relative h-28 w-[14rem] overflow-hidden rounded-lg border transition duration-500 md:h-36 md:w-[18rem] ${
-                      active
-                        ? 'border-[#8cc27a] shadow-[0_18px_60px_rgba(140,194,122,0.22)]'
-                        : 'border-white/70 opacity-86 hover:opacity-100'
-                    }`}
-                  >
-                    <Image
-                      src={stage.image}
-                      alt={stage.title}
-                      fill
-                      sizes="18rem"
-                      className={`object-cover transition duration-700 group-hover:scale-105 ${stage.focus}`}
-                    />
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(23,54,40,0.48))]" />
-                    <span className="absolute left-4 top-3 rounded-full bg-[#8cc27a] px-3 py-1 text-xs font-black text-white">
-                      {stage.age}
-                    </span>
-                    <span className="absolute bottom-3 left-4 right-4 text-left text-xs font-black uppercase tracking-[0.1em] text-white">
-                      {stage.range}
-                    </span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, x: 120, rotateY: -10 }}
+            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.9, delay: 0.12, ease }}
+            className="relative flex flex-col justify-center overflow-hidden rounded-[2rem] border border-[#cbd8c2] bg-[#eaf0e3] p-7 text-[#244f39] shadow-[0_32px_110px_rgba(42,70,48,0.13)] sm:p-9 lg:p-11"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_100%_0%,rgba(140,194,122,0.20),transparent_38%),linear-gradient(140deg,transparent,rgba(255,255,255,0.025))]" />
+            <motion.div
+              aria-hidden="true"
+              animate={{ scale: [1, 1.18, 1], opacity: [0.12, 0.22, 0.12] }}
+              transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              className="absolute -right-20 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full border border-[#8cc27a]"
+            />
+
+            <motion.p
+              initial={{ opacity: 0, y: 34 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.75, delay: 0.4, ease }}
+              className="relative text-lg font-medium leading-8 text-[#3f5d4b] sm:text-xl sm:leading-9"
+            >
+              At DPS, children explore ideas, investigate questions, solve problems, create
+              solutions, collaborate with others, and reflect on their experiences.
+            </motion.p>
+
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: 0.62, ease }}
+              className="relative my-7 h-px origin-left bg-gradient-to-r from-[#8f7a43] via-[#6f9a62] to-transparent"
+            />
+
+            <motion.p
+              initial={{ opacity: 0, y: 34 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.6 }}
+              transition={{ duration: 0.75, delay: 0.72, ease }}
+              className="relative text-base leading-7 text-[#657666] sm:text-lg sm:leading-8"
+            >
+              They learn not simply to remember information, but to understand, apply, innovate,
+              and contribute.
+            </motion.p>
+          </motion.div>
         </div>
+
       </div>
     </section>
+  )
+}
+
+export const ChildGrowthTimeline = LearningThatMatters
+
+function FlyingPhoto({
+  image,
+  className,
+  initial,
+  finalRotate,
+  delay,
+  float,
+}: {
+  image: string
+  className: string
+  initial: { x: number; y: number; rotate: number }
+  finalRotate: number
+  delay: number
+  float: number
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.68, ...initial }}
+      whileInView={{ opacity: 1, x: 0, y: 0, rotate: finalRotate, scale: 1 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.95, delay, ease }}
+      whileHover={{ y: -12, rotate: 0, scale: 1.04, zIndex: 30 }}
+      className={`absolute z-20 ${className}`}
+    >
+      <motion.div
+        animate={{ y: [0, float, 0] }}
+        transition={{ duration: 4.8 + delay, repeat: Infinity, ease: 'easeInOut' }}
+        className="relative h-full overflow-hidden rounded-[1.3rem] border-4 border-white bg-[#173628] shadow-[0_22px_70px_rgba(22,51,37,0.24)]"
+      >
+        <Image src={image} alt="" fill sizes="15rem" className="object-cover" />
+      </motion.div>
+    </motion.div>
   )
 }

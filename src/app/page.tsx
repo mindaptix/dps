@@ -1,27 +1,29 @@
 import { HomeHero } from '@/sections/home/HomeHero'
+import { BeyondGoodMarks } from '@/sections/home/BeyondGoodMarks'
 import { WhySchoolExists } from '@/sections/home/WhySchoolExists'
 import { ChildWeNurture } from '@/sections/home/ChildWeNurture'
-import { ChildGrowthTimeline } from '@/sections/home/ChildGrowthTimeline'
-import { FutureReadyEducation } from '@/sections/home/FutureReadyEducation'
-import { CampusOfPossibility } from '@/sections/home/CampusOfPossibility'
-import { FoundingFamilies } from '@/sections/home/FoundingFamilies'
-import { ParentVoices } from '@/sections/home/ParentVoices'
-import { InsightsForModernParents } from '@/sections/home/InsightsForModernParents'
-import { AdmissionsCTA } from '@/sections/home/AdmissionsCTA'
+import { LearningThatMatters } from '@/sections/home/ChildGrowthTimeline'
+import { JourneyOfGrowth } from '@/sections/home/JourneyOfGrowth'
+import {
+  BeginTheJourney,
+  CampusDesignedAroundChildren,
+  FutureStillBeingWritten,
+  TogetherWithFamilies,
+} from '@/sections/home/FinalChapters'
 
 export default function Home() {
   return (
-    <main className="overflow-x-hidden bg-[#f4f8f3]">
+    <main className="overflow-x-clip bg-[#eef3e8]">
       <HomeHero />
+      <BeyondGoodMarks />
       <WhySchoolExists />
       <ChildWeNurture />
-      <ChildGrowthTimeline />
-      <FutureReadyEducation />
-      <CampusOfPossibility />
-      <FoundingFamilies />
-      <ParentVoices />
-      <InsightsForModernParents />
-      <AdmissionsCTA />
+      <LearningThatMatters />
+      <JourneyOfGrowth />
+      <FutureStillBeingWritten />
+      <CampusDesignedAroundChildren />
+      <TogetherWithFamilies />
+      <BeginTheJourney />
     </main>
   )
 }

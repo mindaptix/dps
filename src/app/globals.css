@@ -1,10 +1,10 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #f4f8f3;
-  --foreground: #163325;
-  --gold: #86b97d;
-  --deep-green: #244c39;
+  --background: #eef3e8;
+  --foreground: #102f22;
+  --gold: #b8944b;
+  --deep-green: #183f2d;
 }
 
 @theme inline {
@@ -20,13 +20,23 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-y: auto;
 }
 
 body {
+  min-height: 100%;
+  overflow-x: clip;
+  overflow-y: visible;
   background: var(--background);
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
+}
+
+main {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(126, 165, 102, 0.12), transparent 28%),
+    linear-gradient(180deg, #eef3e8 0%, #e8f0e2 48%, #edf1e6 100%);
 }
 
 a {
