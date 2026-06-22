@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 const quickLinks = [
-  ['Our Vision', '#vision'],
+  ['Our Vision', '/our-vision'],
   ['Learning Journey', '#journey'],
   ['Campus', '#campus'],
   ['Admissions', '#admissions'],

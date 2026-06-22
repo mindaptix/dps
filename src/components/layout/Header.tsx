@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 
 const navItems = [
-  ['Our Vision', '#vision'],
+  ['Our Vision', '/our-vision'],
   ['Learning Journey', '#journey'],
   ['The Child We Nurture', '#child'],
   ['Campus', '#campus'],

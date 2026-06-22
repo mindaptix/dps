@@ -241,3 +241,306 @@ a {
     animation: none;
   }
 }
+
+.vision-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black 8%, transparent 76%);
+}
+
+.vision-future-section {
+  background:
+    radial-gradient(circle at 82% 22%, rgba(171, 205, 164, 0.2), transparent 30rem),
+    linear-gradient(180deg, #f8faf5 0%, #f4f8f1 100%);
+}
+
+.vision-future-glow {
+  border: 1px solid rgba(117, 160, 109, 0.14);
+  background: radial-gradient(circle, rgba(143, 183, 135, 0.13), transparent 66%);
+  box-shadow: 0 0 0 5rem rgba(143, 183, 135, 0.025), 0 0 0 10rem rgba(143, 183, 135, 0.018);
+  animation: vision-future-pulse 7s ease-in-out infinite;
+}
+
+.vision-signal-map::before {
+  content: '';
+  position: absolute;
+  bottom: 2rem;
+  left: 2.1rem;
+  top: 2rem;
+  width: 1px;
+  background: linear-gradient(transparent, rgba(110, 157, 103, 0.4), transparent);
+}
+
+.vision-signal-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.78) 48%, transparent 66%);
+  transform: translateX(-120%);
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vision-signal-card:hover::after {
+  transform: translateX(120%);
+}
+
+.vision-orb::before,
+.vision-orb::after,
+.vision-rings::before,
+.vision-rings::after {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  opacity: 0.45;
+}
+
+.vision-orb::after,
+.vision-rings::after {
+  inset: 25%;
+  opacity: 0.25;
+}
+
+.vision-orb {
+  color: #80ac76;
+  animation: vision-drift 12s ease-in-out infinite alternate;
+}
+
+.vision-rings {
+  color: white;
+  animation: vision-spin 38s linear infinite;
+}
+
+.vision-scroll-line {
+  animation: vision-scroll 1.8s ease-in-out infinite;
+}
+
+.vision-marquee {
+  animation: vision-marquee 28s linear infinite;
+}
+
+.vision-hero-scan {
+  background:
+    linear-gradient(105deg, transparent 28%, rgba(255, 255, 255, 0.2) 46%, transparent 62%),
+    repeating-linear-gradient(90deg, transparent 0 119px, rgba(255, 255, 255, 0.06) 120px);
+  background-size: 220% 100%, 120px 100%;
+  animation: vision-hero-scan 10s ease-in-out infinite;
+}
+
+.vision-question-card {
+  isolation: isolate;
+  background-color: #173e2b;
+  color: white;
+  box-shadow: 0 32px 75px rgba(18, 54, 36, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.17);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.vision-question-orbit-dot {
+  transform-origin: calc(-6rem - 2px) center;
+  animation: vision-question-orbit 7s linear infinite;
+}
+
+.vision-question-card::before {
+  content: '';
+  position: absolute;
+  inset: -60% -80%;
+  z-index: -1;
+  background: conic-gradient(from 180deg, transparent, rgba(183, 218, 175, 0.25), transparent 30%);
+  animation: vision-card-aurora 10s linear infinite;
+}
+
+.vision-question-card-1 { background: linear-gradient(145deg, #173e2b, #295c40); border-color: rgba(154, 196, 145, 0.35); }
+.vision-question-card-2 { background: linear-gradient(145deg, #315f45, #183a2a); border-color: rgba(164, 203, 155, 0.3); }
+.vision-question-card-3 { background: linear-gradient(145deg, #6f9f68, #315f42); border-color: rgba(215, 234, 209, 0.38); }
+.vision-question-card-4 { background: linear-gradient(145deg, #1e4934, #102f22); border-color: rgba(154, 196, 145, 0.3); }
+.vision-question-card-5 { background: linear-gradient(145deg, #547f54, #173b2b); border-color: rgba(183, 215, 176, 0.35); }
+
+.vision-question-mesh {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+    radial-gradient(circle at 85% 8%, rgba(186, 221, 177, 0.38), transparent 32%);
+  background-size: 38px 38px, 38px 38px, 100% 100%;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+}
+
+.vision-question-thread {
+  z-index: 0;
+  background: linear-gradient(90deg, transparent, #88ad81 12%, #88ad81 88%, transparent);
+  box-shadow: 0 0 20px rgba(109, 155, 102, 0.45);
+}
+
+.vision-question-thread::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -3px;
+  height: 7px;
+  width: 7px;
+  border-radius: 999px;
+  background: #d9ecd4;
+  box-shadow: 0 0 15px #7da976;
+  animation: vision-thread-travel 6s ease-in-out infinite;
+}
+
+.vision-belief-orbit {
+  animation: vision-spin-local 28s linear infinite;
+}
+
+.vision-belief-node {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 7rem;
+  min-height: 2.4rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(165, 204, 156, 0.3);
+  border-radius: 999px;
+  background: rgba(21, 58, 41, 0.88);
+  color: rgba(240, 248, 237, 0.8);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  animation: vision-spin-local-reverse 28s linear infinite;
+}
+
+.vision-belief-node-1 { left: 4%; top: 8%; }
+.vision-belief-node-2 { right: -2%; top: 42%; }
+.vision-belief-node-3 { bottom: 5%; left: 9%; }
+
+.vision-image-sweep {
+  animation: vision-image-sweep 7s ease-in-out infinite;
+}
+
+.vision-capability-radar {
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(105, 148, 99, 0.16) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(105, 148, 99, 0.16) 50%, transparent 50.2%);
+  animation: vision-spin-local 34s linear infinite;
+}
+
+.vision-capability-node {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 10rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid #d2e2ce;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: #294a38;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.08rem;
+  font-style: italic;
+  box-shadow: 0 20px 55px rgba(39, 75, 51, 0.11);
+  backdrop-filter: blur(12px);
+}
+
+.vision-capability-node-1 { left: 6%; top: 13%; }
+.vision-capability-node-2 { right: 7%; top: 10%; }
+.vision-capability-node-3 { right: -1%; top: 43%; }
+.vision-capability-node-4 { bottom: 10%; right: 12%; }
+.vision-capability-node-5 { bottom: 5%; left: 36%; }
+.vision-capability-node-6 { bottom: 17%; left: 2%; }
+.vision-capability-node-7 { left: -2%; top: 43%; }
+
+.vision-commitment-flow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 4%;
+  left: 4%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #bad3b5, transparent);
+}
+
+@keyframes vision-marquee {
+  to { transform: translateX(-50%); }
+}
+
+@keyframes vision-future-pulse {
+  50% { transform: scale(1.06); opacity: 0.72; }
+}
+
+@keyframes vision-card-aurora {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes vision-thread-travel {
+  50% { left: calc(100% - 7px); }
+}
+
+@keyframes vision-question-orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes vision-hero-scan {
+  0%, 18% { background-position: 180% 0, 0 0; }
+  64%, 100% { background-position: -120% 0, 30px 0; }
+}
+
+@keyframes vision-spin-local {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes vision-spin-local-reverse {
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes vision-image-sweep {
+  0%, 28% { transform: translateX(-120%) skewX(-18deg); opacity: 0; }
+  45% { opacity: 1; }
+  70%, 100% { transform: translateX(620%) skewX(-18deg); opacity: 0; }
+}
+
+@keyframes vision-scroll {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+@keyframes vision-drift {
+  to { transform: translate3d(28px, -20px, 0) rotate(8deg); }
+}
+
+@keyframes vision-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vision-orb,
+  .vision-rings,
+  .vision-scroll-line,
+  .vision-marquee,
+  .vision-hero-scan,
+  .vision-belief-orbit,
+  .vision-belief-node,
+  .vision-image-sweep,
+  .vision-capability-radar {
+    animation: none;
+  }
+
+  .vision-future-glow {
+    animation: none;
+  }
+
+  .vision-question-card::before,
+  .vision-question-thread::after,
+  .vision-question-orbit-dot {
+    animation: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .vision-commitment-flow::before {
+    display: none;
+  }
+}
