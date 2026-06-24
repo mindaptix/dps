@@ -5,6 +5,7 @@ import { useRef, useState } from 'react'
 import {
   motion,
   useScroll,
+  useReducedMotion,
   useSpring,
   useTransform,
   type Variants,
@@ -88,7 +89,6 @@ const cardVariants: Variants = {
     rotateX: 6,
     rotateZ: alignLeft ? -2 : 2,
     scale: 0.96,
-    filter: 'blur(4px)',
   }),
   show: {
     opacity: 1,
@@ -97,7 +97,6 @@ const cardVariants: Variants = {
     rotateX: 0,
     rotateZ: 0,
     scale: 1,
-    filter: 'blur(0px)',
     transition: {
       duration: 1.05,
       ease: [0.22, 1, 0.36, 1],
@@ -107,11 +106,10 @@ const cardVariants: Variants = {
 }
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 14, filter: 'blur(3px)' },
+  hidden: { opacity: 0, y: 14 },
   show: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: { duration: 0.64, ease: [0.22, 1, 0.36, 1] },
   },
 }
@@ -119,6 +117,7 @@ const itemVariants: Variants = {
 export function JourneyOfGrowth() {
   const sectionRef = useRef<HTMLElement>(null)
   const cardRefs = useRef<Array<HTMLDivElement | null>>([])
+  const reduceMotion = useReducedMotion()
   const [activeStage, setActiveStage] = useState(0)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -130,12 +129,15 @@ export function JourneyOfGrowth() {
     mass: 0.62,
   })
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 42,
-    damping: 25,
-    mass: 0.58,
+    stiffness: 30,
+    damping: 30,
+    mass: 0.8,
   })
-  const headerY = useTransform(smoothProgress, [0, 0.22], [0, -34])
-  const headerOpacity = useTransform(smoothProgress, [0, 0.22], [1, 0.78])
+  const headerY = useTransform(smoothProgress, [0, 0.28], [0, -18])
+  const headerOpacity = useTransform(smoothProgress, [0, 0.28], [1, 0.92])
+  const ambientX = useTransform(smoothProgress, [0, 1], ['-16%', '18%'])
+  const previewY = useTransform(smoothProgress, [0, 0.35], [24, -18])
+  const previewScale = useTransform(smoothProgress, [0, 0.35], [1.04, 1])
 
   const jumpToStage = (index: number) => {
     const card = cardRefs.current[index]
@@ -157,16 +159,15 @@ export function JourneyOfGrowth() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_8%,rgba(255,198,41,0.34),transparent_28%),radial-gradient(circle_at_88%_28%,rgba(23,35,58,0.12),transparent_34%),linear-gradient(115deg,#fff8eb_0%,#f3eadc_48%,#e8e4d8_100%)]" />
       <motion.div
         aria-hidden="true"
-        animate={{ x: ['-20%', '120%'] }}
-        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-0 z-10 h-full w-1/4 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.34),transparent)] blur-xl"
+        style={{ x: reduceMotion ? undefined : ambientX }}
+        className="absolute top-0 z-10 h-full w-1/4 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.28),transparent)] blur-xl"
       />
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#4b2c31]/18 to-transparent" />
 
       <div className="relative z-20 mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12">
         <motion.div
           style={{ y: headerY, opacity: headerOpacity }}
-          className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end"
+          className="grid gap-8 lg:grid-cols-[0.62fr_0.38fr] lg:items-center"
         >
           <motion.div
             initial={{ opacity: 0, y: 36 }}
@@ -177,21 +178,44 @@ export function JourneyOfGrowth() {
             <p className="text-sm font-black uppercase tracking-[0.34em] text-[#b9862f]">
               Interactive child journey
             </p>
-            <h2 className="mt-5 max-w-4xl font-serif text-[clamp(3.3rem,7vw,7.8rem)] leading-[0.9] text-[#17233a]">
-              One roadmap for your child&apos;s whole future.
+            <h2 className="mt-5 max-w-4xl font-serif text-[clamp(2.9rem,5.7vw,6.2rem)] leading-[0.92] text-[#17233a]">
+              A journey from first steps to future choices.
             </h2>
+            <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-[#5c523f]">
+              Parents do not just see classes. They see care, foundation, discovery,
+              leadership, and placement readiness growing stage by stage.
+            </p>
           </motion.div>
 
-          <motion.p
+          <motion.div
+            style={{ y: reduceMotion ? undefined : previewY, scale: reduceMotion ? undefined : previewScale }}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-2xl justify-self-start text-lg font-medium leading-8 text-[#5c523f] lg:justify-self-end"
+            className="relative min-h-[25rem] overflow-hidden rounded-[1.8rem] border border-white/70 bg-[#17233a] shadow-[0_34px_90px_rgba(23,35,58,0.16)]"
           >
-            Parents do not just see classes. They see a planned progression:
-            care, foundation, discovery, leadership, and placement readiness.
-          </motion.p>
+            <Image
+              src="/images/journey-of-growth.png"
+              alt="Children progressing through a complete school journey"
+              fill
+              priority
+              sizes="(min-width: 1024px) 34vw, 92vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(23,35,58,0.06)_0%,rgba(18,16,10,0.74)_100%)]" />
+            <div className="absolute bottom-5 left-5 right-5 grid gap-3 sm:grid-cols-2">
+              {[
+                ['05 stages', 'Nursery to placements'],
+                ['Clear signals', 'What parents can track'],
+              ].map(([label, text]) => (
+                <div key={label} className="rounded-2xl border border-white/16 bg-white/12 p-4 text-white shadow-xl backdrop-blur-md">
+                  <p className="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[#f5d28a]">{label}</p>
+                  <p className="mt-2 text-lg font-black leading-tight">{text}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </motion.div>
 
         <div className="sticky top-4 z-30 mt-10 rounded-full border border-black/10 bg-white/78 p-2 shadow-[0_28px_90px_rgba(23,35,58,0.12)] backdrop-blur-xl">
@@ -256,6 +280,7 @@ export function JourneyOfGrowth() {
                 index={index}
                 onEnter={() => setActiveStage(index)}
                 onJump={() => jumpToStage(index)}
+                reduceMotion={reduceMotion}
                 setCardRef={(node) => {
                   cardRefs.current[index] = node
                 }}
@@ -265,7 +290,7 @@ export function JourneyOfGrowth() {
           </div>
         </div>
 
-        <ParentConfidence />
+        <ParentConfidence reduceMotion={reduceMotion} />
       </div>
     </section>
   )
@@ -276,6 +301,7 @@ function StageRow({
   index,
   onEnter,
   onJump,
+  reduceMotion,
   setCardRef,
   stage,
 }: {
@@ -283,6 +309,7 @@ function StageRow({
   index: number
   onEnter: () => void
   onJump: () => void
+  reduceMotion: boolean | null
   setCardRef: (node: HTMLDivElement | null) => void
   stage: (typeof stages)[number]
 }) {
@@ -294,15 +321,16 @@ function StageRow({
     offset: ['start 86%', 'end 18%'],
   })
   const smoothRowProgress = useSpring(scrollYProgress, {
-    stiffness: 36,
-    damping: 24,
-    mass: 0.62,
+    stiffness: 28,
+    damping: 30,
+    mass: 0.78,
   })
-  const cardLift = useTransform(smoothRowProgress, [0, 0.5, 1], [22, 0, -18])
-  const imageY = useTransform(smoothRowProgress, [0, 1], ['-5%', '5%'])
-  const imageScale = useTransform(smoothRowProgress, [0, 0.5, 1], [1.08, 1.03, 1.06])
-  const haloOpacity = useTransform(smoothRowProgress, [0, 0.35, 0.86], [0, 0.8, 0.28])
-  const chipX = useTransform(smoothRowProgress, [0, 1], [alignLeft ? 10 : -10, alignLeft ? -7 : 7])
+  const cardLift = useTransform(smoothRowProgress, [0, 0.5, 1], [14, 0, -10])
+  const imageY = useTransform(smoothRowProgress, [0, 1], ['-3%', '3%'])
+  const imageScale = useTransform(smoothRowProgress, [0, 0.5, 1], [1.04, 1.01, 1.03])
+  const haloOpacity = useTransform(smoothRowProgress, [0, 0.35, 0.86], [0, 0.52, 0.18])
+  const chipX = useTransform(smoothRowProgress, [0, 1], [alignLeft ? 5 : -5, alignLeft ? -4 : 4])
+  const sheenX = useTransform(smoothRowProgress, [0, 1], ['-80%', '120%'])
 
   return (
     <div
@@ -319,21 +347,20 @@ function StageRow({
         whileInView="show"
         viewport={{ amount: 0.42, margin: '-12% 0px -12% 0px' }}
         onViewportEnter={onEnter}
-        style={{ y: cardLift }}
+        style={{ y: reduceMotion ? undefined : cardLift }}
         className={`motion-card relative overflow-hidden rounded-[1.65rem] border border-black/10 bg-white/82 p-5 shadow-[0_34px_110px_rgba(23,35,58,0.13)] backdrop-blur-xl will-change-transform sm:p-7 lg:p-8 ${
           alignLeft ? 'lg:col-start-1' : 'lg:col-start-3'
         }`}
       >
         <motion.div
           aria-hidden="true"
-          style={{ opacity: haloOpacity }}
+          style={{ opacity: reduceMotion ? undefined : haloOpacity }}
           className="absolute -right-14 -top-16 h-52 w-52 rounded-full bg-[#ffc629]/28 blur-2xl"
         />
         <motion.div
           aria-hidden="true"
-          animate={{ x: ['-120%', '130%'] }}
-          transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 3.2, ease: 'easeInOut' }}
-          className="absolute inset-y-0 z-10 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent)] opacity-50"
+          style={{ x: reduceMotion ? undefined : sheenX }}
+          className="absolute inset-y-0 z-10 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.42),transparent)] opacity-35"
         />
         <div className="absolute inset-x-0 top-0 h-1.5 bg-[#ffc629]" />
 
@@ -366,7 +393,7 @@ function StageRow({
           {stage.chips.map((chip) => (
             <motion.span
               key={chip}
-              style={{ x: chipX }}
+              style={{ x: reduceMotion ? undefined : chipX }}
               className="rounded-full border border-[#d8bc65]/36 bg-[#fff8eb]/82 px-3 py-2 text-xs font-black uppercase tracking-[0.12em] text-[#7a6538]"
             >
               {chip}
@@ -394,7 +421,7 @@ function StageRow({
         type="button"
         onClick={onJump}
         animate={
-          isActive
+          !reduceMotion && isActive
             ? {
                 scale: [1, 1.14, 1],
                 boxShadow: [
@@ -405,7 +432,7 @@ function StageRow({
               }
             : { scale: 1 }
         }
-        transition={{ duration: 1.45, repeat: isActive ? Infinity : 0, ease: 'easeInOut' }}
+        transition={{ duration: 1.45, repeat: !reduceMotion && isActive ? Infinity : 0, ease: 'easeInOut' }}
         className={`z-20 hidden h-24 w-24 place-items-center rounded-full border-[10px] text-xl font-black transition hover:scale-110 lg:col-start-2 lg:grid ${
           isActive
             ? 'border-white bg-[#ffc629] text-black'
@@ -425,23 +452,21 @@ function StageRow({
           alignLeft ? 'lg:col-start-3' : 'lg:col-start-1 lg:row-start-1'
         }`}
       >
-        <motion.div style={{ y: imageY, scale: imageScale }} className="absolute -inset-[9%]">
+        <motion.div style={{ y: reduceMotion ? undefined : imageY, scale: reduceMotion ? undefined : imageScale }} className="absolute -inset-[6%]">
           <Image
             src={stage.image}
             alt={`${stage.label} learning environment`}
             fill
-            priority
-            loading="eager"
-            quality={92}
+            priority={index < 2}
+            loading={index < 2 ? undefined : 'lazy'}
             sizes="(min-width: 1024px) 38vw, 92vw"
             className="object-cover object-center"
           />
         </motion.div>
         <motion.div
           aria-hidden="true"
-          animate={{ x: ['-125%', '135%'] }}
-          transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 2.4, ease: 'easeInOut' }}
-          className="absolute inset-y-0 z-10 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.36),transparent)]"
+          style={{ x: reduceMotion ? undefined : sheenX }}
+          className="absolute inset-y-0 z-10 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.28),transparent)]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,20,22,0.02)_18%,rgba(18,16,10,0.76)_100%)]" />
         <motion.div
@@ -463,7 +488,7 @@ function StageRow({
   )
 }
 
-function ParentConfidence() {
+function ParentConfidence({ reduceMotion }: { reduceMotion: boolean | null }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 70, scale: 0.96 }}
@@ -485,8 +510,8 @@ function ParentConfidence() {
         />
         <motion.div
           aria-hidden="true"
-          animate={{ x: ['-120%', '140%'] }}
-          transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 3, ease: 'easeInOut' }}
+          animate={reduceMotion ? undefined : { x: ['-60%', '90%'] }}
+          transition={{ duration: 7, repeat: Infinity, repeatDelay: 1.4, ease: 'easeInOut' }}
           className="absolute inset-y-0 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.28),transparent)]"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(23,35,58,0.05),rgba(23,35,58,0.62))]" />
@@ -495,7 +520,7 @@ function ParentConfidence() {
       <div className="relative p-6 text-white sm:p-8 lg:p-12">
         <motion.div
           aria-hidden="true"
-          animate={{ rotate: 360 }}
+          animate={reduceMotion ? undefined : { rotate: 360 }}
           transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}
           className="absolute right-8 top-8 h-32 w-32 rounded-full border border-[#d8bc65]/22"
         />
@@ -516,7 +541,7 @@ function ParentConfidence() {
               key={signal}
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              animate={{ y: [0, index % 2 ? 6 : -6, 0] }}
+              animate={reduceMotion ? undefined : { y: [0, index % 2 ? 4 : -4, 0] }}
               viewport={{ once: true }}
               transition={{
                 opacity: { duration: 0.5, delay: index * 0.08 },
