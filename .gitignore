@@ -16,6 +16,13 @@
 # next.js
 /.next/
 /out/
+.next-dev.*.log
+
+# local agent/audit tooling
+.agents/
+.edge-cdp/
+.tmp/
+child-section-check.png
 
 # production
 /build

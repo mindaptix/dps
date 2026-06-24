@@ -1,10 +1,19 @@
 @import 'tailwindcss';
+@source not "../../.edge-cdp";
+@source not "../../.next";
 
 :root {
-  --background: #eef3e8;
-  --foreground: #102f22;
-  --gold: #b8944b;
-  --deep-green: #183f2d;
+  --background: #f7f1e6;
+  --foreground: #13233a;
+  --cream: #f7f1e6;
+  --cream-soft: #fff8eb;
+  --mist-green: #e8f1e4;
+  --leaf: #6f9b68;
+  --deep-green: #143627;
+  --navy: #17233a;
+  --gold: #b9862f;
+  --gold-soft: #d8bc65;
+  --wine: #7a2634;
 }
 
 @theme inline {
@@ -27,7 +36,10 @@ body {
   min-height: 100%;
   overflow-x: clip;
   overflow-y: visible;
-  background: var(--background);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(111, 155, 104, 0.18), transparent 28rem),
+    radial-gradient(circle at 92% 2%, rgba(216, 188, 101, 0.16), transparent 26rem),
+    linear-gradient(180deg, var(--cream-soft), var(--cream) 45%, #edf4e9 100%);
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
@@ -35,8 +47,9 @@ body {
 
 main {
   background:
-    radial-gradient(circle at 12% 8%, rgba(126, 165, 102, 0.12), transparent 28%),
-    linear-gradient(180deg, #eef3e8 0%, #e8f0e2 48%, #edf1e6 100%);
+    radial-gradient(circle at 10% 8%, rgba(111, 155, 104, 0.12), transparent 28%),
+    radial-gradient(circle at 88% 24%, rgba(185, 134, 47, 0.1), transparent 30%),
+    linear-gradient(180deg, var(--cream) 0%, #f3eadc 48%, #f8f3ea 100%);
 }
 
 a {
@@ -44,24 +57,55 @@ a {
 }
 
 ::selection {
-  background: rgba(134, 185, 125, 0.28);
+  background: rgba(185, 134, 47, 0.28);
 }
 
 .luxury-noise {
   background-image:
-    radial-gradient(circle at 20% 20%, rgba(134, 185, 125, 0.16), transparent 30%),
-    radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.1), transparent 24%),
-    linear-gradient(135deg, rgba(232, 242, 230, 0.96), rgba(241, 248, 239, 0.98));
+    radial-gradient(circle at 20% 20%, rgba(111, 155, 104, 0.16), transparent 30%),
+    radial-gradient(circle at 72% 12%, rgba(185, 134, 47, 0.14), transparent 28%),
+    radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.18), transparent 24%),
+    linear-gradient(135deg, rgba(248, 242, 230, 0.96), rgba(255, 250, 240, 0.98));
+}
+
+.brand-gradient {
+  background: linear-gradient(135deg, var(--deep-green), var(--navy) 58%, #243d2d);
+}
+
+.gold-accent {
+  color: var(--gold);
+}
+
+.interactive-ring {
+  position: relative;
+}
+
+.interactive-ring::before {
+  content: "";
+  position: absolute;
+  inset: -0.45rem;
+  border: 1px solid rgba(216, 188, 101, 0.28);
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 350ms ease,
+    transform 350ms ease;
+}
+
+.interactive-ring:hover::before {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .gold-line {
-  background: linear-gradient(90deg, transparent, rgba(134, 185, 125, 0.9), transparent);
+  background: linear-gradient(90deg, transparent, rgba(185, 134, 47, 0.9), transparent);
 }
 
 .premium-glow {
   box-shadow:
-    0 0 0 1px rgba(134, 185, 125, 0.14),
-    0 24px 80px rgba(22, 51, 37, 0.1),
+    0 0 0 1px rgba(185, 134, 47, 0.16),
+    0 24px 80px rgba(23, 35, 58, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -77,21 +121,21 @@ a {
   pointer-events: none;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.86), transparent 12%, transparent 82%, rgba(22, 51, 37, 0.04)),
-    radial-gradient(circle at 12% 12%, rgba(134, 185, 125, 0.12), transparent 32%),
-    radial-gradient(circle at 88% 78%, rgba(36, 76, 57, 0.08), transparent 34%);
+    radial-gradient(circle at 12% 12%, rgba(185, 134, 47, 0.1), transparent 32%),
+    radial-gradient(circle at 88% 78%, rgba(23, 35, 58, 0.08), transparent 34%);
 }
 
 .surface-lift {
   box-shadow:
-    0 36px 110px rgba(22, 51, 37, 0.08),
-    0 12px 32px rgba(22, 51, 37, 0.05),
+    0 36px 110px rgba(23, 35, 58, 0.08),
+    0 12px 32px rgba(23, 35, 58, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .surface-lift-dark {
   box-shadow:
-    0 42px 130px rgba(22, 51, 37, 0.16),
-    0 16px 44px rgba(22, 51, 37, 0.1),
+    0 42px 130px rgba(23, 35, 58, 0.16),
+    0 16px 44px rgba(23, 35, 58, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
@@ -107,7 +151,7 @@ a {
   border-radius: inherit;
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.22), transparent 28%),
-    linear-gradient(315deg, rgba(134, 185, 125, 0.18), transparent 24%);
+    linear-gradient(315deg, rgba(185, 134, 47, 0.18), transparent 24%);
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
   padding: 1px;
@@ -115,8 +159,8 @@ a {
 
 .depth-mesh {
   background-image:
-    linear-gradient(90deg, rgba(36, 76, 57, 0.06) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(36, 76, 57, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 35, 58, 0.06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(23, 35, 58, 0.045) 1px, transparent 1px),
     radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.72), transparent 38%);
   background-size:
     78px 78px,
@@ -128,7 +172,7 @@ a {
   background-image:
     linear-gradient(90deg, rgba(36, 76, 57, 0.042) 1px, transparent 1px),
     linear-gradient(180deg, rgba(36, 76, 57, 0.03) 1px, transparent 1px),
-    radial-gradient(circle at 50% 0%, rgba(134, 185, 125, 0.16), transparent 42%);
+    radial-gradient(circle at 50% 0%, rgba(185, 134, 47, 0.14), transparent 42%);
   background-size:
     78px 78px,
     78px 78px,
@@ -137,8 +181,8 @@ a {
 
 .section-divider-glow {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(134, 185, 125, 0.72), transparent);
-  box-shadow: 0 0 34px rgba(134, 185, 125, 0.24);
+  background: linear-gradient(90deg, transparent, rgba(185, 134, 47, 0.72), transparent);
+  box-shadow: 0 0 34px rgba(185, 134, 47, 0.22);
 }
 
 .motion-card {
@@ -167,7 +211,7 @@ a {
 .floating-grain {
   background-image:
     radial-gradient(circle, rgba(255, 255, 255, 0.18) 1px, transparent 1px),
-    radial-gradient(circle, rgba(134, 185, 125, 0.22) 1px, transparent 1px);
+    radial-gradient(circle, rgba(185, 134, 47, 0.2) 1px, transparent 1px);
   background-position:
     0 0,
     18px 28px;
@@ -232,6 +276,7 @@ a {
   .hero-title {
     font-size: clamp(2.65rem, 14vw, 4.1rem);
   }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -250,17 +295,70 @@ a {
   mask-image: radial-gradient(circle at center, black 8%, transparent 76%);
 }
 
+.vision-hero-title {
+  font-size: clamp(4.4rem, 8.8vw, 9.4rem);
+  line-height: 0.78;
+  letter-spacing: -0.075em;
+}
+
+.vision-hero-school {
+  margin-top: 1rem;
+  font-size: 0.74em;
+  line-height: 0.78;
+  letter-spacing: -0.055em;
+}
+
+@media (max-width: 768px) {
+  .vision-hero-title {
+    font-size: clamp(3.5rem, 16vw, 5.3rem);
+  }
+
+  .vision-hero-school {
+    margin-top: 0.75rem;
+  }
+}
+
 .vision-future-section {
   background:
-    radial-gradient(circle at 82% 22%, rgba(171, 205, 164, 0.2), transparent 30rem),
-    linear-gradient(180deg, #f8faf5 0%, #f4f8f1 100%);
+    radial-gradient(circle at 82% 22%, rgba(185, 134, 47, 0.16), transparent 30rem),
+    linear-gradient(180deg, #fff8eb 0%, #f7f1e6 100%);
+}
+
+.vision-section-endcap {
+  background: linear-gradient(180deg, transparent, rgba(23, 35, 58, 0.12));
 }
 
 .vision-future-glow {
-  border: 1px solid rgba(117, 160, 109, 0.14);
-  background: radial-gradient(circle, rgba(143, 183, 135, 0.13), transparent 66%);
-  box-shadow: 0 0 0 5rem rgba(143, 183, 135, 0.025), 0 0 0 10rem rgba(143, 183, 135, 0.018);
+  border: 1px solid rgba(185, 134, 47, 0.18);
+  background: radial-gradient(circle, rgba(185, 134, 47, 0.12), transparent 66%);
+  box-shadow: 0 0 0 5rem rgba(185, 134, 47, 0.025), 0 0 0 10rem rgba(185, 134, 47, 0.018);
   animation: vision-future-pulse 7s ease-in-out infinite;
+}
+
+.vision-future-dots {
+  background-image:
+    radial-gradient(circle, rgba(111, 148, 106, 0.16) 1px, transparent 1px),
+    radial-gradient(circle, rgba(185, 134, 47, 0.14) 1px, transparent 1px);
+  background-position:
+    0 0,
+    28px 34px;
+  background-size:
+    56px 56px,
+    72px 72px;
+  mask-image: linear-gradient(90deg, transparent, black 16%, black 84%, transparent);
+  animation: vision-dots-drift 18s linear infinite;
+}
+
+.vision-future-image-panel {
+  height: 17rem;
+}
+
+.vision-future-left-image {
+  height: 18rem;
+}
+
+.vision-future-small-image {
+  height: 8.5rem;
 }
 
 .vision-signal-map::before {
@@ -270,7 +368,7 @@ a {
   left: 2.1rem;
   top: 2rem;
   width: 1px;
-  background: linear-gradient(transparent, rgba(110, 157, 103, 0.4), transparent);
+  background: linear-gradient(transparent, rgba(185, 134, 47, 0.4), transparent);
 }
 
 .vision-signal-card::after {
@@ -285,6 +383,64 @@ a {
 
 .vision-signal-card:hover::after {
   transform: translateX(120%);
+}
+
+.vision-signal-thumb {
+  width: 6rem;
+  height: 4.5rem;
+}
+
+.vision-signal-icon {
+  animation: vision-icon-float 4.8s ease-in-out infinite;
+}
+
+.vision-number-card {
+  isolation: isolate;
+}
+
+.vision-number-card-glow {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(216, 188, 101, 0.16), transparent 34%),
+    radial-gradient(circle at 90% 88%, rgba(111, 148, 106, 0.13), transparent 38%);
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.vision-number-card:hover .vision-number-card-glow {
+  opacity: 1;
+}
+
+.vision-number-card-icon {
+  animation: vision-icon-float 5.2s ease-in-out infinite;
+}
+
+.vision-number-card-visual {
+  height: 5.6rem;
+}
+
+.vision-number-card-visual::after {
+  content: '';
+  position: absolute;
+  inset: -40% -20%;
+  background: linear-gradient(105deg, transparent 28%, rgba(255, 255, 255, 0.55), transparent 64%);
+  transform: translateX(-120%);
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vision-number-card:hover .vision-number-card-visual::after {
+  transform: translateX(120%);
+}
+
+.vision-parent-panel-image {
+  min-height: 25rem;
+}
+
+.vision-signal-card:nth-child(2) .vision-signal-icon {
+  animation-delay: -1.4s;
+}
+
+.vision-signal-card:nth-child(3) .vision-signal-icon {
+  animation-delay: -2.8s;
 }
 
 .vision-orb::before,
@@ -306,7 +462,7 @@ a {
 }
 
 .vision-orb {
-  color: #80ac76;
+  color: #b9862f;
   animation: vision-drift 12s ease-in-out infinite alternate;
 }
 
@@ -333,7 +489,7 @@ a {
 
 .vision-question-card {
   isolation: isolate;
-  background-color: #173e2b;
+  background-color: #17233a;
   color: white;
   box-shadow: 0 32px 75px rgba(18, 54, 36, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.17);
   transform-style: preserve-3d;
@@ -350,29 +506,29 @@ a {
   position: absolute;
   inset: -60% -80%;
   z-index: -1;
-  background: conic-gradient(from 180deg, transparent, rgba(183, 218, 175, 0.25), transparent 30%);
+  background: conic-gradient(from 180deg, transparent, rgba(216, 188, 101, 0.26), transparent 30%);
   animation: vision-card-aurora 10s linear infinite;
 }
 
-.vision-question-card-1 { background: linear-gradient(145deg, #173e2b, #295c40); border-color: rgba(154, 196, 145, 0.35); }
-.vision-question-card-2 { background: linear-gradient(145deg, #315f45, #183a2a); border-color: rgba(164, 203, 155, 0.3); }
-.vision-question-card-3 { background: linear-gradient(145deg, #6f9f68, #315f42); border-color: rgba(215, 234, 209, 0.38); }
-.vision-question-card-4 { background: linear-gradient(145deg, #1e4934, #102f22); border-color: rgba(154, 196, 145, 0.3); }
-.vision-question-card-5 { background: linear-gradient(145deg, #547f54, #173b2b); border-color: rgba(183, 215, 176, 0.35); }
+.vision-question-card-1 { background: linear-gradient(145deg, #17233a, #25365a); border-color: rgba(216, 188, 101, 0.32); }
+.vision-question-card-2 { background: linear-gradient(145deg, #24304c, #111a2d); border-color: rgba(216, 188, 101, 0.28); }
+.vision-question-card-3 { background: linear-gradient(145deg, #b9862f, #7a2634); border-color: rgba(245, 210, 138, 0.38); }
+.vision-question-card-4 { background: linear-gradient(145deg, #25365a, #111a2d); border-color: rgba(216, 188, 101, 0.3); }
+.vision-question-card-5 { background: linear-gradient(145deg, #7a2634, #17233a); border-color: rgba(245, 210, 138, 0.35); }
 
 .vision-question-mesh {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-    radial-gradient(circle at 85% 8%, rgba(186, 221, 177, 0.38), transparent 32%);
+    radial-gradient(circle at 85% 8%, rgba(216, 188, 101, 0.34), transparent 32%);
   background-size: 38px 38px, 38px 38px, 100% 100%;
   mask-image: linear-gradient(to bottom, black, transparent 82%);
 }
 
 .vision-question-thread {
   z-index: 0;
-  background: linear-gradient(90deg, transparent, #88ad81 12%, #88ad81 88%, transparent);
-  box-shadow: 0 0 20px rgba(109, 155, 102, 0.45);
+  background: linear-gradient(90deg, transparent, #b9862f 12%, #b9862f 88%, transparent);
+  box-shadow: 0 0 20px rgba(185, 134, 47, 0.38);
 }
 
 .vision-question-thread::after {
@@ -383,13 +539,36 @@ a {
   height: 7px;
   width: 7px;
   border-radius: 999px;
-  background: #d9ecd4;
-  box-shadow: 0 0 15px #7da976;
+  background: #f5d28a;
+  box-shadow: 0 0 15px #b9862f;
   animation: vision-thread-travel 6s ease-in-out infinite;
 }
 
 .vision-belief-orbit {
   animation: vision-spin-local 28s linear infinite;
+}
+
+.vision-belief-section {
+  background:
+    radial-gradient(circle at 18% 18%, rgba(169, 208, 161, 0.14), transparent 30rem),
+    radial-gradient(circle at 88% 78%, rgba(185, 134, 47, 0.12), transparent 26rem),
+    #17233a;
+}
+
+.vision-belief-ambient {
+  background:
+    linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.05) 45%, transparent 52%),
+    radial-gradient(circle at 50% 50%, rgba(169, 208, 161, 0.08), transparent 34rem);
+  animation: vision-belief-sweep 12s ease-in-out infinite;
+}
+
+.vision-belief-card {
+  transform-style: preserve-3d;
+}
+
+.vision-belief-card-image {
+  height: 100%;
+  min-height: 9.5rem;
 }
 
 .vision-belief-node {
@@ -434,10 +613,10 @@ a {
   gap: 0.75rem;
   min-width: 10rem;
   padding: 1rem 1.2rem;
-  border: 1px solid #d2e2ce;
+  border: 1px solid #e1cfaa;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.88);
-  color: #294a38;
+  color: #17233a;
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 1.08rem;
   font-style: italic;
@@ -460,15 +639,39 @@ a {
   right: 4%;
   left: 4%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #bad3b5, transparent);
+  background: linear-gradient(90deg, transparent, #d8bc65, transparent);
 }
 
 @keyframes vision-marquee {
   to { transform: translateX(-50%); }
 }
 
+.admission-ticker {
+  animation: admission-ticker-scroll 16s linear infinite;
+  will-change: transform;
+}
+
+.admission-ticker:hover {
+  animation-play-state: paused;
+}
+
+@keyframes admission-ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 @keyframes vision-future-pulse {
   50% { transform: scale(1.06); opacity: 0.72; }
+}
+
+@keyframes vision-dots-drift {
+  from { background-position: 0 0, 28px 34px; }
+  to { background-position: 56px 56px, 100px 106px; }
+}
+
+@keyframes vision-icon-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(4deg); }
 }
 
 @keyframes vision-card-aurora {
@@ -477,6 +680,11 @@ a {
 
 @keyframes vision-thread-travel {
   50% { left: calc(100% - 7px); }
+}
+
+@keyframes vision-belief-sweep {
+  0%, 100% { opacity: 0.45; transform: translateX(-2%); }
+  50% { opacity: 0.9; transform: translateX(2%); }
 }
 
 @keyframes vision-question-orbit {
@@ -525,6 +733,10 @@ a {
   .vision-belief-node,
   .vision-image-sweep,
   .vision-capability-radar {
+    animation: none;
+  }
+
+  .admission-ticker {
     animation: none;
   }
 
