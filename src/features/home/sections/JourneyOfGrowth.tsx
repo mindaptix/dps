@@ -2,229 +2,540 @@
 
 import Image from 'next/image'
 import { useRef, useState } from 'react'
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, useSpring, useTransform } from 'framer-motion'
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  type Variants,
+} from 'framer-motion'
 
 const stages = [
   {
-    grade: 'Nursery',
-    title: 'First Steps',
-    subtitle: 'A warm, safe start where school feels like belonging.',
-    words: ['Wonder.', 'Play.', 'Confidence.'],
-    outcomes: ['Language readiness', 'Social comfort', 'Motor skills'],
+    step: '01',
+    label: 'Nursery',
+    years: 'Ages 3-5',
+    title: 'Confidence before curriculum',
+    desc: 'Children begin with play, rhythm, language, movement, and emotional safety.',
+    signal: 'Wonder',
+    metric: '8:1 care clusters',
     image: '/images/early-years.png',
+    parent: 'A gentle first step where school feels safe, joyful, and familiar.',
+    chips: ['Play rhythm', 'Language bloom', 'Emotional safety'],
   },
   {
-    grade: 'Class 1',
-    title: 'Strong Foundations',
-    subtitle: 'Children begin building reading, numeracy, habits, and curiosity.',
-    words: ['Phonics.', 'Numbers.', 'Expression.'],
-    outcomes: ['Reading habits', 'Number sense', 'Classroom routines'],
+    step: '02',
+    label: 'Primary',
+    years: 'Classes 1-5',
+    title: 'Strong basics, curious minds',
+    desc: 'Reading, numeracy, expression, art, sport, and inquiry become daily habits.',
+    signal: 'Foundation',
+    metric: 'Daily skill loops',
     image: '/images/primary-school.png',
+    parent: 'Parents begin seeing habits, confidence, and academic foundations grow together.',
+    chips: ['Reading habits', 'Number sense', 'Creative expression'],
   },
   {
-    grade: 'Class 6',
-    title: 'New Independence',
-    subtitle: 'Learners move from basics to projects, questions, and deeper thinking.',
-    words: ['Inquiry.', 'Teamwork.', 'Exploration.'],
-    outcomes: ['Project learning', 'Collaboration', 'Self-management'],
+    step: '03',
+    label: 'Middle School',
+    years: 'Classes 6-8',
+    title: 'Discovery with depth',
+    desc: 'Labs, clubs, projects, debate, coding, and mentoring help each child find strengths.',
+    signal: 'Exploration',
+    metric: '30+ discovery paths',
     image: '/images/middle-school.png',
+    parent: 'Children explore more, while mentors help them make sense of choices early.',
+    chips: ['Labs', 'Clubs', 'Projects'],
   },
   {
-    grade: 'Class 10',
-    title: 'Purposeful Direction',
-    subtitle: 'Academic rigour meets mentoring, reflection, and future choices.',
-    words: ['Focus.', 'Discipline.', 'Problem-solving.'],
-    outcomes: ['Board readiness', 'Mentorship', 'Career awareness'],
-    image: '/images/primary-school.png',
+    step: '04',
+    label: 'Senior Secondary',
+    years: 'Classes 9-12',
+    title: 'Leadership and exam readiness',
+    desc: 'Board excellence meets research, portfolio building, leadership, and career mapping.',
+    signal: 'Direction',
+    metric: 'Personal roadmap',
+    image: '/images/learning-that-matters.png',
+    parent: 'The journey becomes sharper: performance, mentoring, identity, and future planning.',
+    chips: ['Portfolio', 'Mentoring', 'Board readiness'],
   },
   {
-    grade: 'Class 12',
-    title: 'Future Ready',
-    subtitle: 'Students leave with confidence, leadership, and a clear next step.',
-    words: ['Leadership.', 'Pathways.', 'Readiness.'],
-    outcomes: ['University planning', 'Life skills', 'Student leadership'],
+    step: '05',
+    label: 'University Placements',
+    years: 'Beyond school',
+    title: 'A future planned early',
+    desc: 'Counselling, profile strategy, internships, and admissions support the next leap.',
+    signal: 'Launch',
+    metric: 'Global options',
     image: '/images/child-journey-grade12-ai.png',
+    parent: 'Families see a child prepared for university, life, and the world beyond school.',
+    chips: ['Admissions', 'Profiles', 'Global choices'],
   },
 ]
 
+const parentSignals = [
+  'Emotional safety',
+  'Academic confidence',
+  'Mentor visibility',
+  'Future pathways',
+]
+
+const cardVariants: Variants = {
+  hidden: (alignLeft: boolean) => ({
+    opacity: 0,
+    x: alignLeft ? -44 : 44,
+    y: 46,
+    rotateX: 6,
+    rotateZ: alignLeft ? -2 : 2,
+    scale: 0.96,
+    filter: 'blur(4px)',
+  }),
+  show: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    rotateX: 0,
+    rotateZ: 0,
+    scale: 1,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 1.05,
+      ease: [0.22, 1, 0.36, 1],
+      staggerChildren: 0.06,
+    },
+  },
+}
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 14, filter: 'blur(3px)' },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.64, ease: [0.22, 1, 0.36, 1] },
+  },
+}
+
 export function JourneyOfGrowth() {
   const sectionRef = useRef<HTMLElement>(null)
-  const [activeIndex, setActiveIndex] = useState(0)
+  const cardRefs = useRef<Array<HTMLDivElement | null>>([])
+  const [activeStage, setActiveStage] = useState(0)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start start', 'end end'],
+    offset: ['start 72%', 'end 38%'],
   })
-  const progress = useSpring(scrollYProgress, { stiffness: 88, damping: 24, mass: 0.35 })
-  const activeStage = stages[activeIndex]
-  const panoramaScale = useTransform(progress, [0, 1], [1.08, 1.24])
-  const panoramaX = useTransform(progress, [0, 1], ['0%', '-6%'])
-  const ringRotate = useTransform(progress, [0, 1], [0, 220])
-  const progressScale = useTransform(progress, [0, 1], [0, 1])
-  const headingOpacity = useTransform(progress, [0, 0.94, 1], [1, 1, 0.18])
+  const pathProgress = useSpring(scrollYProgress, {
+    stiffness: 38,
+    damping: 24,
+    mass: 0.62,
+  })
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 42,
+    damping: 25,
+    mass: 0.58,
+  })
+  const headerY = useTransform(smoothProgress, [0, 0.22], [0, -34])
+  const headerOpacity = useTransform(smoothProgress, [0, 0.22], [1, 0.78])
 
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    const nextIndex = Math.min(stages.length - 1, Math.max(0, Math.floor(latest * stages.length)))
-    setActiveIndex(nextIndex)
-  })
+  const jumpToStage = (index: number) => {
+    const card = cardRefs.current[index]
+
+    if (!card) {
+      return
+    }
+
+    setActiveStage(index)
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
 
   return (
-    <section ref={sectionRef} id="growth-journey" className="relative h-[560vh] bg-[#eef4df]">
-      <div className="sticky top-0 h-screen overflow-hidden text-[#315844]">
-        <motion.div style={{ scale: panoramaScale, x: panoramaX }} className="absolute -inset-[7%]">
-          <Image
-            src="/images/journey-of-growth.png"
-            alt="Children progressing through different stages of their school journey"
-            fill
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(38,61,38,0.42)_0%,rgba(255,246,205,0.18)_42%,rgba(21,54,38,0.72)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(239,217,140,.28),transparent_28%),radial-gradient(circle_at_82%_18%,rgba(140,194,122,.22),transparent_26%)] backdrop-saturate-[1.08]" />
+    <section
+      ref={sectionRef}
+      id="growth-journey"
+      className="relative overflow-hidden bg-[#f7f1e6] py-24 text-[#12100a] sm:py-28 lg:py-36"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_8%,rgba(255,198,41,0.34),transparent_28%),radial-gradient(circle_at_88%_28%,rgba(23,35,58,0.12),transparent_34%),linear-gradient(115deg,#fff8eb_0%,#f3eadc_48%,#e8e4d8_100%)]" />
+      <motion.div
+        aria-hidden="true"
+        animate={{ x: ['-20%', '120%'] }}
+        transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute top-0 z-10 h-full w-1/4 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.34),transparent)] blur-xl"
+      />
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#4b2c31]/18 to-transparent" />
 
+      <div className="relative z-20 mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12">
         <motion.div
-          aria-hidden="true"
-          animate={{ x: ['-28%', '128%'] }}
-          transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
-          className="absolute inset-y-0 z-10 w-1/4 bg-[linear-gradient(90deg,transparent,rgba(255,240,185,.25),transparent)] blur-md"
-        />
-
-        <div className="pointer-events-none absolute inset-0 grid place-items-center">
-          <motion.div
-            aria-hidden="true"
-            style={{ rotate: ringRotate }}
-            className="relative h-[38rem] w-[38rem] rounded-full border border-white/12 md:h-[54rem] md:w-[54rem]"
-          >
-            <span className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 rounded-full bg-[#bfa96d] shadow-[0_0_26px_rgba(191,169,109,0.55)]" />
-            <span className="absolute bottom-[12%] left-[9%] h-2 w-2 rounded-full bg-[#8cc27a] shadow-[0_0_24px_rgba(140,194,122,0.75)]" />
-            <span className="absolute right-[10%] top-[22%] h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_26px_rgba(255,255,255,0.85)]" />
-          </motion.div>
-        </div>
-
-        <motion.h2
-          style={{ opacity: headingOpacity }}
-          className="absolute inset-x-5 top-7 z-30 text-center font-serif text-[clamp(2.5rem,4.5vw,5rem)] font-medium leading-[0.9] tracking-[-0.05em] text-[#f5dda0] drop-shadow-[0_8px_24px_rgba(0,0,0,.32)] md:top-10 md:whitespace-nowrap"
+          style={{ y: headerY, opacity: headerOpacity }}
+          className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end"
         >
-          A Journey of Growth
-        </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, y: 36 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="text-sm font-black uppercase tracking-[0.34em] text-[#b9862f]">
+              Interactive child journey
+            </p>
+            <h2 className="mt-5 max-w-4xl font-serif text-[clamp(3.3rem,7vw,7.8rem)] leading-[0.9] text-[#17233a]">
+              One roadmap for your child&apos;s whole future.
+            </h2>
+          </motion.div>
 
-        <div className="absolute inset-x-4 bottom-[6.8rem] top-[7.5rem] z-20 sm:inset-x-6 md:bottom-[7.5rem] md:top-[9.5rem] lg:inset-x-10">
-          <AnimatePresence mode="wait" initial={false}>
-            <JourneyScene key={activeStage.grade} stage={activeStage} index={activeIndex} />
-          </AnimatePresence>
-        </div>
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-2xl justify-self-start text-lg font-medium leading-8 text-[#5c523f] lg:justify-self-end"
+          >
+            Parents do not just see classes. They see a planned progression:
+            care, foundation, discovery, leadership, and placement readiness.
+          </motion.p>
+        </motion.div>
 
-        <div className="absolute bottom-8 left-1/2 z-50 w-[min(84vw,68rem)] -translate-x-1/2 md:bottom-10">
-          <div className="relative h-px bg-white/18">
-            <motion.div
-              style={{ scaleX: progressScale }}
-              className="absolute inset-0 origin-left bg-gradient-to-r from-[#77a866] via-[#bfa96d] to-[#d8c892] shadow-[0_0_18px_rgba(143,122,67,0.45)]"
-            />
-            {stages.map((stage, index) => {
-              const isActive = index === activeIndex
-
-              return (
-                <button
-                  key={stage.title}
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  className={`absolute top-1/2 grid h-8 w-8 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border text-[0.6rem] font-bold shadow-xl transition duration-500 ${isActive ? 'scale-125 border-[#d8c892] bg-[#d8c892] text-[#14382a]' : 'border-white/60 bg-[#0b241a] text-[#d8c892]'}`}
-                  style={{ left: `${(index / (stages.length - 1)) * 100}%` }}
-                >
-                  {index + 1}
-                  <span className="absolute top-9 hidden whitespace-nowrap text-xs font-semibold text-white/80 md:block">{stage.grade}</span>
-                </button>
-              )
-            })}
+        <div className="sticky top-4 z-30 mt-10 rounded-full border border-black/10 bg-white/78 p-2 shadow-[0_28px_90px_rgba(23,35,58,0.12)] backdrop-blur-xl">
+          <div className="flex gap-1 overflow-x-auto">
+            {stages.map((stage, index) => (
+              <button
+                key={stage.label}
+                type="button"
+                onClick={() => jumpToStage(index)}
+                className={`min-w-fit rounded-full px-4 py-3 text-xs font-black uppercase tracking-[0.16em] transition sm:px-6 sm:text-sm ${
+                  activeStage === index
+                    ? 'bg-[#ffc629] text-black shadow-[0_16px_34px_rgba(185,134,47,0.24)]'
+                    : 'text-black/48 hover:bg-black/5 hover:text-black'
+                }`}
+              >
+                {stage.label}
+              </button>
+            ))}
           </div>
         </div>
+
+        <div className="relative mt-16 lg:mt-24">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 1000 1880"
+            className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-[76%] -translate-x-1/2 lg:block"
+            preserveAspectRatio="none"
+          >
+            <path
+              d="M505 18 C170 202 185 430 515 540 C855 655 828 895 496 986 C160 1082 196 1325 525 1424 C830 1517 824 1702 505 1858"
+              fill="none"
+              stroke="rgba(18,16,10,0.12)"
+              strokeLinecap="round"
+              strokeWidth="38"
+            />
+            <motion.path
+              d="M505 18 C170 202 185 430 515 540 C855 655 828 895 496 986 C160 1082 196 1325 525 1424 C830 1517 824 1702 505 1858"
+              fill="none"
+              pathLength={pathProgress}
+              stroke="#ffc629"
+              strokeLinecap="round"
+              strokeWidth="14"
+              style={{ filter: 'drop-shadow(0 0 18px rgba(255,198,41,0.5))' }}
+            />
+          </svg>
+
+          <motion.div
+            animate={{ y: [-9, 9, -9], rotate: [-2, 2, -2] }}
+            transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+            className="absolute left-1/2 top-6 z-20 hidden h-24 w-24 -translate-x-1/2 place-items-center rounded-full bg-[#12100a] text-[#ffc629] shadow-[0_30px_70px_rgba(0,0,0,0.28)] lg:grid"
+          >
+            <span className="text-xs font-black uppercase tracking-[0.18em]">
+              Future
+            </span>
+          </motion.div>
+
+          <div className="space-y-14 lg:space-y-32">
+            {stages.map((stage, index) => (
+              <StageRow
+                key={stage.label}
+                activeStage={activeStage}
+                index={index}
+                onEnter={() => setActiveStage(index)}
+                onJump={() => jumpToStage(index)}
+                setCardRef={(node) => {
+                  cardRefs.current[index] = node
+                }}
+                stage={stage}
+              />
+            ))}
+          </div>
+        </div>
+
+        <ParentConfidence />
       </div>
     </section>
   )
 }
 
-function JourneyScene({
-  stage,
+function StageRow({
+  activeStage,
   index,
+  onEnter,
+  onJump,
+  setCardRef,
+  stage,
 }: {
-  stage: (typeof stages)[number]
+  activeStage: number
   index: number
+  onEnter: () => void
+  onJump: () => void
+  setCardRef: (node: HTMLDivElement | null) => void
+  stage: (typeof stages)[number]
 }) {
+  const rowRef = useRef<HTMLDivElement>(null)
+  const alignLeft = index % 2 === 0
+  const isActive = activeStage === index
+  const { scrollYProgress } = useScroll({
+    target: rowRef,
+    offset: ['start 86%', 'end 18%'],
+  })
+  const smoothRowProgress = useSpring(scrollYProgress, {
+    stiffness: 36,
+    damping: 24,
+    mass: 0.62,
+  })
+  const cardLift = useTransform(smoothRowProgress, [0, 0.5, 1], [22, 0, -18])
+  const imageY = useTransform(smoothRowProgress, [0, 1], ['-5%', '5%'])
+  const imageScale = useTransform(smoothRowProgress, [0, 0.5, 1], [1.08, 1.03, 1.06])
+  const haloOpacity = useTransform(smoothRowProgress, [0, 0.35, 0.86], [0, 0.8, 0.28])
+  const chipX = useTransform(smoothRowProgress, [0, 1], [alignLeft ? 10 : -10, alignLeft ? -7 : 7])
+
   return (
-    <motion.article
-      initial={{ opacity: 0, x: index % 2 === 0 ? 120 : -120, scale: 0.94, rotate: index % 2 === 0 ? 3 : -3, filter: 'blur(10px)' }}
-      animate={{ opacity: 1, x: 0, scale: 1, rotate: 0, filter: 'blur(0px)' }}
-      exit={{ opacity: 0, x: index % 2 === 0 ? -90 : 90, scale: 0.96, rotate: index % 2 === 0 ? -2 : 2, filter: 'blur(8px)' }}
-      transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-      className="absolute inset-0 overflow-hidden rounded-[2rem] border border-white/55 bg-[#122f22] shadow-[0_36px_120px_rgba(15,38,27,0.42)]"
+    <div
+      ref={rowRef}
+      className={`relative grid gap-6 lg:grid-cols-[1fr_128px_1fr] lg:items-center ${
+        alignLeft ? '' : 'lg:[&>*:first-child]:col-start-3'
+      }`}
     >
       <motion.div
-        initial={{ scale: 1.16, y: '3%' }}
-        animate={{ scale: 1.04, y: '-2%' }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute inset-0"
+        ref={setCardRef}
+        custom={alignLeft}
+        variants={cardVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ amount: 0.42, margin: '-12% 0px -12% 0px' }}
+        onViewportEnter={onEnter}
+        style={{ y: cardLift }}
+        className={`motion-card relative overflow-hidden rounded-[1.65rem] border border-black/10 bg-white/82 p-5 shadow-[0_34px_110px_rgba(23,35,58,0.13)] backdrop-blur-xl will-change-transform sm:p-7 lg:p-8 ${
+          alignLeft ? 'lg:col-start-1' : 'lg:col-start-3'
+        }`}
       >
-        <Image
-          src={stage.image}
-          alt={stage.title}
-          fill
-          sizes="100vw"
-          className="object-cover object-center"
+        <motion.div
+          aria-hidden="true"
+          style={{ opacity: haloOpacity }}
+          className="absolute -right-14 -top-16 h-52 w-52 rounded-full bg-[#ffc629]/28 blur-2xl"
         />
-      </motion.div>
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,24,16,0.05)_20%,rgba(8,31,21,0.92)_100%),linear-gradient(90deg,rgba(255,245,205,0.42),transparent_58%)]" />
-      <motion.div
-        aria-hidden="true"
-        animate={{ opacity: [0.18, 0.42, 0.18], scale: [1, 1.12, 1] }}
-        transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute left-8 top-10 h-28 w-28 rounded-full border border-[#d8c892]/45 shadow-[0_0_52px_rgba(143,122,67,.28)] md:h-40 md:w-40"
-      />
-
-      <motion.div
-        initial={{ x: index % 2 === 0 ? '18%' : '-18%', y: '10%', rotate: index % 2 === 0 ? 5 : -5 }}
-        animate={{ x: '0%', y: '0%', rotate: 0 }}
-        transition={{ duration: 1, delay: 0.12, type: 'spring', bounce: 0.18 }}
-        className="absolute right-5 top-5 hidden h-[42%] w-[28%] overflow-hidden rounded-[1.35rem] border-4 border-white/90 shadow-[0_24px_70px_rgba(0,0,0,0.38)] sm:block md:right-8 md:top-8"
-      >
-        <Image
-          src={stage.image}
-          alt=""
-          fill
-          sizes="28vw"
-          className="scale-125 object-cover object-[65%_35%]"
+        <motion.div
+          aria-hidden="true"
+          animate={{ x: ['-120%', '130%'] }}
+          transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 3.2, ease: 'easeInOut' }}
+          className="absolute inset-y-0 z-10 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.55),transparent)] opacity-50"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#10271f]/20 to-transparent" />
-      </motion.div>
+        <div className="absolute inset-x-0 top-0 h-1.5 bg-[#ffc629]" />
 
-      <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10">
-        <motion.div initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.18 }} className="mb-5 inline-flex items-center gap-3 rounded-full border border-[#d8c892]/45 bg-[#d8c892]/14 px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-[#e6d9ad] backdrop-blur-md">
-          <span className="h-2 w-2 rounded-full bg-[#d8c892] shadow-[0_0_16px_rgba(216,200,146,.65)]" />
-          {stage.grade}
+        <motion.div variants={itemVariants} className="relative flex items-start justify-between gap-5">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#b9862f]">
+              {stage.years}
+            </p>
+            <h3 className="mt-3 text-[clamp(2.25rem,4vw,4.3rem)] font-black leading-[0.94]">
+              {stage.label}
+            </h3>
+          </div>
+          <motion.span
+            animate={isActive ? { scale: [1, 1.12, 1] } : { scale: 1 }}
+            transition={{ duration: 1.2, repeat: isActive ? Infinity : 0, ease: 'easeInOut' }}
+            className="rounded-full bg-[#12100a] px-5 py-3 text-sm font-black text-[#ffc629]"
+          >
+            {stage.step}
+          </motion.span>
         </motion.div>
-        <motion.h3 initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.24 }} className="font-serif text-[clamp(2.5rem,5vw,5.4rem)] font-medium leading-[0.9] tracking-[-0.045em] text-[#f5dda0] drop-shadow-[0_8px_22px_rgba(0,0,0,.3)]">
+
+        <motion.p variants={itemVariants} className="relative mt-8 max-w-xl text-[clamp(1.45rem,2vw,2.2rem)] font-black leading-tight">
           {stage.title}
-        </motion.h3>
-        <motion.p initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.32 }} className="mt-4 max-w-2xl text-base font-medium leading-relaxed text-white/82 md:text-xl">
-          {stage.subtitle}
         </motion.p>
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: 0.4 }} className="mt-4 flex flex-wrap gap-x-3 text-base font-semibold text-[#e6d9ad] sm:text-xl md:text-2xl">
-          {stage.words.map((word) => (
-            <span key={word}>{word}</span>
+        <motion.p variants={itemVariants} className="relative mt-4 max-w-xl text-base font-medium leading-7 text-[#5f5642] sm:text-lg">
+          {stage.desc}
+        </motion.p>
+
+        <motion.div variants={itemVariants} className="relative mt-6 flex flex-wrap gap-2">
+          {stage.chips.map((chip) => (
+            <motion.span
+              key={chip}
+              style={{ x: chipX }}
+              className="rounded-full border border-[#d8bc65]/36 bg-[#fff8eb]/82 px-3 py-2 text-xs font-black uppercase tracking-[0.12em] text-[#7a6538]"
+            >
+              {chip}
+            </motion.span>
           ))}
         </motion.div>
-        <div className="mt-5 grid max-w-3xl gap-3 sm:grid-cols-3">
-          {stage.outcomes.map((outcome, outcomeIndex) => (
+
+        <motion.div variants={itemVariants} className="relative mt-7 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-[1rem] bg-[#f4ecd8] p-4">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-black/40">
+              Parent signal
+            </p>
+            <p className="mt-2 text-xl font-black">{stage.signal}</p>
+          </div>
+          <div className="rounded-[1rem] bg-[#ffc629] p-4">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-black/45">
+              System
+            </p>
+            <p className="mt-2 text-xl font-black">{stage.metric}</p>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      <motion.button
+        type="button"
+        onClick={onJump}
+        animate={
+          isActive
+            ? {
+                scale: [1, 1.14, 1],
+                boxShadow: [
+                  '0 24px 60px rgba(23,35,58,0.18)',
+                  '0 30px 90px rgba(255,198,41,0.58)',
+                  '0 24px 60px rgba(23,35,58,0.18)',
+                ],
+              }
+            : { scale: 1 }
+        }
+        transition={{ duration: 1.45, repeat: isActive ? Infinity : 0, ease: 'easeInOut' }}
+        className={`z-20 hidden h-24 w-24 place-items-center rounded-full border-[10px] text-xl font-black transition hover:scale-110 lg:col-start-2 lg:grid ${
+          isActive
+            ? 'border-white bg-[#ffc629] text-black'
+            : 'border-[#f7f1e6] bg-white text-black/42'
+        }`}
+        aria-label={`Jump to ${stage.label}`}
+      >
+        {stage.step}
+      </motion.button>
+
+      <motion.div
+        initial={{ opacity: 0, y: 70, scale: 0.92, rotateZ: alignLeft ? 2.5 : -2.5 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1, rotateZ: 0 }}
+        viewport={{ amount: 0.36 }}
+        transition={{ duration: 1.05, delay: 0.04, ease: [0.22, 1, 0.36, 1] }}
+        className={`relative min-h-[22rem] overflow-hidden rounded-[1.65rem] border border-white/70 bg-[#17233a] shadow-[0_34px_100px_rgba(23,35,58,0.18)] will-change-transform ${
+          alignLeft ? 'lg:col-start-3' : 'lg:col-start-1 lg:row-start-1'
+        }`}
+      >
+        <motion.div style={{ y: imageY, scale: imageScale }} className="absolute -inset-[9%]">
+          <Image
+            src={stage.image}
+            alt={`${stage.label} learning environment`}
+            fill
+            priority
+            loading="eager"
+            quality={92}
+            sizes="(min-width: 1024px) 38vw, 92vw"
+            className="object-cover object-center"
+          />
+        </motion.div>
+        <motion.div
+          aria-hidden="true"
+          animate={{ x: ['-125%', '135%'] }}
+          transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 2.4, ease: 'easeInOut' }}
+          className="absolute inset-y-0 z-10 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.36),transparent)]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,20,22,0.02)_18%,rgba(18,16,10,0.76)_100%)]" />
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ amount: 0.5 }}
+          transition={{ duration: 0.7, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute bottom-5 left-5 right-5 z-20"
+        >
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-[#f5d28a]">
+            Real journey signal
+          </p>
+          <p className="mt-2 max-w-lg text-2xl font-black leading-tight text-white">
+            {stage.parent}
+          </p>
+        </motion.div>
+      </motion.div>
+    </div>
+  )
+}
+
+function ParentConfidence() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 70, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+      className="mt-20 grid overflow-hidden rounded-[1.8rem] border border-[#d8bc65]/28 bg-[#17233a] shadow-[0_42px_130px_rgba(23,35,58,0.2)] lg:grid-cols-[0.9fr_1.1fr]"
+    >
+      <div className="relative min-h-[24rem]">
+        <Image
+          src="/images/together-with-families.png"
+          alt="Parents and school working together"
+          fill
+          priority
+          loading="eager"
+          quality={92}
+          sizes="(min-width: 1024px) 42vw, 92vw"
+          className="object-cover object-center"
+        />
+        <motion.div
+          aria-hidden="true"
+          animate={{ x: ['-120%', '140%'] }}
+          transition={{ duration: 2.8, repeat: Infinity, repeatDelay: 3, ease: 'easeInOut' }}
+          className="absolute inset-y-0 w-1/3 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.28),transparent)]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(23,35,58,0.05),rgba(23,35,58,0.62))]" />
+      </div>
+
+      <div className="relative p-6 text-white sm:p-8 lg:p-12">
+        <motion.div
+          aria-hidden="true"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 26, repeat: Infinity, ease: 'linear' }}
+          className="absolute right-8 top-8 h-32 w-32 rounded-full border border-[#d8bc65]/22"
+        />
+        <p className="text-sm font-black uppercase tracking-[0.28em] text-[#d8bc65]">
+          Parent confidence section
+        </p>
+        <h3 className="mt-5 max-w-2xl font-serif text-[clamp(2.4rem,4.2vw,5rem)] leading-[0.92]">
+          A school journey parents can actually feel.
+        </h3>
+        <p className="mt-5 max-w-2xl text-base font-medium leading-8 text-white/74 sm:text-lg">
+          Every stage shows families what is changing in the child: safety,
+          habits, independence, direction, and readiness for the next world.
+        </p>
+
+        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+          {parentSignals.map((signal, index) => (
             <motion.div
-              key={outcome}
-              animate={{ y: [0, outcomeIndex % 2 ? 6 : -6, 0] }}
-              transition={{ duration: 3 + outcomeIndex * 0.35, repeat: Infinity, ease: 'easeInOut' }}
-              className="rounded-2xl border border-white/18 bg-white/12 px-4 py-3 text-sm font-medium text-white shadow-xl backdrop-blur-md"
+              key={signal}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              animate={{ y: [0, index % 2 ? 6 : -6, 0] }}
+              viewport={{ once: true }}
+              transition={{
+                opacity: { duration: 0.5, delay: index * 0.08 },
+                y: {
+                  duration: 3.6 + index * 0.35,
+                  repeat: Infinity,
+                  ease: 'easeInOut',
+                },
+              }}
+              className="rounded-[1rem] border border-white/12 bg-white/10 px-4 py-4 shadow-xl backdrop-blur-md"
             >
-              {outcome}
+              <p className="text-[0.68rem] font-black uppercase tracking-[0.2em] text-[#d8bc65]">
+                Parents track
+              </p>
+              <p className="mt-2 text-lg font-black">{signal}</p>
             </motion.div>
           ))}
         </div>
       </div>
-    </motion.article>
+    </motion.div>
   )
 }

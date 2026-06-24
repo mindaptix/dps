@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Footer } from '@/shared/layout/Footer'
 import { Header } from '@/shared/layout/Header'
+import { SmoothScroll } from '@/shared/layout/SmoothScroll'
 import '../globals.css'
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="min-h-full bg-[#f7f1e6] font-sans text-[#17233a] antialiased">
+        <SmoothScroll />
         <Header />
         {children}
         <Footer />
