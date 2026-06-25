@@ -11,7 +11,7 @@ export function HomeIntroNote() {
               <div className="mt-5 h-px w-24 bg-black" />
             </div>
 
-            <div className="space-y-5 font-serif text-[clamp(1.8rem,3vw,3.4rem)] font-medium leading-tight text-black">
+            <div className="space-y-5 font-serif text-[clamp(1.55rem,2.5vw,2.8rem)] font-medium leading-tight text-black">
               <p>
                 Children need curiosity to explore, wisdom to make good decisions,
                 confidence to lead, and compassion to make a difference.

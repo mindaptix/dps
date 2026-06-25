@@ -181,10 +181,6 @@ export function JourneyOfGrowth() {
             <h2 className="mt-5 max-w-4xl font-serif text-[clamp(2.9rem,5.7vw,6.2rem)] leading-[0.92] text-[#17233a]">
               A journey from first steps to future choices.
             </h2>
-            <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-[#5c523f]">
-              Parents do not just see classes. They see care, foundation, discovery,
-              leadership, and placement readiness growing stage by stage.
-            </p>
           </motion.div>
 
           <motion.div

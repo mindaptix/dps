@@ -9,33 +9,41 @@ const slides = [
     letter: 'A',
     eyebrow: 'Education beyond the report card',
     title: 'Every Parent Wants More Than Good Marks',
+    titleLines: ['Every Parent Wants', 'More Than', 'Good Marks'],
     body:
       'Parents want children who are confident, happy, resilient, collaborative, and ready to build meaningful lives.',
-    image: '/images/education-beyond-marks.png',
+    image: '/images/smiling-schoolchildren-examining-globe.jpg',
+    imagePosition: '55% 50%',
   },
   {
     letter: 'B',
     eyebrow: 'Confidence for life',
     title: 'Children Need More Than Marks To Thrive',
+    titleLines: ['Children Need More', 'Than Marks', 'To Thrive'],
     body:
       'They need curiosity to explore, courage to stand up for what is right, and the ability to work well with others.',
-    image: '/images/early-years.png',
+    image: '/images/children-giving-high-five.jpg',
+    imagePosition: '44% 50%',
   },
   {
     letter: 'C',
     eyebrow: 'A richer school day',
     title: 'Learning Must Shape Character Too',
+    titleLines: ['Learning Must', 'Shape Character', 'Too'],
     body:
       'At DPS, academic excellence, wellbeing, character, and future readiness come together through one complete school experience.',
-    image: '/images/leadership.png',
+    image: '/images/one.jpg',
+    imagePosition: '48% 50%',
   },
   {
     letter: 'D',
     eyebrow: 'The purpose of education',
     title: 'Good Marks Matter. Good Lives Matter More.',
+    titleLines: ['Good Marks Matter.', 'Good Lives', 'Matter More.'],
     body:
       'The purpose of DPS is to help every child grow with knowledge, confidence, compassion, and a clear sense of possibility.',
-    image: '/images/dps-campus-life.png',
+    image: 'https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=1400&q=90',
+    imagePosition: '48% 50%',
   },
 ]
 
@@ -58,15 +66,15 @@ export function BeyondGoodMarks() {
   const activeSlide = slides[activeIndex]
 
   return (
-    <section ref={sectionRef} id="beyond-marks" className="relative h-[420vh] bg-white text-[#08246c]">
+    <section ref={sectionRef} id="beyond-marks" className="relative h-[420vh] bg-white text-[#4d629e]">
       <div className="sticky top-0 h-screen overflow-hidden bg-white">
         <motion.div
           aria-hidden="true"
           style={{ rotate: ringRotate }}
-          className="pointer-events-none absolute -right-[18rem] -top-[16rem] h-[70rem] w-[70rem] rounded-full border border-[#08246c]/16"
+          className="pointer-events-none absolute -right-[12rem] -top-[16rem] h-[76rem] w-[76rem] rounded-full border border-[#4d629e]/20"
         />
 
-        <div className="absolute inset-y-0 left-0 hidden w-[34vw] overflow-hidden rounded-r-[52%] lg:block">
+        <div className="absolute inset-y-0 left-0 hidden w-[36vw] overflow-hidden rounded-r-[58%] lg:block xl:w-[38vw]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeSlide.image}
@@ -81,18 +89,19 @@ export function BeyondGoodMarks() {
                   src={activeSlide.image}
                   alt={activeSlide.title}
                   fill
-                  sizes="34vw"
-                  className="object-cover object-center"
+                  sizes="38vw"
+                  className="object-cover contrast-105 saturate-110"
+                  style={{ objectPosition: activeSlide.imagePosition }}
                 />
               </motion.div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="mx-auto grid h-full max-w-[112rem] grid-cols-1 items-center px-6 pt-32 md:px-10 lg:grid-cols-[0.38fr_0.62fr] lg:px-16">
+        <div className="mx-auto grid h-full max-w-[112rem] grid-cols-1 items-center px-6 pt-32 md:px-10 lg:grid-cols-[0.38fr_0.62fr] lg:px-16 xl:grid-cols-[0.4fr_0.6fr]">
           <div className="hidden lg:block" />
 
-          <div className="relative z-10 max-w-4xl lg:pl-12">
+          <div className="relative z-10 max-w-[44rem] lg:pl-8 xl:pl-12">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeSlide.title}
@@ -101,19 +110,23 @@ export function BeyondGoodMarks() {
                 exit={{ opacity: 0, y: -34, filter: 'blur(7px)' }}
                 transition={{ duration: 0.68, ease: [0.22, 1, 0.36, 1] }}
               >
-                <span className="pointer-events-none absolute -left-24 -top-24 hidden font-serif text-[14rem] font-medium leading-none text-[#f3a000]/42 lg:block">
+                <span className="pointer-events-none absolute -left-20 -top-20 hidden select-none font-sans text-[5.5rem] font-light leading-none text-[#f3a000]/28 lg:block xl:text-[6.5rem]">
                   {activeSlide.letter}
                 </span>
 
-                <p className="relative text-sm font-semibold uppercase tracking-[0.2em] text-[#f3a000]">
+                <p className="relative text-[13px] font-medium uppercase tracking-[0.06em] text-[#4d629e]">
                   {activeSlide.eyebrow}
                 </p>
 
-                <h2 className="relative mt-5 max-w-3xl text-[clamp(3rem,5.4vw,6.2rem)] font-black uppercase leading-[0.94] tracking-normal text-[#08246c]">
-                  {activeSlide.title}
+                <h2 className="relative mt-5 max-w-3xl text-[clamp(2.85rem,4.35vw,5.05rem)] font-light uppercase leading-[0.98] tracking-normal text-[#4d629e]">
+                  {activeSlide.titleLines.map((line, index) => (
+                    <span key={line} className={`block ${index > 0 ? 'font-black' : ''}`}>
+                      {line}
+                    </span>
+                  ))}
                 </h2>
 
-                <p className="relative mt-7 max-w-3xl text-xl font-medium leading-9 text-[#08246c] md:text-2xl md:leading-10">
+                <p className="relative mt-7 max-w-[40rem] text-[clamp(1.05rem,1.45vw,1.58rem)] font-normal leading-[1.45] text-[#4d629e]">
                   {activeSlide.body}
                 </p>
               </motion.div>
@@ -122,10 +135,10 @@ export function BeyondGoodMarks() {
             <div className="mt-10 flex items-center gap-4">
               <a
                 href="#child"
-                className="group inline-flex min-h-14 items-center gap-6 rounded-full border border-[#08246c]/30 bg-white px-8 text-sm font-black uppercase tracking-[0.08em] text-[#08246c] shadow-[0_14px_40px_rgba(8,36,108,0.08)] transition hover:-translate-y-0.5"
+                className="group inline-flex min-h-14 items-center gap-6 rounded-full border border-[#4d629e]/28 bg-white px-8 text-sm font-black uppercase tracking-[0.06em] text-[#4d629e] shadow-[0_14px_40px_rgba(77,98,158,0.08)] transition hover:-translate-y-0.5"
               >
                 Explore learning
-                <span className="grid h-12 w-12 place-items-center rounded-full bg-[#f3a000] text-2xl leading-none text-black transition group-hover:translate-x-1">
+                <span className="grid h-12 w-12 place-items-center rounded-full bg-[#f3a000] text-2xl leading-none text-[#4d629e] transition group-hover:translate-x-1">
                   &gt;
                 </span>
               </a>
@@ -137,10 +150,10 @@ export function BeyondGoodMarks() {
           {slides.map((slide, index) => {
             const isActive = index === activeIndex
             const curvePositions = [
-              'right-[7.5rem] top-[40%]',
-              'right-[11rem] top-[62%]',
-              'right-[16rem] top-[82%]',
-              'right-[24rem] top-[95%]',
+              'right-[6.5rem] top-[42%]',
+              'right-[10rem] top-[63%]',
+              'right-[15rem] top-[82%]',
+              'right-[23rem] top-[95%]',
             ]
 
             return (
@@ -148,8 +161,8 @@ export function BeyondGoodMarks() {
                 key={slide.title}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className={`pointer-events-auto absolute grid h-24 w-24 -translate-y-1/2 place-items-center rounded-full text-2xl font-medium transition duration-500 ${curvePositions[index]} ${
-                  isActive ? 'bg-[#f3a000] text-black' : 'bg-[#f8dfb3] text-[#08246c]/24'
+                className={`pointer-events-auto absolute grid h-20 w-20 -translate-y-1/2 place-items-center rounded-full text-xl font-medium italic transition duration-500 xl:h-24 xl:w-24 xl:text-2xl ${curvePositions[index]} ${
+                  isActive ? 'bg-[#f3a000] text-black' : 'bg-[#f8dfb3] text-[#4d629e]/24'
                 }`}
               >
                 {index + 1}
