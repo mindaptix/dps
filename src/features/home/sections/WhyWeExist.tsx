@@ -8,7 +8,7 @@ const purposeCards = [
     title: 'Thoughtful Questions',
     body: 'The world needs people who ask better questions, think deeply, and look beyond obvious answers.',
     label: 'Ask',
-    bg: '#01AAFF',
+    bg: '#0E425C',
     text: '#ffffff',
   },
   {
@@ -43,7 +43,7 @@ export function WhyWeExist() {
       id="why-we-exist"
       className="relative overflow-hidden bg-white px-5 py-14 text-[#101828] sm:px-8 sm:py-16 lg:px-12 lg:py-20"
     >
-      <div className="pointer-events-none absolute -left-44 top-8 h-96 w-96 rounded-full bg-[#01AAFF]/10 blur-3xl" />
+      <div className="pointer-events-none absolute -left-44 top-8 h-96 w-96 rounded-full bg-[#0E425C]/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-44 bottom-8 h-[30rem] w-[30rem] rounded-full bg-[#EDAC1E]/12 blur-3xl" />
 
       <div className="relative z-10 mx-auto max-w-[112rem]">
@@ -55,7 +55,7 @@ export function WhyWeExist() {
             viewport={{ once: true, amount: 0.45 }}
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="mb-4 text-[0.72rem] font-black uppercase tracking-[0.28em] text-[#01AAFF]">
+            <p className="mb-4 text-[0.72rem] font-black uppercase tracking-[0.28em] text-[]">
               Section 03
             </p>
 
