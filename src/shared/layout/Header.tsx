@@ -25,6 +25,7 @@ const tickerItems = [
 
 export function Header() {
   const [hidden, setHidden] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const lastScrollY = useRef(0)
 
   useEffect(() => {
@@ -34,6 +35,9 @@ export function Header() {
       const scrolledPastThreshold = currentY > 80
 
       setHidden(scrolledPastThreshold && scrollingDown)
+      if (scrolledPastThreshold && scrollingDown) {
+        setMenuOpen(false)
+      }
       lastScrollY.current = currentY
     }
 
@@ -67,41 +71,87 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex h-24 items-center gap-2 overflow-visible px-3 py-0 md:px-6 lg:px-8">
-          <Link href="/" className="flex shrink-0 items-center">
-            <span className="relative block h-20 w-64 shrink-0 overflow-visible md:w-72 lg:w-80">
+        <div className="flex h-20 items-center gap-2 px-3 py-0 sm:h-[5.5rem] md:px-5 lg:h-24 lg:px-7 2xl:px-8">
+          <Link href="/" className="flex min-w-0 shrink items-center xl:shrink-0" onClick={() => setMenuOpen(false)}>
+            <span className="relative block w-[min(68vw,16rem)] shrink overflow-hidden sm:w-[19rem] xl:w-[16.25rem] 2xl:w-[20rem]">
               <Image
                 src="/images/logo11.png"
                 alt="Delhi Public School SPR Gurugram"
-                fill
+                width={1903}
+                height={592}
                 loading="eager"
                 fetchPriority="high"
-                sizes="(max-width: 768px) 20rem, (max-width: 1024px) 23rem, 26rem"
-                className="origin-left scale-[1.52] object-contain object-left lg:scale-[1.65]"
+                sizes="(max-width: 640px) 68vw, (max-width: 1279px) 19rem, (max-width: 1535px) 16.25rem, 20rem"
+                className="h-auto w-full object-contain object-left"
               />
             </span>
           </Link>
 
-          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-3 text-[0.72rem] font-bold uppercase tracking-[0.11em] text-[#17233a] xl:flex">
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-1.5 text-[0.64rem] font-bold uppercase tracking-[0.08em] text-[#17233a] xl:flex 2xl:gap-3 2xl:text-[0.72rem] 2xl:tracking-[0.11em]">
             {navItems.map(([item, href]) => (
               <a
                 key={item}
                 href={href}
-                className="relative whitespace-nowrap rounded-full px-2 py-1 transition duration-300 hover:bg-[#eef6eb] hover:text-[#143627] after:absolute after:-bottom-2 after:left-2 after:h-px after:w-0 after:bg-[#b9862f] after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)]"
+                className="relative whitespace-nowrap rounded-full px-1.5 py-1 transition duration-300 hover:bg-[#eef6eb] hover:text-[#143627] after:absolute after:-bottom-2 after:left-2 after:h-px after:w-0 after:bg-[#b9862f] after:transition-all after:duration-300 hover:after:w-[calc(100%-1rem)] 2xl:px-2"
               >
                 {item}
               </a>
             ))}
           </nav>
 
-          <div className="ml-auto mr-2 flex shrink-0 items-center gap-2">
+          <div className="ml-auto flex shrink-0 items-center gap-2">
             <a
               href="#admissions"
-              className="interactive-ring hidden rounded-full border border-[#d6b56d]/45 bg-gradient-to-r from-[#143627] via-[#17233a] to-[#243d2d] px-4 py-1.5 text-[0.64rem] font-bold uppercase tracking-[0.14em] text-[#fff6df] shadow-[0_12px_30px_rgba(23,35,58,0.24)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(23,35,58,0.30)] md:inline-flex"
+              className="interactive-ring hidden rounded-full border border-[#d6b56d]/45 bg-gradient-to-r from-[#143627] via-[#17233a] to-[#243d2d] px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-[#fff6df] shadow-[0_12px_30px_rgba(23,35,58,0.24)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(23,35,58,0.30)] sm:inline-flex lg:px-4 lg:text-[0.64rem] xl:px-3 2xl:px-4"
             >
               Schedule A Visit
             </a>
+
+            <button
+              type="button"
+              aria-label="Toggle navigation menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((open) => !open)}
+              className="interactive-ring grid h-10 w-10 place-items-center rounded-full border border-[#d6b56d]/45 bg-[#143627] text-[#fff6df] shadow-[0_10px_24px_rgba(23,35,58,0.18)] transition hover:-translate-y-0.5 xl:hidden"
+            >
+              <span className="relative block h-3.5 w-4">
+                <span
+                  className={`absolute left-0 h-0.5 w-4 rounded-full bg-current transition ${
+                    menuOpen ? 'top-1.5 rotate-45' : 'top-0'
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-1.5 h-0.5 w-4 rounded-full bg-current transition ${
+                    menuOpen ? 'opacity-0' : 'opacity-100'
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 h-0.5 w-4 rounded-full bg-current transition ${
+                    menuOpen ? 'top-1.5 -rotate-45' : 'top-3'
+                  }`}
+                />
+              </span>
+            </button>
           </div>
+        </div>
+
+        <div
+          className={`border-t border-[#d6e5d1]/80 bg-[#fffdf8]/95 px-4 shadow-[0_18px_34px_rgba(23,35,58,0.12)] backdrop-blur-xl transition xl:hidden ${
+            menuOpen ? 'max-h-96 py-4 opacity-100' : 'max-h-0 overflow-hidden py-0 opacity-0'
+          }`}
+        >
+          <nav className="mx-auto grid max-w-3xl gap-2 sm:grid-cols-2">
+            {navItems.map(([item, href]) => (
+              <a
+                key={item}
+                href={href}
+                onClick={() => setMenuOpen(false)}
+                className="rounded-md border border-[#d6e5d1]/70 bg-white/70 px-4 py-3 text-sm font-bold uppercase tracking-[0.08em] text-[#17233a] transition hover:border-[#b9862f]/55 hover:bg-[#eef6eb] hover:text-[#143627]"
+              >
+                {item}
+              </a>
+            ))}
+          </nav>
         </div>
       </div>
     </header>
