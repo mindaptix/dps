@@ -1,5 +1,6 @@
 import { HomeHero } from '@/features/home/sections/HomeHero'
 import { HomeIntroNote } from '@/features/home/sections/HomeIntroNote'
+import { WhyWeExist } from '@/features/home/sections/WhyWeExist'
 import { BeyondGoodMarks } from '@/features/home/sections/BeyondGoodMarks'
 import { WhySchoolExists } from '@/features/home/sections/WhySchoolExists'
 import { ChildWeNurture } from '@/features/home/sections/ChildWeNurture'
@@ -18,6 +19,7 @@ export default function Home() {
       <HomeHero />
       <HomeIntroNote />
       <BeyondGoodMarks />
+      <WhyWeExist />
       <WhySchoolExists />
       <ChildWeNurture />
       <LearningThatMatters />
