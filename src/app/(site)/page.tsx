@@ -2,6 +2,7 @@ import { HomeHero } from '@/features/home/sections/HomeHero'
 import { HomeIntroNote } from '@/features/home/sections/HomeIntroNote'
 import { WhyWeExist } from '@/features/home/sections/WhyWeExist'
 import { BeyondGoodMarks } from '@/features/home/sections/BeyondGoodMarks'
+import { ChildPotentialCollage } from '@/features/home/sections/ChildPotentialCollage'
 import { WhySchoolExists } from '@/features/home/sections/WhySchoolExists'
 import { ChildWeNurture } from '@/features/home/sections/ChildWeNurture'
 import { LearningThatMatters } from '@/features/home/sections/ChildGrowthTimeline'
@@ -22,6 +23,7 @@ export default function Home() {
       <WhyWeExist />
       <WhySchoolExists />
       <ChildWeNurture />
+      <ChildPotentialCollage />
       <LearningThatMatters />
       <JourneyOfGrowth />
       <FutureStillBeingWritten />
