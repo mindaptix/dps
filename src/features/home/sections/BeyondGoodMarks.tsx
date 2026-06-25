@@ -125,7 +125,7 @@ export function BeyondGoodMarks() {
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="w-full max-w-[48rem]"
             >
-              <p className="mb-4 text-[0.72rem] font-black uppercase tracking-[0.28em] text-[#01aaff]">
+              <p className="mb-4 text-[0.72rem] font-black uppercase tracking-[0.28em] text-[#FCB017]">
                 Beyond marks
               </p>
 
@@ -134,7 +134,7 @@ export function BeyondGoodMarks() {
                   Every Parent Wants
                 </span>
                 <span className="block whitespace-nowrap">
-                  <span className="text-[#01aaff]">More Than</span> Good Marks
+                  <span className="text-[#FCB017]">More Than</span> Good Marks
                 </span>
               </h2>
 
