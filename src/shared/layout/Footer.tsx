@@ -26,12 +26,12 @@ export function Footer() {
         <div className="mb-8 grid gap-8 md:grid-cols-2 lg:grid-cols-5 lg:gap-10">
           <div className="lg:col-span-2">
             <div className="mb-4 flex items-center rounded-[1.4rem] border border-white/10 bg-white/[0.06] p-4 backdrop-blur">
-              <span className="relative block h-20 w-72 max-w-full shrink-0 rounded-xl bg-white/90">
+              <span className="relative block h-20 w-[24rem] max-w-full shrink-0 rounded-xl bg-white/90">
                 <Image
-                  src="/images/schoollogo.png.png"
+                  src="/images/logo11.png"
                   alt="Delhi Public School SPR Gurugram"
                   fill
-                  sizes="18rem"
+                  sizes="24rem"
                   className="object-contain object-left"
                 />
               </span>

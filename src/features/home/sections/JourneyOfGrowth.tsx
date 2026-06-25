@@ -154,7 +154,7 @@ export function JourneyOfGrowth() {
     <section
       ref={sectionRef}
       id="growth-journey"
-      className="relative overflow-hidden bg-[#f7f1e6] py-24 text-[#12100a] sm:py-28 lg:py-36"
+      className="relative overflow-hidden bg-[#f7f1e6] py-14 text-[#12100a] sm:py-16 lg:py-20"
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_8%,rgba(255,198,41,0.34),transparent_28%),radial-gradient(circle_at_88%_28%,rgba(23,35,58,0.12),transparent_34%),linear-gradient(115deg,#fff8eb_0%,#f3eadc_48%,#e8e4d8_100%)]" />
       <motion.div
@@ -167,7 +167,7 @@ export function JourneyOfGrowth() {
       <div className="relative z-20 mx-auto max-w-[1500px] px-5 sm:px-8 lg:px-12">
         <motion.div
           style={{ y: headerY, opacity: headerOpacity }}
-          className="grid gap-8 lg:grid-cols-[0.62fr_0.38fr] lg:items-center"
+          className="grid gap-6 lg:grid-cols-[0.62fr_0.38fr] lg:items-center"
         >
           <motion.div
             initial={{ opacity: 0, y: 36 }}
@@ -189,7 +189,7 @@ export function JourneyOfGrowth() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="relative min-h-[25rem] overflow-hidden rounded-[1.8rem] border border-white/70 bg-[#17233a] shadow-[0_34px_90px_rgba(23,35,58,0.16)]"
+            className="relative min-h-[19rem] overflow-hidden rounded-[1.8rem] border border-white/70 bg-[#17233a] shadow-[0_34px_90px_rgba(23,35,58,0.16)] lg:min-h-[21rem]"
           >
             <Image
               src="/images/journey-of-growth.png"
@@ -214,26 +214,7 @@ export function JourneyOfGrowth() {
           </motion.div>
         </motion.div>
 
-        <div className="sticky top-4 z-30 mt-10 rounded-full border border-black/10 bg-white/78 p-2 shadow-[0_28px_90px_rgba(23,35,58,0.12)] backdrop-blur-xl">
-          <div className="flex gap-1 overflow-x-auto">
-            {stages.map((stage, index) => (
-              <button
-                key={stage.label}
-                type="button"
-                onClick={() => jumpToStage(index)}
-                className={`min-w-fit rounded-full px-4 py-3 text-xs font-black uppercase tracking-[0.16em] transition sm:px-6 sm:text-sm ${
-                  activeStage === index
-                    ? 'bg-[#ffc629] text-black shadow-[0_16px_34px_rgba(185,134,47,0.24)]'
-                    : 'text-black/48 hover:bg-black/5 hover:text-black'
-                }`}
-              >
-                {stage.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="relative mt-16 lg:mt-24">
+        <div className="relative mt-8 lg:mt-12">
           <svg
             aria-hidden="true"
             viewBox="0 0 1000 1880"
@@ -344,7 +325,7 @@ function StageRow({
         viewport={{ amount: 0.42, margin: '-12% 0px -12% 0px' }}
         onViewportEnter={onEnter}
         style={{ y: reduceMotion ? undefined : cardLift }}
-        className={`motion-card relative overflow-hidden rounded-[1.65rem] border border-black/10 bg-white/82 p-5 shadow-[0_34px_110px_rgba(23,35,58,0.13)] backdrop-blur-xl will-change-transform sm:p-7 lg:p-8 ${
+        className={`motion-card relative overflow-hidden rounded-[1.45rem] border border-black/10 bg-white/82 p-4 shadow-[0_28px_80px_rgba(23,35,58,0.12)] backdrop-blur-xl will-change-transform sm:p-5 lg:p-6 ${
           alignLeft ? 'lg:col-start-1' : 'lg:col-start-3'
         }`}
       >
@@ -362,53 +343,53 @@ function StageRow({
 
         <motion.div variants={itemVariants} className="relative flex items-start justify-between gap-5">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.24em] text-[#b9862f]">
+            <p className="text-[0.68rem] font-black uppercase tracking-[0.22em] text-[#b9862f]">
               {stage.years}
             </p>
-            <h3 className="mt-3 text-[clamp(2.25rem,4vw,4.3rem)] font-black leading-[0.94]">
+            <h3 className="mt-2 text-[clamp(1.85rem,3.1vw,3.25rem)] font-black leading-[0.94]">
               {stage.label}
             </h3>
           </div>
           <motion.span
             animate={isActive ? { scale: [1, 1.12, 1] } : { scale: 1 }}
             transition={{ duration: 1.2, repeat: isActive ? Infinity : 0, ease: 'easeInOut' }}
-            className="rounded-full bg-[#12100a] px-5 py-3 text-sm font-black text-[#ffc629]"
+            className="rounded-full bg-[#12100a] px-4 py-2 text-xs font-black text-[#ffc629]"
           >
             {stage.step}
           </motion.span>
         </motion.div>
 
-        <motion.p variants={itemVariants} className="relative mt-8 max-w-xl text-[clamp(1.45rem,2vw,2.2rem)] font-black leading-tight">
+        <motion.p variants={itemVariants} className="relative mt-5 max-w-xl text-[clamp(1.15rem,1.55vw,1.65rem)] font-black leading-tight">
           {stage.title}
         </motion.p>
-        <motion.p variants={itemVariants} className="relative mt-4 max-w-xl text-base font-medium leading-7 text-[#5f5642] sm:text-lg">
+        <motion.p variants={itemVariants} className="relative mt-3 max-w-xl text-sm font-medium leading-6 text-[#5f5642] sm:text-base">
           {stage.desc}
         </motion.p>
 
-        <motion.div variants={itemVariants} className="relative mt-6 flex flex-wrap gap-2">
+        <motion.div variants={itemVariants} className="relative mt-4 flex flex-wrap gap-2">
           {stage.chips.map((chip) => (
             <motion.span
               key={chip}
               style={{ x: reduceMotion ? undefined : chipX }}
-              className="rounded-full border border-[#d8bc65]/36 bg-[#fff8eb]/82 px-3 py-2 text-xs font-black uppercase tracking-[0.12em] text-[#7a6538]"
+              className="rounded-full border border-[#d8bc65]/36 bg-[#fff8eb]/82 px-3 py-1.5 text-[0.68rem] font-black uppercase tracking-[0.1em] text-[#7a6538]"
             >
               {chip}
             </motion.span>
           ))}
         </motion.div>
 
-        <motion.div variants={itemVariants} className="relative mt-7 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-[1rem] bg-[#f4ecd8] p-4">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-black/40">
+        <motion.div variants={itemVariants} className="relative mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-[0.9rem] bg-[#f4ecd8] p-3.5">
+            <p className="text-[0.66rem] font-black uppercase tracking-[0.18em] text-black/40">
               Parent signal
             </p>
-            <p className="mt-2 text-xl font-black">{stage.signal}</p>
+            <p className="mt-1.5 text-base font-black">{stage.signal}</p>
           </div>
-          <div className="rounded-[1rem] bg-[#ffc629] p-4">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-black/45">
+          <div className="rounded-[0.9rem] bg-[#ffc629] p-3.5">
+            <p className="text-[0.66rem] font-black uppercase tracking-[0.18em] text-black/45">
               System
             </p>
-            <p className="mt-2 text-xl font-black">{stage.metric}</p>
+            <p className="mt-1.5 text-base font-black">{stage.metric}</p>
           </div>
         </motion.div>
       </motion.div>

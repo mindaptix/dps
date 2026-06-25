@@ -50,7 +50,7 @@ export function Header() {
       }`}
     >
       <div className="surface-lift edge-highlight w-full overflow-hidden border-b border-[#d6e5d1]/80 bg-[#fffdf8]/90 shadow-[0_16px_46px_rgba(23,35,58,0.13)] backdrop-blur-xl">
-        <div className="overflow-hidden border-b border-[#d8bc65]/35 bg-[#064126]">
+        <div className="overflow-hidden border-b border-[#d8bc65]/35 bg-[#026833]">
           <div className="admission-ticker flex w-max items-center py-1">
             {[...tickerItems, ...tickerItems].map((item, index) => (
               <a
@@ -67,22 +67,22 @@ export function Header() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 px-4 py-0 md:px-8 lg:px-12">
+        <div className="flex h-24 items-center gap-2 overflow-visible px-3 py-0 md:px-6 lg:px-8">
           <Link href="/" className="flex shrink-0 items-center">
-            <span className="relative ml-3 block h-[5.2rem] w-48 shrink-0 overflow-hidden md:ml-4 md:h-[5.8rem] md:w-60 lg:ml-5 lg:h-[6.4rem] lg:w-[17rem]">
+            <span className="relative block h-20 w-64 shrink-0 overflow-visible md:w-72 lg:w-80">
               <Image
-                src="/images/schoollogo.png.png"
+                src="/images/logo11.png"
                 alt="Delhi Public School SPR Gurugram"
                 fill
                 loading="eager"
                 fetchPriority="high"
-                sizes="(max-width: 768px) 14rem, (max-width: 1024px) 16rem, 18rem"
-                className="object-contain"
+                sizes="(max-width: 768px) 20rem, (max-width: 1024px) 23rem, 26rem"
+                className="origin-left scale-[1.52] object-contain object-left lg:scale-[1.65]"
               />
             </span>
           </Link>
 
-          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-4 text-[0.74rem] font-bold uppercase tracking-[0.12em] text-[#17233a] xl:flex">
+          <nav className="hidden min-w-0 flex-1 items-center justify-center gap-3 text-[0.72rem] font-bold uppercase tracking-[0.11em] text-[#17233a] xl:flex">
             {navItems.map(([item, href]) => (
               <a
                 key={item}
